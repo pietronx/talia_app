@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:talia_app/widgets/widgets_util.dart';
+
 import 'customColors/app_colors.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
 // Clase principal
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ejemplo 1',
+      title: 'Talia Group App',
       theme: ThemeData(
         primaryColor: AppColors.appbar,
         scaffoldBackgroundColor: AppColors.fondo,
@@ -71,148 +73,6 @@ class PantallaPrincipal extends StatelessWidget {
       ),
       // Cuerpo de la pantalla
       body: const Center(child: Text('Bienvenido a la aplicación')),
-      //--> Codigo Antiguo
-      /*
-
-      <---------------------------- Codigo antiguo ---------------------------->
-
-      drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            // Encabezado del Drawer
-            Container(
-              width: double.infinity,
-              color: AppColors.drawerCabecera,
-              padding: const EdgeInsets.only(top: 60, bottom: 20),
-              child: const Text(
-                'Menu',
-                style: TextStyle(
-                  color: AppColors.drawerTitulo,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-
-            // Cuerpo del Drawer
-            Expanded(
-              child: Container(
-                color: AppColors.drawerFondo,
-                child: ListView(
-                  children: [
-                    ListTile(
-                      //--> Botón de Sobre Nosotros
-                      title: const Text(
-                        'Sobre Nosotros',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AboutUs(),
-                          ),
-                        );
-                      },
-                    ),
-
-                    const Divider(
-                      color: AppColors.drawerCabecera, // Color de la línea
-                      thickness: 1, // Grosor de la línea
-                    ),
-
-                    ListTile(
-                      //--> Botón de Contacto
-                      title: const Text(
-                        'Contacto',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Contact(),
-                          ),
-                        );
-                      },
-                    ),
-
-                    const Divider(
-                      color: AppColors.drawerCabecera,
-                      thickness: 1,
-                    ),
-
-                    ListTile(
-                      //--> Botón de Eventos
-                      title: const Text(
-                        'Eventos',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-
-                    const Divider(
-                      color: AppColors.drawerCabecera,
-                      thickness: 1,
-                    ),
-
-                    ListTile(
-                      //--> Botón de Abonos
-                      title: const Text(
-                        'Abonos',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-
-                    const Divider(
-                      color: AppColors.drawerCabecera,
-                      thickness: 1,
-                    ),
-
-                    ListTile(
-                      //--> Botón de Cesta
-                      title: const Text(
-                        'Cesta',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-
-                    const Divider(
-                      color: AppColors.drawerCabecera,
-                      thickness: 1,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-       */
       drawer: Drawer(
         child: Container(
           color: AppColors.drawerFondo,
@@ -292,7 +152,8 @@ Divider _divisores() {
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
 
-  /* Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Sobre Nosotros')),
       body: SingleChildScrollView(
@@ -302,284 +163,311 @@ class AboutUs extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Espacio de Separación
+                // Banner de la empresa
+                WidgetsUtil.contenedorPersonalizado(
+                  width: 300,
+                  height: 140,
+                  path: 'assets/images/bannerGrupoTalia.png',
+                ),
+
+                SizedBox(height: 50),
+
+                // Titulo Webs Oficiales
+                WidgetsUtil.contenedorPersonalizado(
+                  text: 'Webs Oficiales',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  textoColor: AppColors.titulo,
+                  fondoColor: AppColors.contenedor,
+                ),
+
+                // Divisor
+                Divider(
+                  height: 25,
+                  indent: 55,
+                  endIndent: 55,
+                  color: AppColors.drawerCabecera,
+                  thickness: 2,
+                ),
+
+                SizedBox(height: 30), // Web Oficiales - Grupo Talía
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // Centra todo el contenido del Row principal
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Grupo Talía
+                    Row(
+                      children: [
+                        Text(
+                          'Grupo Talía',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.texto,
+                          ),
+                        ),
+
+                        SizedBox(width: 1),
+
+                        // Espacio entre texto e icono
+                        OpenLink.socialMediaIcon(
+                          icono: Icons.public,
+                          url: 'https://www.grupotalia.org/',
+                          color: AppColors.appbar,
+                        ),
+                      ],
+                    ),
+
+                    Container(width: 1, height: 30, color: AppColors.appbar),
+
+                    SizedBox(width: 10),
+
+                    // Silvia Sanz
+                    Row(
+                      children: [
+                        Text(
+                          'Silvia Sanz',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.texto,
+                          ),
+                        ),
+                        SizedBox(width: 1),
+                        // Espacio entre texto e icono
+                        OpenLink.socialMediaIcon(
+                          icono: Icons.public,
+                          url: 'https://www.silviasanz.com/',
+                          color: AppColors.appbar,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 40),
+
+                // Titulo Directores
                 WidgetsUtil.contenedorPersonalizado(
                   text: 'Directores',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   textoColor: AppColors.titulo,
+                  fondoColor: AppColors.contenedor,
                 ),
 
-                SizedBox(height: 20), // Separador entre titulo y texto
-                // Elemento para scrollear de manera horizontal
+                // Divisor
+                Divider(
+                  height: 25,
+                  indent: 75,
+                  endIndent: 75,
+                  color: AppColors.drawerCabecera,
+                  thickness: 2,
+                ),
+
+                SizedBox(height: 40),
+
+                // Director 1
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  // Director 1 - Imagen
                   children: [
                     WidgetsUtil.contenedorPersonalizado(
-                      width: 110,
+                      width: 100,
                       height: 110,
-                      path: 'assets/images/imagenuno.png',
+                      path: 'assets/images/silviaimg.png',
                       fondoColor: AppColors.contenedor,
                     ),
 
                     SizedBox(width: 20),
-
                     // Separador entre imagen y texto
-                    WidgetsUtil.contenedorPersonalizado(
-                      text:
-                          'SILVIA SANZ\n'
-                          'DIRECTORA TITULAR',
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      textoColor: Colors.black,
-                    ),
 
-                    SizedBox(height: 20),
-                    // Contenedor de iconos
-                    Row(
-                      children: [
-                        SocialIcon.socialMediaIcon(
-                          icono: Icons.facebook,
-                          url: 'https://www.facebook.com/silviasanz',
-                        ),
-                        SocialIcon.socialMediaIcon(
-                          icono: Icons.mail,
-                          url: 'mailto:silvia@correo.com',
-                        ),
-                        SocialIcon.socialMediaIcon(
-                          icono: Icons.public,
-                          url: 'https://www.sitio-web.com',
-                        ),
-                        SocialIcon.socialMediaIcon(
-                          icono: Icons.camera_alt,
-                          url: 'https://www.instagram.com/silviasanz',
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 30), // Separador entre directores
-
-                    Row(
-                      children: [
-                        WidgetsUtil.contenedorPersonalizado(
-                          width: 110,
-                          height: 110,
-                          path: 'assets/images/imagendos.png',
-                          fondoColor: AppColors.contenedor,
-                        ),
-
-                        SizedBox(width: 20),
-
-                        WidgetsUtil.contenedorPersonalizado(
-                          text:
-                              'ALEJANDRO VIVAS\n'
-                              'DIRECTOR ARTÍSTICO',
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          textoColor: Colors.black,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-   */
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Sobre Nosotros')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Espacio de Separación
-                WidgetsUtil.contenedorPersonalizado(
-                  text: 'Directores',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  textoColor: AppColors.titulo,
-                ),
-
-                SizedBox(height: 20), // Separador entre titulo y texto
-
-                // Elemento para mostrar imagen, texto e iconos
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // Alineamos los elementos en la parte superior
-                  children: [
-                    // Imagen a la izquierda
-                    WidgetsUtil.contenedorPersonalizado(
-                      width: 110,
-                      height: 110,
-                      path: 'assets/images/imagendos.png',
-                      fondoColor: AppColors.contenedor,
-                    ),
-
-                    SizedBox(width: 20), // Separador entre imagen y texto
-
-                    // Contenedor para el texto
+                    // Director 1 - Texto
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           WidgetsUtil.contenedorPersonalizado(
-                            text: 'SILVIA SANZ\nDIRECTORA TITULAR',
+                            text: 'SILVIA SANZ\n"DIRECTORA TITULAR"',
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             textoColor: Colors.black,
                           ),
 
-                          SizedBox(height: 1),
+                          SizedBox(height: 0),
 
-                          /*
-                          // Contenedor de iconos
+                          // Director 1 - Iconos y Enlaces
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SocialIcon.socialMediaIcon(
-                                icono: Icons.facebook,
-                                url: 'https://flutter.dev',
+                              SizedBox(width: 25),
+                              OpenLink.socialMediaIcon(
+                                path: 'assets/icons/facebookIcon.png',
+                                url:
+                                    'https://www.facebook.com/people/Silvia-Sanz-Torre/100054562743950/#',
                               ),
                               SizedBox(width: 10),
-                              SocialIcon.socialMediaIcon(
+                              OpenLink.socialMediaIcon(
                                 path: 'assets/icons/instagram.png',
-                                url: 'https://www.instagram.com/silviasanztorre/#',
+                                url:
+                                    'https://www.instagram.com/silviasanztorre/#',
+                              ),
+                              SizedBox(width: 10),
+                              OpenLink.socialMediaIcon(
+                                path: 'assets/icons/twitterIcon.png',
+                                url: 'https://x.com/silviasanztorre',
+                              ),
+                              SizedBox(width: 10),
+                              OpenLink.socialMediaIcon(
+                                path: 'assets/icons/linkedinIcon.png',
+                                url:
+                                    'https://www.linkedin.com/in/silvia-sanz-torre-59764668/',
                               ),
                             ],
                           ),
-                          */
                         ],
                       ),
                     ),
                   ],
                 ),
 
-                SizedBox(height: 30), // Separador entre directores
-
+                SizedBox(height: 40), // Separador entre directores
+                // Director 2
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  // Alineamos los elementos en la parte superior
+
+                  // Director 2 - Imagen
                   children: [
                     // Imagen a la izquierda
                     WidgetsUtil.contenedorPersonalizado(
-                      width: 110,
+                      width: 100,
                       height: 110,
-                      path: 'assets/images/imagendos.png',
+                      path: 'assets/images/alejandroimg.png',
                       fondoColor: AppColors.contenedor,
                     ),
 
                     SizedBox(width: 20), // Separador entre imagen y texto
-
-                    // Contenedor para el texto
+                    // Director 2 - Texto
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           WidgetsUtil.contenedorPersonalizado(
-                            text: 'ALEJANDRO VIVAS\nDIRECTOR ARTÍSTICO',
+                            text: 'ALEJANDRO VIVAS\n"DIRECTOR ARTÍSTICO"',
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             textoColor: Colors.black,
                           ),
 
-                          SizedBox(height: 1),
-                          /*
-                          // Contenedor de iconos
+                          SizedBox(height: 0),
+
+                          // Director 2 - Iconos y Enlaces
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SocialIcon.socialMediaIcon(
-                                icono: Icons.facebook,
-                                url: 'https://www.facebook.com/alejandrovivas',
+                              SizedBox(width: 25),
+                              OpenLink.socialMediaIcon(
+                                path: 'assets/icons/facebookIcon.png',
+                                url:
+                                    'https://www.facebook.com/Alejandro-VIVAS-PUIG-1485352031719047/',
                               ),
                               SizedBox(width: 10),
-                              SocialIcon.socialMediaIcon(
-                                icono: Icons.camera_alt,
-                                url: 'https://www.instagram.com/alejandrovivas',
+                              OpenLink.socialMediaIcon(
+                                path: 'assets/icons/instagram.png',
+                                url:
+                                    'https://www.instagram.com/alevivasmusic/#',
+                              ),
+                              SizedBox(width: 10),
+                              OpenLink.socialMediaIcon(
+                                path: 'assets/icons/twitterIcon.png',
+                                url: 'https://x.com/avivasMusic',
+                              ),
+                              SizedBox(width: 10),
+                              OpenLink.socialMediaIcon(
+                                path: 'assets/icons/linkedinIcon.png',
+                                url:
+                                    'https://www.linkedin.com/in/alejandro-vivas-puig-a3152044/',
                               ),
                             ],
                           ),
-                          */
                         ],
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
-// ----------------------> Pantalla Contacto <----------------------\\
-/*
-
-    <---------------------------- Codigo antiguo ---------------------------->
-
-class Contact extends StatelessWidget {
-  const Contact({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Contacto')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _WidgetsUtil.contenedorPersonalizado(
-                  'Información de Contacto',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-
-                const SizedBox(height: 20),
-
-                // Espacio de Separacion
-                _WidgetsUtil.contenedorPersonalizado(
-                  'Av. del Veinticinco de Septiembre, 2\n'
-                  '28027 Madrid\n'
-                  'Teléfono: +34 91 318 59 28\n'
-                  'Correo: info@grupotalia.org',
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                  height: 2,
-                ),
-
-                const SizedBox(height: 20),
-                // Espacio de Separacion
-                // "ScrollView" horizontal
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal, // Desplazamiento horizontal
-                  child: Row(
-                    // Usa Row para alinear los elementos en línea horizontal
+                // Apartado de copyright y derechos reservados
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
                     children: [
-                      _contenedor(100, 100, 'assets/images/imagenuno.png'),
 
-                      const SizedBox(width: 20),
+                      SizedBox(height: 40),
 
-                      _WidgetsUtil.contenedorPersonalizado(
-                        'SILVIA SANZ\n'
-                        'DIRECTORA TITULAR\n'
-                        'Apasionada de la música\n y trabajadora incansable\n'
-                        'Siempre con una partitura en sus manos',
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal
+                      Divider(
+                        indent: 10,
+                        endIndent: 10,
+                        color: AppColors.drawerCabecera,
+                        thickness: 1,
+                      ),
+
+                      SizedBox(height: 16),
+                      // Espacio después del Divider
+
+                      // Texto de copyright
+                      Text(
+                        '© ${DateTime.now().year} Grupo Talía',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                      SizedBox(height: 8),
+
+                      // Texto de derechos reservados
+                      Text(
+                        'Todos los derechos reservados',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+
+                      SizedBox(height: 16),
+
+                      // Enlaces de privacidad y legal
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // Politica de privacidad
+                        children: [
+                          TextButton(
+                            onPressed:
+                                () => OpenLink.abrirEnlace(
+                              'https://www.grupotalia.org/privacidad/',
+                            ),
+                            child: Text(
+                              'Política de privacidad',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 1),
+
+                          // Aviso Legal
+                          TextButton(
+                            onPressed:
+                                () => OpenLink.abrirEnlace(
+                              'https://www.grupotalia.org/avisolegal/',
+                            ),
+                            child: Text(
+                              'Aviso Legal',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -591,65 +479,9 @@ class Contact extends StatelessWidget {
       ),
     );
   }
-
-  // Función para crear los contenedores de imagenes
-  Widget _contenedor(double width, double height, String path) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: AppColors.contenedor,
-        borderRadius: BorderRadius.circular(10),
-        // Bordes redondeados opcionales
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(100), // Opacidad del sombreado
-            blurRadius: 10, // Difuminacion del sombreado
-            spreadRadius: 2, // Tamaño del sombreado
-            offset: const Offset(0, 2), // Desplazamiento del sombreado
-          ),
-        ],
-        image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
-      ),
-    );
-  }
-
-  // Función para crear los recuadros de texto
-  // Constructor
-  Widget _WidgetsUtil.contenedorPersonalizado (String text, {
-    required double fontSize,
-    required FontWeight fontWeight,
-    double? height, // Interlineado
-  }) {
-    // Creacion del contenedor con el texto
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        // Bordes redondeados opcionales
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(100), // Opacidad del sombreado
-            blurRadius: 10, // Difuminacion del sombreado
-            spreadRadius: 2, // Tamaño del sombreado
-            offset: const Offset(0, 2), // Desplazamiento del sombreado
-          ),
-        ],
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          height: height,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
 }
- */
+
+// ----------------------> Pantalla Contacto <----------------------\\
 
 class Contact extends StatelessWidget {
   const Contact({super.key});
@@ -677,7 +509,7 @@ class Contact extends StatelessWidget {
                 // Espacio de Separación
                 WidgetsUtil.contenedorPersonalizado(
                   text:
-                  'Av. del Veinticinco de Septiembre, 2\n'
+                      'Av. del Veinticinco de Septiembre, 2\n'
                       '28027 Madrid\n'
                       'Teléfono: +34 91 318 59 28\n'
                       'Correo: info@grupotalia.org',
@@ -688,62 +520,76 @@ class Contact extends StatelessWidget {
                   textoColor: Colors.black,
                 ),
 
-                SizedBox(height: 30),
-
-                // Espacio de Separación
-                WidgetsUtil.contenedorPersonalizado(
-                  text: 'Directores',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  textoColor: AppColors.titulo,
-                ),
-
-                SizedBox(height: 20),
-                // Espacio de Separación
-
-                // Elemento para scrollear de manera horizontal
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal, // Desplazamiento horizontal
-                  child: Row(
+                // Apartado de copyright y derechos reservados
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
                     children: [
-                      WidgetsUtil.contenedorPersonalizado(
-                        width: 110,
-                        height: 110,
-                        path: 'assets/images/imagenuno.png',
-                        fondoColor: AppColors.contenedor,
+
+                      SizedBox(height: 40),
+
+                      Divider(
+                        indent: 10,
+                        endIndent: 10,
+                        color: AppColors.drawerCabecera,
+                        thickness: 1,
                       ),
 
-                      SizedBox(width: 20),
+                      SizedBox(height: 16),
+                      // Espacio después del Divider
 
-                      WidgetsUtil.contenedorPersonalizado(
-                        text:
-                        'SILVIA SANZ\n'
-                            'DIRECTORA TITULAR',
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        textoColor: Colors.black,
+                      // Texto de copyright
+                      Text(
+                        '© ${DateTime.now().year} Grupo Talía',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                      SizedBox(height: 8),
+
+                      // Texto de derechos reservados
+                      Text(
+                        'Todos los derechos reservados',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
 
-                      SizedBox(width: 20),
+                      SizedBox(height: 16),
 
-                      WidgetsUtil.contenedorPersonalizado(
-                        width: 110,
-                        height: 110,
-                        path: 'assets/images/imagendos.png',
-                        fondoColor: AppColors.contenedor,
+                      // Enlaces de privacidad y legal
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // Politica de privacidad
+                        children: [
+                          TextButton(
+                            onPressed:
+                                () => OpenLink.abrirEnlace(
+                              'https://www.grupotalia.org/privacidad/',
+                            ),
+                            child: Text(
+                              'Política de privacidad',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 1),
+
+                          // Aviso Legal
+                          TextButton(
+                            onPressed:
+                                () => OpenLink.abrirEnlace(
+                              'https://www.grupotalia.org/avisolegal/',
+                            ),
+                            child: Text(
+                              'Aviso Legal',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-
-                      SizedBox(width: 20),
-
-                      WidgetsUtil.contenedorPersonalizado(
-                        text:
-                        'ALEJANDRO VIVAS\n'
-                            'DIRECTOR ARTÍSTICO',
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        textoColor: Colors.black,
-                      ),
-                      SizedBox(width: 10),
                     ],
                   ),
                 ),
@@ -755,71 +601,9 @@ class Contact extends StatelessWidget {
     );
   }
 }
-/*
-  // Función unificada para crear los recuadros con texto o imagen
-  Widget WidgetsUtil.contenedorPersonalizado({
-    double? width,
-    double? height,
-    String? text,
-    String? path,
-    double fontSize = 16,
-    FontWeight fontWeight = FontWeight.normal,
-    double? textHeight, // Interlineado
-    Color? fondoColor,
-    Color? textoColor,
-  }) {
-    // Si se proporciona una ruta de imagen
-    if (path != null) {
-      return Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: fondoColor ?? Colors.transparent,
-          // Color de fondo opcional
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
-        ),
-      );
-    }
 
-    // Si no se proporciona ruta de imagen, se muestra el texto
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        color: fondoColor ?? AppColors.fondo,
-        borderRadius: BorderRadius.circular(10),
-        // Eliminar las sombras si no se pasa el fondoColor
-        boxShadow:
-            fondoColor == null
-                ? [] // Sin sombra si no hay fondoColor
-                : [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(
-                      100,
-                    ), // Opacidad del sombreado
-                    blurRadius: 10, // Difuminación del sombreado
-                    spreadRadius: 2, // Tamaño del sombreado
-                    offset: const Offset(0, 2), // Desplazamiento del sombreado
-                  ),
-                ],
-      ),
-      child: Text(
-        text ?? '',
-        style: TextStyle(
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          color: textoColor ?? Colors.black,
-          height: textHeight, // Interlineado si se pasa
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-}
-*/
-// Pantalla Eventos
+// ----------------------> Pantalla Eventos <----------------------\\
 
-// Pantalla Abonos
+// ----------------------> Pantalla Abonos <----------------------\\
 
-// Pantalla Cesta
+// ----------------------> Pantalla Cesta <----------------------\\

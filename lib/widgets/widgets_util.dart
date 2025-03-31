@@ -1,5 +1,6 @@
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
-//import 'package:url_launcher/url_launcher.dart';
+import 'dart:io' show Platform;
 import '../customColors/app_colors.dart';
 
 // Función para crear los recuadros con texto o imagen
@@ -66,10 +67,7 @@ class WidgetsUtil {
 }
 
 // Función para crear los iconos de redes sociales
-class SocialIcon {
-}
-/*
-class SocialIcon {
+class OpenLink {
   static Widget socialMediaIcon({
 
     IconData? icono, // Icono de Flutter (opcional)
@@ -82,7 +80,7 @@ class SocialIcon {
     // Si se proporciona una ruta de imagen (assets), usar esa imagen
     if (path != null) {
       return GestureDetector(
-        onTap: () => _abrirEnlace(url),
+        onTap: () => abrirEnlace(url),
         child: Image.asset(
           path,
           width: size,
@@ -95,19 +93,25 @@ class SocialIcon {
     // Si se pasa un icono de Flutter, usar el IconButton
     return IconButton(
       icon: Icon(icono, color: color),
-      onPressed: () => _abrirEnlace(url),
+      onPressed: () => abrirEnlace(url),
       iconSize: size,
     );
   }
 
-  // Función privada para abrir enlaces en el navegador
-  static void _abrirEnlace(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+// Función privada para abrir enlaces en Android con android_intent_plus
+  static void abrirEnlace(String url) async {
+    if (Platform.isAndroid) {
+      final intent = AndroidIntent(
+        action: 'action_view',
+        data: url,
+      );
+      try {
+        await intent.launch();
+      } catch (e) {
+        debugPrint('Error al intentar abrir el enlace: $e');
+      }
     } else {
-      debugPrint('No se pudo abrir el enlace: $url');
+      debugPrint('Este método solo funciona en Android por ahora');
     }
   }
 }
-
- */
