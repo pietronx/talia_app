@@ -1,4 +1,7 @@
 import 'dart:ui';
+
+import 'package:flutter/material.dart';
+
 //--------------> Paleta de colores Grupo Talía
 /*
 class AppColors {
@@ -70,37 +73,26 @@ class AppColors {
 // Clase que define la paleta de colores de la web
 class AppColors {
   // ----------------------> Colores generales <----------------------\\
-  static const Color fondo = Color(0xFFF8F4F1); // Beige claro, cálido y suave
-  static const Color texto = Color(
-    0xFF2D2D2D,
-  ); // Gris oscuro, excelente contraste
-  static const Color titulo = Color(
-    0xFF8B4513,
-  ); // Marrón oscuro, elegante y serio
-  static const Color contenedor = Color(0xFFEDE0D4); // Crema suave, armonioso
+  static const Color fondo = Color(0xFFF8F4F1);
+  static const Color texto = Color(0xFF2D2D2D);
+  static const Color titulo = Color(0xFF8B4513);
+  static const Color contenedor = Color(0xFFEDE0D4);
 
   //----------------------> AppBar <----------------------\\
-  static const Color appbar = Color(
-    0xFF5A3E36,
-  ); // Marrón café oscuro, sofisticado
-  static const Color appbarTitulo = Color(
-    0xFFFFFFFF,
-  ); // Blanco puro, resalta bien
-  static const Color appbarIcons = Color(
-    0xFFD4A373,
-  ); // Beige tostado, toque refinado
+  static const Color appbar = Color(0xFF5A3E36);
+  static const Color appbarTitulo = Color(0xFFFFFFFF);
+  static const Color appbarIcons = Color(0xFFD4A373);
 
   //----------------------> Drawer (Barra lateral) <----------------------\\
-  static const Color drawerFondo = Color(
-    0xFFF0E6DD,
-  ); // Beige claro, mantiene armonía
-  static const Color drawerTexto = Color(
-    0xFF2D2D2D,
-  ); // Gris oscuro, fácil de leer
-  static const Color drawerTitulo = Color(
-    0xFFFFFFFF,
-  ); // Marrón oscuro, elegante
-  static const Color drawerCabecera = Color(
-    0xFF5A3E36,
-  ); // Marrón café, profundo y cálido
+  static const Color drawerFondo = Color(0xFFF0E6DD);
+  static const Color drawerTexto = Color(0xFF2D2D2D);
+  static const Color drawerTitulo = Color(0xFFFFFFFF);
+  static const Color drawerCabecera = Color(0xFF5A3E36);
+
+  //----------------------> Calendario y Eventos <----------------------\\
+
+  static const Color diaConcierto = Color(0xFFFFB4A1);
+  static const Color diaActual = Color(0xFF6E0901);
+  static const Color diaSeleccionado = Color(0xFFDA432B);
+  static const Color diaConciertoTexto = Color(0xFF4E1E1E);
 }
