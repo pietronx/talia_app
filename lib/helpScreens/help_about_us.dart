@@ -25,11 +25,8 @@ class HelpAboutUs extends StatelessWidget {
               icono: Icons.image,
               titulo: 'Imagen del Grupo Talía',
               descripcion:
-              'Al inicio encontrarás un banner visual con la imagen del grupo y dos enlaces:',
-              puntos: [
-                'Web de la Directora Silvia Sanz.',
-                'Web oficial del Grupo Talía.',
-              ],
+              'Al inicio encontrarás un banner visual con la imagen del grupo y varios enlaces.\n'
+                  'Toca los iconos para acceder a ellos',
             ),
 
             WidgetsUtil.bloqueAyuda(

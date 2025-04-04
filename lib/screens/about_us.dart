@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../customColors/app_colors.dart';
 import '../helpScreens/help_about_us.dart';
 import '../widgets/widgets_util.dart';
@@ -59,43 +60,75 @@ class AboutUs extends StatelessWidget {
                 const Text(
                   'Grupo Talía',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: AppColors.texto,
                   ),
                 ),
+
                 const SizedBox(height: 10),
+
                 Wrap(
                   alignment: WrapAlignment.center,
-                  spacing: 8,
-                  children: List.generate(5, (_) {
-                    return OpenLink.socialMediaIcon(
-                      icono: Icons.public,
-                      url: 'https://www.grupotalia.org/',
-                      color: AppColors.appbar,
-                    );
-                  }),
+                  spacing: 10,
+                  children:
+                      [
+                        {
+                          'path': 'assets/icons/webIcon.png',
+                          'url': 'https://www.grupotalia.org/',
+                        },
+                        {
+                          'path': 'assets/icons/facebookIcon.png',
+                          'url':
+                              'https://www.facebook.com/GrupoConcertanteTalia/',
+                        },
+                        {
+                          'path': 'assets/icons/twitterIcon.png',
+                          'url': 'https://x.com/GrupoTalia',
+                        },
+                        {
+                          'path': 'assets/icons/tiktokIcon.png',
+                          'url': 'https://www.tiktok.com/@grupotalia',
+                        },
+                        {
+                          'path': 'assets/icons/instagramIcon.png',
+                          'url': 'https://www.instagram.com/grupo.talia/',
+                        },
+                        {
+                          'path': 'assets/icons/youtubeIcon.png',
+                          'url': 'https://www.youtube.com/user/grupotalia',
+                        },
+                      ].map((item) {
+                        return OpenLink.socialMediaIcon(
+                          path: item['path']!,
+                          url: item['url']!,
+                          size: 30,
+                        );
+                      }).toList(),
                 ),
               ],
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             Column(
               children: [
                 const Text(
                   'Silvia Sanz',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: AppColors.texto,
                   ),
                 ),
+
                 const SizedBox(height: 10),
+
                 OpenLink.socialMediaIcon(
-                  icono: Icons.public,
+                  path: 'assets/icons/webIcon.png',
                   url: 'https://www.silviasanz.com/',
                   color: AppColors.appbar,
+                  size: 30,
                 ),
               ],
             ),
@@ -125,10 +158,12 @@ class AboutUs extends StatelessWidget {
               cargo: 'DIRECTORA TITULAR',
               imagen: 'assets/images/silviaimg.png',
               redes: {
-                'facebook': 'https://www.facebook.com/people/Silvia-Sanz-Torre/100054562743950/',
+                'facebook':
+                    'https://www.facebook.com/people/Silvia-Sanz-Torre/100054562743950/',
                 'instagram': 'https://www.instagram.com/silviasanztorre/',
                 'twitter': 'https://x.com/silviasanztorre',
-                'linkedin': 'https://www.linkedin.com/in/silvia-sanz-torre-59764668/',
+                'linkedin':
+                    'https://www.linkedin.com/in/silvia-sanz-torre-59764668/',
               },
             ),
 
@@ -140,14 +175,15 @@ class AboutUs extends StatelessWidget {
               cargo: 'DIRECTOR ARTÍSTICO',
               imagen: 'assets/images/alejandroimg.png',
               redes: {
-                'facebook': 'https://www.facebook.com/Alejandro-VIVAS-PUIG-1485352031719047/',
+                'facebook':
+                    'https://www.facebook.com/Alejandro-VIVAS-PUIG-1485352031719047/',
                 'instagram': 'https://www.instagram.com/alevivasmusic/',
                 'twitter': 'https://x.com/avivasMusic',
-                'linkedin': 'https://www.linkedin.com/in/alejandro-vivas-puig-a3152044/',
+                'linkedin':
+                    'https://www.linkedin.com/in/alejandro-vivas-puig-a3152044/',
               },
             ),
-
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
             WidgetsUtil.pieDePagina(),
           ],
         ),
@@ -162,7 +198,7 @@ class AboutUs extends StatelessWidget {
     required Map<String, String> redes,
   }) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         WidgetsUtil.contenedorPersonalizado(
           width: 100,
@@ -170,7 +206,7 @@ class AboutUs extends StatelessWidget {
           path: imagen,
           fondoColor: AppColors.contenedor,
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: 25),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,18 +217,19 @@ class AboutUs extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 textoColor: Colors.black,
               ),
-              const SizedBox(height: 10),
+
               Center(
                 child: Wrap(
-                  spacing: 10,
+                  spacing: 15,
                   alignment: WrapAlignment.center,
-                  children: redes.entries.map((entry) {
-                    return OpenLink.socialMediaIcon(
-                      path: 'assets/icons/${entry.key}Icon.png',
-                      url: entry.value,
-                      size: 25,
-                    );
-                  }).toList(),
+                  children:
+                      redes.entries.map((entry) {
+                        return OpenLink.socialMediaIcon(
+                          path: 'assets/icons/${entry.key}Icon.png',
+                          url: entry.value,
+                          size: 30,
+                        );
+                      }).toList(),
                 ),
               ),
             ],

@@ -32,7 +32,7 @@ class Contact extends StatelessWidget {
       drawer: DrawerUtil.appDrawer(context, currentRoute: 'contact'),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(top: 1, bottom: 20),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

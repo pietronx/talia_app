@@ -64,6 +64,14 @@ class _CalendarState extends State<Calendar> {
     return fechasConciertos.contains(fecha);
   }
 
+  Widget _colorMuestra(Color color) {
+    return Container(
+      width: 20,
+      height: 20,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,16 +94,70 @@ class _CalendarState extends State<Calendar> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            WidgetsUtil.contenedorPersonalizado(
-              text: '"Leyenda explicativa del calendario"',
+            Align(
+              alignment: Alignment.centerLeft, //--> Leyenda
+              child: const Text(
+                'Leyenda del Calendario',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.titulo,
+                ),
+              ),
             ),
+
+            const SizedBox(height: 20),
+            // Dia de Hoy
+            Row(
+              children: [
+                _colorMuestra(AppColors.diaActual),
+                const SizedBox(width: 8),
+                const Text('Hoy'),
+              ],
+            ),
+
+            const SizedBox(height: 6),
+            // Dia de seleccionado
+            Row(
+              children: [
+                _colorMuestra(AppColors.diaSeleccionado),
+                const SizedBox(width: 8),
+                const Text('Día seleccionado'),
+              ],
+            ),
+
+            const SizedBox(height: 6),
+            // Dia de concierto
+            Row(
+              children: [
+                Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: AppColors.diaConcierto,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppColors.diaConciertoTexto,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Text('Día con concierto'),
+              ],
+            ),
+
+            const SizedBox(height: 16),
             Divider(
               indent: 10,
               endIndent: 10,
               color: AppColors.drawerCabecera,
               thickness: 1,
             ),
+
+            // Calendario
             TableCalendar(
               locale: 'es_ES',
               focusedDay: selectedDay ?? DateTime.now(),
@@ -161,7 +223,10 @@ class _CalendarState extends State<Calendar> {
                 });
               },
             ),
+
             const SizedBox(height: 20),
+
+            // Detalle del concierto seleccionado
             if (conciertoSeleccionado != null &&
                 conciertoSeleccionado!.nombre != 'Sin eventos')
               Card(
@@ -178,7 +243,7 @@ class _CalendarState extends State<Calendar> {
                             child: Text(
                               conciertoSeleccionado!.nombre,
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -200,48 +265,201 @@ class _CalendarState extends State<Calendar> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      Text('🕒 ${conciertoSeleccionado!.hora}'),
-                      Text('📍 ${conciertoSeleccionado!.lugar}'),
+
+                      const SizedBox(height: 10),
+
+                      Text(
+                        '🕒 ${conciertoSeleccionado!.hora}',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text(
+                        '📍 ${conciertoSeleccionado!.lugar}',
+                        style: TextStyle(fontSize: 15),
+                      ),
                       if (conciertoSeleccionado!.notas.isNotEmpty)
-                        Text('📝 ${conciertoSeleccionado!.notas}'),
+                        Text(
+                          '📝 ${conciertoSeleccionado!.notas}',
+                          style: TextStyle(fontSize: 15),
+                        ),
                     ],
                   ),
                 ),
               ),
-            const SizedBox(height: 25),
+
+            const SizedBox(height: 1),
             Divider(
               indent: 10,
               endIndent: 10,
               color: AppColors.drawerCabecera,
               thickness: 1,
             ),
+
             WidgetsUtil.contenedorPersonalizado(
               text: '"Eventos disponibles de la web"',
             ),
-            Divider(
-              indent: 10,
-              endIndent: 10,
-              color: AppColors.drawerCabecera,
-              thickness: 1,
-            ),
-            const SizedBox(height: 25),
-            ElevatedButton.icon(
-              onPressed: () {
+
+            const SizedBox(height: 1),
+
+            GestureDetector(
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const AboutUs()),
                 );
               },
-              icon: const Icon(Icons.add_business),
-              label: const Text('Ver mis Eventos'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.appbar,
-                foregroundColor: AppColors.appbarTitulo,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            child: ClipRRect(
+              child: Image.network(
+                'https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9',
+                height: 150,
+                width: double.infinity,
+                fit: BoxFit.contain,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(child: CircularProgressIndicator());
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(child: Text('No se pudo cargar la imagen'));
+                },
               ),
+            ),
+            ),
+
+            const SizedBox(height: 16),
+
+            Divider(
+              indent: 10,
+              endIndent: 10,
+              color: AppColors.drawerCabecera,
+              thickness: 1,
+            ),
+
+            const SizedBox(height: 25),
+
+            // Botones para ir a eventos y favoritos
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Eventos
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AboutUs()),
+                    );
+                  },
+                  icon: const Icon(Icons.add_business),
+                  label: const Text('Eventos'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.diaActual,
+                    foregroundColor: AppColors.appbarTitulo,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 10), // Favoritos
+                ElevatedButton.icon(
+                  onPressed: () {
+                    List<Concierto> favoritos =
+                        FavoritosHelper.getFavoritos()
+                          ..sort((a, b) => a.fecha.compareTo(b.fecha));
+                    // Bottom sheet (lista de favoritos)
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: false,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10),
+                        ),
+                      ),
+                      builder: (_) {
+                        return StatefulBuilder(
+                          builder: (context, setStateSheet) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20,
+                                right: 20,
+                                top: 20,
+                                bottom: 40,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        'Favoritos',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      IconButton(
+                                        icon: const Icon(Icons.close),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+
+                                  Flexible(
+                                    child:
+                                        favoritos.isEmpty
+                                            ? const Center(
+                                              child: Text(
+                                                'Aún no has añadido favoritos.',
+                                              ),
+                                            )
+                                            : ListView.builder(
+                                              itemCount: favoritos.length,
+                                              itemBuilder: (_, index) {
+                                                final concierto =
+                                                    favoritos[index];
+                                                return ListTile(
+                                                  leading: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.favorite,
+                                                      color: Colors.red,
+                                                    ),
+                                                    onPressed: () {
+                                                      FavoritosHelper.toggleFavorito(
+                                                        concierto,
+                                                      );
+                                                      setStateSheet(() {
+                                                        favoritos =
+                                                            FavoritosHelper.getFavoritos();
+                                                      });
+                                                    },
+                                                  ),
+                                                  title: Text(concierto.nombre),
+                                                  subtitle: Text(
+                                                    '${concierto.fecha.day}/${concierto.fecha.month} - ${concierto.lugar}',
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.favorite),
+                  label: const Text('Favoritos'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.diaSeleccionado,
+                    foregroundColor: AppColors.appbarTitulo,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ],
             ),
             WidgetsUtil.pieDePagina(),
           ],
