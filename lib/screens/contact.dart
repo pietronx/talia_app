@@ -29,20 +29,28 @@ class Contact extends StatelessWidget {
         ],
       ),
 
-      drawer: DrawerUtil.appDrawer(context, currentRoute: 'contact'),
-
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 1, bottom: 20),
+        padding: const EdgeInsets.all(20),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+
               WidgetsUtil.contenedorPersonalizado(
                 text: 'Información de Contacto',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 textoColor: AppColors.titulo,
               ),
+              Divider(
+                height: 0.1,
+                indent: 20,
+                endIndent: 20,
+                thickness: 2,
+                color: AppColors.drawerCabecera,
+              ),
+
+              SizedBox(height: 20),
 
               ListTile(
                 leading: Icon(Icons.location_on, color: AppColors.appbar),
@@ -83,9 +91,9 @@ class Contact extends StatelessWidget {
                 ),
                 subtitle: Text(
                   'Lunes a viernes:\n'
-                      '8:00 – 14:00 y 17:00 – 20:00\n\n'
-                      'Sábados y domingos:\n'
-                      'Ensayos programados',
+                  '8:00 – 14:00 y 17:00 – 20:00\n\n'
+                  'Sábados y domingos:\n'
+                  'Ensayos programados',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ),

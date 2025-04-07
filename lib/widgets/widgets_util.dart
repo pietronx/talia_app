@@ -4,10 +4,6 @@ import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 
 import '../customColors/app_colors.dart';
-import '../screens/about_us.dart';
-import '../screens/calendar.dart';
-import '../screens/contact.dart';
-import '../screens/pantalla_principal.dart';
 
 // Función para crear los recuadros con texto o imagen
 class WidgetsUtil {
@@ -21,20 +17,21 @@ class WidgetsUtil {
     double? textHeight, // Interlineado
     Color? fondoColor,
     Color? textoColor,
+    BoxFit? fit,
   }) {
     if (path != null) {
       return Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: fondoColor ?? Colors.transparent,
+            color: fondoColor ?? Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
         ),
       );
     }
     return Container(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
         color: fondoColor ?? AppColors.fondo,
@@ -114,41 +111,98 @@ class WidgetsUtil {
   }
 
   static Widget pieDePagina() {
-    return Column(
-      children: [
-        const SizedBox(height: 30),
-        Divider(
-          indent: 10,
-          endIndent: 10,
-          color: AppColors.drawerCabecera,
-          thickness: 1,
-        ),
-        const SizedBox(height: 16),
-        Text(
-          '© ${DateTime.now().year} Grupo Talía',
-          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Todos los derechos reservados',
-          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-        ),
-        const SizedBox(height: 1),
-        TextButton(
-          onPressed: () => OpenLink.abrirEnlace('https://www.grupotalia.org/privacidad/'),
-          child: Text(
-            'Política de privacidad',
-            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      child: Column(
+        children: [
+          const Divider(
+            indent: 20,
+            endIndent: 20,
+            thickness: 1,
+            color: AppColors.drawerCabecera,
           ),
-        ),
-        TextButton(
-          onPressed: () => OpenLink.abrirEnlace('https://www.grupotalia.org/avisolegal/'),
-          child: Text(
-            'Aviso Legal',
-            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+
+          const SizedBox(height: 10),
+
+          // Botones legales
+          Column(
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  OpenLink.abrirEnlace('https://www.grupotalia.org/privacidad/');
+                },
+                icon: const Icon(Icons.privacy_tip),
+                label: const Text('Política de Privacidad'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  backgroundColor: AppColors.texto,     // Fondo del botón
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  OpenLink.abrirEnlace('https://www.grupotalia.org/avisolegal/');
+                },
+                icon: const Icon(Icons.gavel),
+                label: const Text('Aviso Legal'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  backgroundColor: AppColors.texto,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ],
           ),
+
+          const SizedBox(height: 20),
+
+          // Derechos
+          Column(
+            children: [
+              Text(
+                '© ${DateTime.now().year} Grupo Talía',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey[700],
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Todos los derechos reservados',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget gridMenu({
+    required String imagePath,
+    required VoidCallback onTap,
+    double? height,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        height: height,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.asset(imagePath, fit: BoxFit.contain),
         ),
-      ],
+      ),
     );
   }
 }
@@ -186,132 +240,5 @@ class OpenLink {
     } else {
       debugPrint('Este método solo funciona en Android por ahora');
     }
-  }
-}
-
-class DrawerUtil {
-  static Divider divisor() {
-    return const Divider(color: AppColors.drawerCabecera, thickness: 1);
-  }
-
-  static Widget appDrawer(
-    BuildContext context, {
-    required String currentRoute,
-  }) {
-    return Drawer(
-      child: Container(
-        color: AppColors.drawerFondo,
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              color: AppColors.drawerCabecera,
-              padding: const EdgeInsets.only(top: 40, bottom: 20),
-              child: Column(
-                children: [
-                  // Imagen superior del drawer
-                  SizedBox(
-                    height: 150,
-                    child: Image.asset(
-                      'assets/images/bannerGrupoTalia.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Menú',
-                    style: TextStyle(
-                      color: AppColors.drawerTitulo,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(top: 10),
-                children: [
-                  if (currentRoute != 'home') ...[
-                    ListTile(
-                      title: const Text(
-                        'Inicio',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (_) => const PantallaPrincipal(
-                                  titulo: 'Grupo Talia',
-                                ),
-                          ),
-                          (route) => false,
-                        );
-                      },
-                    ),
-                    DrawerUtil.divisor(),
-                  ],
-
-                  if (currentRoute != 'aboutus') ...[
-                    ListTile(
-                      title: const Text(
-                        'Sobre Nosotros',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const AboutUs()),
-                        );
-                      },
-                    ),
-                    DrawerUtil.divisor(),
-                  ],
-
-                  if (currentRoute != 'contact') ...[
-                    ListTile(
-                      title: const Text(
-                        'Contacto',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const Contact()),
-                        );
-                      },
-                    ),
-                    DrawerUtil.divisor(),
-                  ],
-
-                  if (currentRoute != 'calendar') ...[
-                    ListTile(
-                      title: const Text('Calendario', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const Calendar()));
-                      },
-                    ),
-                    DrawerUtil.divisor(),
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

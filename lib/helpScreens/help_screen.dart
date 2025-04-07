@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:talia_app/helpScreens/help_calendar.dart';
 import 'package:talia_app/helpScreens/help_contact.dart';
 import 'package:talia_app/helpScreens/help_legal.dart';
-import '../screens/pantalla_principal.dart';
+import '../screens/home_screen.dart';
 import 'help_about_us.dart';
 
 class HelpScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final secciones = [
-      {'titulo': 'Inicio', 'pantalla': const PantallaPrincipal(titulo: 'Inicio',)},
+      {'titulo': 'Inicio', 'pantalla': const HomeScreen(titulo: 'Inicio',)},
       {'titulo': 'Sobre Nosotros', 'pantalla': const HelpAboutUs()},
       {'titulo': 'Contacto', 'pantalla': const HelpContact()},
       {'titulo': 'Calendario', 'pantalla': const HelpCalendar()},

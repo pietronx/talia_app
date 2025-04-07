@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+// Clases
+import 'package:talia_app/screens/about_us.dart';
+import 'package:talia_app/screens/calendar.dart';
+import 'package:talia_app/screens/contact.dart';
+
 // Archivos internos del proyecto
 import 'customColors/app_colors.dart';
+import 'helpScreens/help_screen.dart';
 import 'models/concierto_model.dart';
-import 'screens/pantalla_principal.dart';
+import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,14 +52,23 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           color: AppColors.appbar,
           iconTheme: IconThemeData(color: AppColors.appbarIcons),
+          toolbarHeight: 60,
           titleTextStyle: TextStyle(
             color: AppColors.appbarTitulo,
-            fontSize: 20,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      home: const PantallaPrincipal(titulo: 'Inicio'),
+      home: const HomeScreen(titulo: 'Inicio'),
+      routes: {
+        '/about_us': (context) => const AboutUs(),
+        '/contact': (context) => const Contact(),
+        '/calendar': (context) => const Calendar(),
+        '/helpScreens/help_screen': (context) => const HelpScreen(),
+
+      },
+
     );
   }
 }

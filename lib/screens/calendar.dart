@@ -90,18 +90,34 @@ class _CalendarState extends State<Calendar> {
           ),
         ],
       ),
-      drawer: DrawerUtil.appDrawer(context, currentRoute: 'calendar'),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+
+            WidgetsUtil.contenedorPersonalizado(
+              text: 'Información de Contacto',
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              textoColor: AppColors.titulo,
+            ),
+            Divider(
+              height: 0.1,
+              indent: 10,
+              endIndent: 10,
+              thickness: 2,
+              color: AppColors.drawerCabecera,
+            ),
+
+            const SizedBox(height: 30),
+
             Align(
               alignment: Alignment.centerLeft, //--> Leyenda
               child: const Text(
                 'Leyenda del Calendario',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.titulo,
                 ),
@@ -114,7 +130,7 @@ class _CalendarState extends State<Calendar> {
               children: [
                 _colorMuestra(AppColors.diaActual),
                 const SizedBox(width: 8),
-                const Text('Hoy'),
+                const Text('Hoy', style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
 
@@ -124,7 +140,7 @@ class _CalendarState extends State<Calendar> {
               children: [
                 _colorMuestra(AppColors.diaSeleccionado),
                 const SizedBox(width: 8),
-                const Text('Día seleccionado'),
+                const Text('Día seleccionado', style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
 
@@ -145,7 +161,7 @@ class _CalendarState extends State<Calendar> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Text('Día con concierto'),
+                const Text('Día con concierto', style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
 
