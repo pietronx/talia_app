@@ -11,10 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          toolbarHeight: 30,
-          backgroundColor: AppColors.fondo
-      ),
+      appBar: AppBar(toolbarHeight: 30, backgroundColor: AppColors.fondo),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -30,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 50),
 
                 GridView.count(
                   shrinkWrap: true,
@@ -51,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                     Column(
                       children: [
                         WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/aboutUsIcon.png',
+                          imagePath: 'assets/icons/infoIcon.png',
                           onTap:
                               () => Navigator.pushNamed(context, '/about_us'),
                         ),
@@ -67,6 +64,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+
                     // CONTACTO
                     Column(
                       children: [
@@ -86,13 +84,17 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // CALENDARIO
+
+                    // EVENTOS
                     Column(
                       children: [
                         WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/eventIcon.png',
+                          imagePath: 'assets/icons/eventsIcon.png',
                           onTap:
-                              () => Navigator.pushNamed(context, '/calendar'),
+                              () => Navigator.pushNamed(
+                                context,
+                                '/screens/events',
+                              ),
                         ),
                         const SizedBox(height: 10),
                         const Text(
@@ -105,54 +107,9 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ), // AYUDA
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/supportIcon.png',
-                          onTap:
-                              () => Navigator.pushNamed(
-                                context,
-                                '/helpScreens/help_screen',
-                              ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Ayuda',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-                      ],
                     ),
 
-                    //AYUDA
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/supportIcon.png',
-                          onTap:
-                              () => Navigator.pushNamed(
-                                context,
-                                '/helpScreens/help_screen',
-                              ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Ayuda',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-                      ],
-                    ),
-
+                    // AYUDA
                     Column(
                       children: [
                         WidgetsUtil.gridMenu(

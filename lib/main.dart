@@ -1,14 +1,14 @@
 // Flutter SDK
 import 'package:flutter/material.dart';
-
 // Paquetes externos
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
 // Clases
 import 'package:talia_app/screens/about_us.dart';
-import 'package:talia_app/screens/calendar.dart';
 import 'package:talia_app/screens/contact.dart';
+import 'package:talia_app/screens/events.dart';
+import 'package:talia_app/screens/next_events.dart';
+import 'package:talia_app/screens/previous_events.dart';
 
 // Archivos internos del proyecto
 import 'customColors/app_colors.dart';
@@ -64,11 +64,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/about_us': (context) => const AboutUs(),
         '/contact': (context) => const Contact(),
-        '/calendar': (context) => const Calendar(),
+        '/screens/events': (context) => const Events(),
+        '/screens/nextEvents': (context) => const NextEvents(),
         '/helpScreens/help_screen': (context) => const HelpScreen(),
-
+        '/screens/previousEvents': (context) => const PreviousEvents(),
       },
-
     );
   }
 }

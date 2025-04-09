@@ -212,18 +212,17 @@ class OpenLink {
     IconData? icono,
     String? path,
     required String url,
-    Color color = AppColors.appbar,
     double size = 24.0,
   }) {
     if (path != null) {
       return GestureDetector(
         onTap: () => abrirEnlace(url),
-        child: Image.asset(path, width: size, height: size, color: color),
+        child: Image.asset(path, width: size, height: size),
       );
     }
 
     return IconButton(
-      icon: Icon(icono, color: color),
+      icon: Icon(icono),
       onPressed: () => abrirEnlace(url),
       iconSize: size,
     );

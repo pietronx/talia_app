@@ -1,44 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:talia_app/helpScreens/help_calendar.dart';
-import 'package:talia_app/helpScreens/help_contact.dart';
-import 'package:talia_app/helpScreens/help_legal.dart';
-import 'package:talia_app/credits/credits_screen.dart';
 
 import '../customColors/app_colors.dart';
 import '../screens/home_screen.dart';
-import 'help_about_us.dart';
+import 'icon_credits.dart';
 
-class HelpScreen extends StatelessWidget {
-  const HelpScreen({super.key});
+class CreditsScreen extends StatelessWidget {
+  const CreditsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final secciones = [
       {'titulo': 'Inicio', 'pantalla': const HomeScreen(titulo: 'Inicio',)},
-      {'titulo': 'Sobre Nosotros', 'pantalla': const HelpAboutUs()},
-      {'titulo': 'Contacto', 'pantalla': const HelpContact()},
-      {'titulo': 'Calendario', 'pantalla': const HelpCalendar()},
-      {'titulo': 'Políticas de Privacidad', 'pantalla': const HelpLegal()},
-      {'titulo': 'Créditos', 'pantalla': const CreditsScreen()},
+      {'titulo': 'Iconos', 'pantalla': const IconCredits()},
+      {'titulo': 'Koobin', 'pantalla': const CreditsScreen()},
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ayuda'),
+        title: const Text('Créditos'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
             const Text(
-              'Guía de Ayuda',
+              'Información',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             const Text(
-              'Selecciona una sección para recibir ayuda sobre cómo usar esa parte de la aplicación.\n\n'
-                  'Encontrarás exlicaciones sencillas y enlaces útiles para navegar sin dificultad.',
-              style: TextStyle(fontSize: 16),
+              'Encontrarás enlaces y autores acreditados para cada uno de los recursos utilizados en la aplicación.',
+              style: TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 30),
 

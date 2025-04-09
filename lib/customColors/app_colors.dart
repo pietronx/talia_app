@@ -77,6 +77,7 @@ class AppColors {
   static const Color texto = Color(0xFF2D2D2D);
   static const Color titulo = Color(0xFF8B4513);
   static const Color contenedor = Color(0xFFEDE0D4);
+  static const Color contenedor2 = Color(0xFFFAF3F3);
 
   //----------------------> AppBar <----------------------\\
   static const Color appbar = Color(0xFF5A3E36);
