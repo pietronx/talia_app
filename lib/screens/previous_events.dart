@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
-import '../customColors/app_colors.dart';
-import '../helpScreens/help_about_us.dart';
-import '../widgets/widgets_util.dart';
-import 'about_us.dart';
+import "../customColors/app_colors.dart";
+import "../helpScreens/help_about_us.dart";
+import "../widgets/widgets_util.dart";
+import "about_us.dart";
 
 class PreviousEvents extends StatelessWidget {
   const PreviousEvents({super.key});
@@ -12,7 +12,7 @@ class PreviousEvents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Anteriores Eventos'),
+        title: const Text("Anteriores Eventos"),
         actions: [
           IconButton(
             icon: const Icon(Icons.help),
@@ -35,7 +35,7 @@ class PreviousEvents extends StatelessWidget {
               children: [
                 // Titulo
                 WidgetsUtil.contenedorPersonalizado(
-                  text: 'Eventos para Recordar',
+                  text: "Eventos para Recordar",
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   textoColor: AppColors.titulo,
@@ -71,16 +71,33 @@ class PreviousEvents extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const AboutUs(),
-                              ),
+                            WidgetsUtil.popupPersonalizado(
+                              context: context,
+                              titulo: "En Clave 2",
+                              descripcion:
+                                  "La orquesta de alumnos del Encuentro Orquestal Sinfónico (EOS 24), "
+                                  "que organiza anualmente el Grupo Talía en Alba de Tormes, "
+                                  "ofrece en este concierto, dirigido por Silvia Sanz Torre, "
+                                  "el resultado del trabajo realizado en la última edición del curso"
+                                  "\n\nBajo el título En clave de dos,"
+                                  " el programa incluye obras protagonizadas por distintos tipos de parejas: "
+                                  "dos enamorados, dos enemigos irreconciliables, "
+                                  "dos compañeros de aventuras y hasta dos mundos en contraste. "
+                                  "Hay lugar para grandes clásicos, "
+                                  "como la obertura Romeo y Julieta de P. I. Chaikovski "
+                                  "o la Danza bacanal de la ópera Sansón y Dalila de Saint-Saëns;"
+                                  " para inolvidables bandas sonoras de Disney, como La Bella y la Bestia de A. Menken, "
+                                  "El libro de la selva y Aladdín."
+                                  "\n\nSábado, 29 de marzo. 11:30 h."
+                                  "\n\nAuditorio Nacional de Música, Sala Sinfónica.",
+
+                              imagenUrl:
+                                  "https://drive.google.com/uc?export=view&id=1PMV_xLNE73Ax3qm0UsbGz2wWe0CsSFq2",
                             );
                           },
                           child: ClipRRect(
                             child: Image.network(
-                              'https://drive.google.com/uc?export=view&id=1PMV_xLNE73Ax3qm0UsbGz2wWe0CsSFq2',
+                              "https://drive.google.com/uc?export=view&id=1PMV_xLNE73Ax3qm0UsbGz2wWe0CsSFq2",
                               height: 250,
                               width: double.infinity,
                               fit: BoxFit.contain,
@@ -96,14 +113,18 @@ class PreviousEvents extends StatelessWidget {
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 return const Center(
-                                  child: Text('No se pudo cargar la imagen'),
+                                  child: Text("No se pudo cargar la imagen"),
                                 );
                               },
                             ),
                           ),
                         ),
 
-                        WidgetsUtil.contenedorPersonalizado(text: 'En clave 2'),
+                        WidgetsUtil.contenedorPersonalizado(
+                          text: "En clave 2",
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ],
                     ),
 
@@ -121,7 +142,7 @@ class PreviousEvents extends StatelessWidget {
                           },
                           child: ClipRRect(
                             child: Image.network(
-                              'https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9',
+                              "https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9",
                               height: 150,
                               width: double.infinity,
                               fit: BoxFit.contain,
@@ -137,14 +158,14 @@ class PreviousEvents extends StatelessWidget {
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 return const Center(
-                                  child: Text('No se pudo cargar la imagen'),
+                                  child: Text("No se pudo cargar la imagen"),
                                 );
                               },
                             ),
                           ),
                         ),
                         WidgetsUtil.contenedorPersonalizado(
-                          text: 'Fauré,\nSaint-Saëns, Poulenc',
+                          text: "Fauré,\nSaint-Saëns, Poulenc",
                         ),
                       ],
                     ), // Serenata para cuerdas (Dvorak)
@@ -161,7 +182,7 @@ class PreviousEvents extends StatelessWidget {
                           },
                           child: ClipRRect(
                             child: Image.network(
-                              'https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9',
+                              "https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9",
                               height: 150,
                               width: double.infinity,
                               fit: BoxFit.contain,
@@ -177,14 +198,14 @@ class PreviousEvents extends StatelessWidget {
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 return const Center(
-                                  child: Text('No se pudo cargar la imagen'),
+                                  child: Text("No se pudo cargar la imagen"),
                                 );
                               },
                             ),
                           ),
                         ),
                         WidgetsUtil.contenedorPersonalizado(
-                          text: 'Serenata para cuerdas',
+                          text: "Serenata para cuerdas",
                         ),
                       ],
                     ), // Música y Juguetes
@@ -201,7 +222,7 @@ class PreviousEvents extends StatelessWidget {
                           },
                           child: ClipRRect(
                             child: Image.network(
-                              'https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9',
+                              "https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9",
                               height: 150,
                               width: double.infinity,
                               fit: BoxFit.contain,
@@ -217,7 +238,7 @@ class PreviousEvents extends StatelessWidget {
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 return const Center(
-                                  child: Text('No se pudo cargar la imagen'),
+                                  child: Text("No se pudo cargar la imagen"),
                                 );
                               },
                             ),
@@ -225,7 +246,7 @@ class PreviousEvents extends StatelessWidget {
                         ),
 
                         WidgetsUtil.contenedorPersonalizado(
-                          text: 'Música y Juguetes',
+                          text: "Música y Juguetes",
                         ),
                       ],
                     ), // Pop y Rock Sinfónico
@@ -242,7 +263,7 @@ class PreviousEvents extends StatelessWidget {
                           },
                           child: ClipRRect(
                             child: Image.network(
-                              'https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9',
+                              "https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9",
                               height: 150,
                               width: double.infinity,
                               fit: BoxFit.contain,
@@ -258,7 +279,7 @@ class PreviousEvents extends StatelessWidget {
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 return const Center(
-                                  child: Text('No se pudo cargar la imagen'),
+                                  child: Text("No se pudo cargar la imagen"),
                                 );
                               },
                             ),
@@ -266,7 +287,7 @@ class PreviousEvents extends StatelessWidget {
                         ),
 
                         WidgetsUtil.contenedorPersonalizado(
-                          text: 'Pop y Rock Sinfónico',
+                          text: "Pop y Rock Sinfónico",
                         ),
                       ],
                     ),

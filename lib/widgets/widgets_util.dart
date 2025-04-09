@@ -7,6 +7,7 @@ import '../customColors/app_colors.dart';
 
 // Función para crear los recuadros con texto o imagen
 class WidgetsUtil {
+  // Contenedor personalizable
   static Widget contenedorPersonalizado({
     double? width,
     double? height,
@@ -24,7 +25,7 @@ class WidgetsUtil {
         width: width,
         height: height,
         decoration: BoxDecoration(
-            color: fondoColor ?? Colors.transparent,
+          color: fondoColor ?? Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
         ),
@@ -61,6 +62,98 @@ class WidgetsUtil {
     );
   }
 
+  // Popup personalizable
+  static void popupPersonalizado({
+    required BuildContext context,
+    required String descripcion,
+    String? titulo,
+    String? imagenUrl,
+  }) {
+    showModalBottomSheet(
+      backgroundColor: AppColors.fondo,
+      context: context,
+      // Averiguar que es esto
+      isScrollControlled: false,
+      enableDrag: true,
+      isDismissible: true,
+      elevation: 50,
+      //
+
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: 40),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // IMAGEN
+                if (imagenUrl != null) ...[
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    child: Image.network(imagenUrl),
+                  ),
+                  const SizedBox(height: 25),
+                ],
+
+                // TITULO
+                if (titulo != null) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      titulo,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+
+                // DESCRIPCION
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Text(
+                    descripcion,
+                    style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Boton de Cerrar
+                Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.appbar,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text('Cerrar'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Ayuda
   static Widget bloqueAyuda({
     IconData? icono,
     required String titulo,
@@ -110,6 +203,7 @@ class WidgetsUtil {
     );
   }
 
+  // Apartado de Copyright y Aviso Legal
   static Widget pieDePagina() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -129,13 +223,16 @@ class WidgetsUtil {
             children: [
               ElevatedButton.icon(
                 onPressed: () {
-                  OpenLink.abrirEnlace('https://www.grupotalia.org/privacidad/');
+                  OpenLink.abrirEnlace(
+                    'https://www.grupotalia.org/privacidad/',
+                  );
                 },
                 icon: const Icon(Icons.privacy_tip),
                 label: const Text('Política de Privacidad'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  backgroundColor: AppColors.texto,     // Fondo del botón
+                  backgroundColor: AppColors.texto,
+                  // Fondo del botón
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -144,7 +241,9 @@ class WidgetsUtil {
               ),
               ElevatedButton.icon(
                 onPressed: () {
-                  OpenLink.abrirEnlace('https://www.grupotalia.org/avisolegal/');
+                  OpenLink.abrirEnlace(
+                    'https://www.grupotalia.org/avisolegal/',
+                  );
                 },
                 icon: const Icon(Icons.gavel),
                 label: const Text('Aviso Legal'),
@@ -168,19 +267,13 @@ class WidgetsUtil {
               Text(
                 '© ${DateTime.now().year} Grupo Talía',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey[700],
-                ),
+                style: TextStyle(fontSize: 13, color: Colors.grey[700]),
               ),
               const SizedBox(height: 4),
               Text(
                 'Todos los derechos reservados',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey[700],
-                ),
+                style: TextStyle(fontSize: 13, color: Colors.grey[700]),
               ),
             ],
           ),
@@ -189,6 +282,7 @@ class WidgetsUtil {
     );
   }
 
+  // Grid del inicio
   static Widget gridMenu({
     required String imagePath,
     required VoidCallback onTap,

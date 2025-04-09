@@ -10,7 +10,6 @@ import '../helpScreens/help_calendar.dart';
 import '../helpers/favoritos_helper.dart';
 import '../models/concierto_model.dart';
 import '../widgets/widgets_util.dart';
-import 'about_us.dart';
 
 class NextEvents extends StatefulWidget {
   const NextEvents({super.key});
@@ -50,7 +49,7 @@ class _CalendarState extends State<NextEvents> {
               parsed
                   .map(
                     (c) => DateTime(c.fecha.year, c.fecha.month, c.fecha.day),
-              )
+                  )
                   .toSet();
         });
       }
@@ -95,7 +94,6 @@ class _CalendarState extends State<NextEvents> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             WidgetsUtil.contenedorPersonalizado(
               text: 'Próximos Eventos',
               fontSize: 24,
@@ -117,20 +115,23 @@ class _CalendarState extends State<NextEvents> {
               child: const Text(
                 'Leyenda del Calendario',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: AppColors.titulo,
                 ),
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             // Dia de Hoy
             Row(
               children: [
                 _colorMuestra(AppColors.diaActual),
                 const SizedBox(width: 8),
-                const Text('Hoy', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  'Hoy',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ],
             ),
 
@@ -140,7 +141,10 @@ class _CalendarState extends State<NextEvents> {
               children: [
                 _colorMuestra(AppColors.diaSeleccionado),
                 const SizedBox(width: 8),
-                const Text('Día seleccionado', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  'Día seleccionado',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ],
             ),
 
@@ -161,7 +165,10 @@ class _CalendarState extends State<NextEvents> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Text('Día con concierto', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  'Día con concierto',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ],
             ),
 
@@ -226,15 +233,15 @@ class _CalendarState extends State<NextEvents> {
                 setState(() {
                   selectedDay = selected;
                   conciertoSeleccionado = conciertos.firstWhere(
-                        (c) => isSameDay(c.fecha, selected),
+                    (c) => isSameDay(c.fecha, selected),
                     orElse:
                         () => Concierto(
-                      nombre: 'Sin eventos',
-                      fecha: selected,
-                      hora: '',
-                      lugar: '',
-                      notas: '',
-                    ),
+                          nombre: 'Sin eventos',
+                          fecha: selected,
+                          hora: '',
+                          lugar: '',
+                          notas: '',
+                        ),
                   );
                 });
               },
@@ -302,84 +309,18 @@ class _CalendarState extends State<NextEvents> {
                 ),
               ),
 
-            const SizedBox(height: 1),
-            Divider(
-              indent: 10,
-              endIndent: 10,
-              color: AppColors.drawerCabecera,
-              thickness: 1,
-            ),
+            const SizedBox(height: 5),
 
-            WidgetsUtil.contenedorPersonalizado(
-              text: '"Eventos disponibles de la web"',
-            ),
-
-            const SizedBox(height: 1),
-
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const AboutUs()),
-                );
-              },
-              child: ClipRRect(
-                child: Image.network(
-                  'https://drive.google.com/uc?export=view&id=1TDEu1RPXv-V3qipGct5jezKjTeisYFR9',
-                  height: 150,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(child: Text('No se pudo cargar la imagen'));
-                  },
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            Divider(
-              indent: 10,
-              endIndent: 10,
-              color: AppColors.drawerCabecera,
-              thickness: 1,
-            ),
-
-            const SizedBox(height: 25),
-
-            // Botones para ir a eventos y favoritos
+            // Boton de favoritos
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Eventos
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const AboutUs()),
-                    );
-                  },
-                  icon: const Icon(Icons.add_business),
-                  label: const Text('Eventos'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.diaActual,
-                    foregroundColor: AppColors.appbarTitulo,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: 10), // Favoritos
+                // Favoritos
                 ElevatedButton.icon(
                   onPressed: () {
                     List<Concierto> favoritos =
-                    FavoritosHelper.getFavoritos()
-                      ..sort((a, b) => a.fecha.compareTo(b.fecha));
+                        FavoritosHelper.getFavoritos()
+                          ..sort((a, b) => a.fecha.compareTo(b.fecha));
                     // Bottom sheet (lista de favoritos)
                     showModalBottomSheet(
                       context: context,
@@ -422,40 +363,40 @@ class _CalendarState extends State<NextEvents> {
 
                                   Flexible(
                                     child:
-                                    favoritos.isEmpty
-                                        ? const Center(
-                                      child: Text(
-                                        'Aún no has añadido favoritos.',
-                                      ),
-                                    )
-                                        : ListView.builder(
-                                      itemCount: favoritos.length,
-                                      itemBuilder: (_, index) {
-                                        final concierto =
-                                        favoritos[index];
-                                        return ListTile(
-                                          leading: IconButton(
-                                            icon: const Icon(
-                                              Icons.favorite,
-                                              color: Colors.red,
+                                        favoritos.isEmpty
+                                            ? const Center(
+                                              child: Text(
+                                                'Aún no has añadido favoritos.',
+                                              ),
+                                            )
+                                            : ListView.builder(
+                                              itemCount: favoritos.length,
+                                              itemBuilder: (_, index) {
+                                                final concierto =
+                                                    favoritos[index];
+                                                return ListTile(
+                                                  leading: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.favorite,
+                                                      color: Colors.red,
+                                                    ),
+                                                    onPressed: () {
+                                                      FavoritosHelper.toggleFavorito(
+                                                        concierto,
+                                                      );
+                                                      setStateSheet(() {
+                                                        favoritos =
+                                                            FavoritosHelper.getFavoritos();
+                                                      });
+                                                    },
+                                                  ),
+                                                  title: Text(concierto.nombre),
+                                                  subtitle: Text(
+                                                    '${concierto.fecha.day}/${concierto.fecha.month} - ${concierto.lugar}',
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                            onPressed: () {
-                                              FavoritosHelper.toggleFavorito(
-                                                concierto,
-                                              );
-                                              setStateSheet(() {
-                                                favoritos =
-                                                    FavoritosHelper.getFavoritos();
-                                              });
-                                            },
-                                          ),
-                                          title: Text(concierto.nombre),
-                                          subtitle: Text(
-                                            '${concierto.fecha.day}/${concierto.fecha.month} - ${concierto.lugar}',
-                                          ),
-                                        );
-                                      },
-                                    ),
                                   ),
                                 ],
                               ),
@@ -477,7 +418,10 @@ class _CalendarState extends State<NextEvents> {
                 ),
               ],
             ),
+
+            // Copyright y Legal
             WidgetsUtil.pieDePagina(),
+
           ],
         ),
       ),
