@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../customColors/app_colors.dart';
-import '../helpScreens/help_calendar.dart';
+import '../helpScreens/help_next_events.dart';
 import '../helpers/favoritos_helper.dart';
 import '../models/concierto_model.dart';
 import '../widgets/widgets_util.dart';
@@ -83,7 +83,7 @@ class _CalendarState extends State<NextEvents> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const HelpCalendar()),
+                MaterialPageRoute(builder: (_) => const HelpNextEvents()),
               );
             },
           ),

@@ -1,64 +1,65 @@
 import 'package:flutter/material.dart';
 
 import '../customColors/app_colors.dart';
-import '../screens/about_us.dart';
+import '../screens/previous_events.dart';
 import '../widgets/widgets_util.dart';
 
-class HelpAboutUs extends StatelessWidget {
-  const HelpAboutUs({super.key});
+class HelpPreviousEvents extends StatelessWidget {
+  const HelpPreviousEvents({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ayuda: Sobre Nosotros')),
+      appBar: AppBar(title: const Text('Ayuda: Anteriores Eventos')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
             const Text(
-              '¿Qué hay en "Sobre Nosotros"?',
+              '¿Qué hay en "Anteriores Eventos"?',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
 
             WidgetsUtil.bloqueAyuda(
-              icono: Icons.image,
-              titulo: 'Imagen del Grupo Talía',
+              icono: Icons.history,
+              titulo: 'Descripción ',
               descripcion:
-                  'Al inicio encontrarás un banner visual con la imagen del grupo y varios enlaces.\n'
-                  'Toca los iconos para acceder a ellos',
+                  'Aquí encontrarás eventos ya celebrados por Grupo Talía.',
             ),
 
             WidgetsUtil.bloqueAyuda(
-              icono: Icons.people,
-              titulo: 'Directores',
+              icono: Icons.touch_app,
+              titulo: 'Interacción con las tarjetas',
               descripcion:
-                  'Verás fotos de los directores del grupo y una breve descripción.',
+                  'Puedes tocar sobre cada tarjeta '
+                  'para abrir una ventana con información detallada del evento.',
+            ),
+
+            WidgetsUtil.bloqueAyuda(
+              icono: Icons.image,
+              titulo: 'Eventos',
+              descripcion:
+                  'Cada evento tiene una imagen representativa y una descripción.',
               puntos: [
-                'Cada director tiene iconos debajo con enlaces a sus redes sociales.',
-                'Toca los iconos para abrir sus perfiles en Facebook, Instagram, Twitter o LinkedIn.',
+                'Podrás ver la imagen completa, la descripción y, si está disponible, '
+                    'un botón para dirigirte '
+                    'al programa mano en PDF.',
               ],
             ),
 
-            WidgetsUtil.bloqueAyuda(
-              titulo: 'Pie de página',
-              descripcion:
-                  'Al final de la pantalla encontrarás enlaces importantes:',
-              puntos: ['Política de Privacidad', 'Aviso Legal'],
-            ),
-
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const AboutUs()),
+                    MaterialPageRoute(builder: (_) => const PreviousEvents()),
                   );
                 },
-                icon: const Icon(Icons.feed),
-                label: const Text('Ir a "Sobre Nosotros"'),
+                icon: const Icon(Icons.event),
+                label: const Text('Ir a "Anteriores Eventos"'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.texto,
                   foregroundColor: Colors.white,

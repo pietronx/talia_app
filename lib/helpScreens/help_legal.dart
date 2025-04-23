@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../customColors/app_colors.dart';
 import '../widgets/widgets_util.dart';
 
 class HelpLegal extends StatelessWidget {
@@ -37,6 +38,17 @@ class HelpLegal extends StatelessWidget {
                 },
                 icon: const Icon(Icons.privacy_tip),
                 label: const Text('Ver Política de Privacidad'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.texto,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  )
               ),
             ),
 
@@ -50,6 +62,17 @@ class HelpLegal extends StatelessWidget {
                 },
                 icon: const Icon(Icons.gavel),
                 label: const Text('Ver Aviso Legal'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.texto,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
               ),
             ),
           ],

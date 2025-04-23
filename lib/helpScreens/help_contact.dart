@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../customColors/app_colors.dart';
 import '../screens/contact.dart';
 import '../widgets/widgets_util.dart';
 
@@ -68,8 +69,19 @@ class HelpContact extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const Contact()),
                   );
                 },
-                icon: const Icon(Icons.pageview),
+                icon: const Icon(Icons.people),
                 label: const Text('Ir a "Contacto"'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.texto,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
               ),
             ),
           ],

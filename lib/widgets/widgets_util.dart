@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 
 import '../customColors/app_colors.dart';
+import '../helpers/link_helper.dart';
 
 // Función para crear los recuadros con texto o imagen
 class WidgetsUtil {
@@ -19,7 +21,8 @@ class WidgetsUtil {
     Color? fondoColor,
     Color? textoColor,
     BoxFit? fit,
-  }) {
+  })
+  {
     if (path != null) {
       return Container(
         width: width,
@@ -54,7 +57,7 @@ class WidgetsUtil {
         style: TextStyle(
           fontSize: fontSize,
           fontWeight: fontWeight,
-          color: textoColor ?? Colors.black,
+          color: textoColor ?? AppColors.texto,
           height: textHeight,
         ),
         textAlign: TextAlign.center,
@@ -62,90 +65,244 @@ class WidgetsUtil {
     );
   }
 
+  static Widget popupCard({
+    required BuildContext context,
+    required String titulo,
+    required String imagenUrl,
+    required String descripcion,
+    String? subtitulo,
+    String? programaUrl,
+  })
+  {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return GestureDetector(
+      onTap: () {
+        WidgetsUtil.popupPersonalizado(
+          context: context,
+          titulo: titulo,
+          descripcion: descripcion,
+          imagenUrl: imagenUrl,
+          programaurl: programaUrl,
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+
+          // Cargar imagen
+          FutureBuilder<Image>(
+            future: _cargarImagen(imagenUrl),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                // Mientras carga, muestra loader
+                return Container(
+                  width: screenWidth * 0.8,
+                  height: screenWidth * 0.8,
+                  alignment: Alignment.center,
+                  child: const CircularProgressIndicator(),
+                );
+              }
+
+              // Imagen cargada con sombra y bordes
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(80),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: SizedBox(
+                    width: screenWidth * 0.8,
+                    height: screenWidth * 0.8,
+                    child: snapshot.data!,
+                  ),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 20),
+
+          // Título y subtítulo
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                Text(
+                  titulo,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                if (subtitulo != null)
+                  Text(
+                    subtitulo,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Función para cargar imagen
+  static Future<Image> _cargarImagen(String url) async {
+    final image = Image.network(url, fit: BoxFit.cover);
+    final completer = Completer<Image>();
+    final imageStream = image.image.resolve(const ImageConfiguration());
+
+    imageStream.addListener(
+      ImageStreamListener(
+            (info, _) => completer.complete(image),
+        onError: (error, _) => completer.completeError(error),
+      ),
+    );
+
+    return completer.future;
+  }
+
+
   // Popup personalizable
   static void popupPersonalizado({
     required BuildContext context,
     required String descripcion,
-    String? titulo,
-    String? imagenUrl,
-  }) {
+    required String titulo,
+    required String imagenUrl,
+    String? programaurl,
+    VoidCallback? onClose,
+  })
+  {
     showModalBottomSheet(
-      backgroundColor: AppColors.fondo,
       context: context,
-      // Averiguar que es esto
-      isScrollControlled: false,
+      backgroundColor: AppColors.fondo,
+      isScrollControlled: true,
       enableDrag: true,
       isDismissible: true,
-      elevation: 50,
-      //
-
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-
       builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 40),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // IMAGEN
-                if (imagenUrl != null) ...[
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    child: Image.network(imagenUrl),
-                  ),
-                  const SizedBox(height: 25),
-                ],
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.75,
+                ),
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(bottom: 30),
+                  children: [
 
-                // TITULO
-                if (titulo != null) ...[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      titulo,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                    // Imagen
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                      child: Image.network(
+                        imagenUrl,
+                        fit: BoxFit.contain,
+                        width: double.infinity,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Text("No se pudo cargar la imagen"),
+                          );
+                        },
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                ],
 
-                // DESCRIPCION
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Text(
-                    descripcion,
-                    style: const TextStyle(fontSize: 16),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
+                    const SizedBox(height: 25),
 
-                const SizedBox(height: 20),
-
-                // Boton de Cerrar
-                Align(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.appbar,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    // Titulo
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        titulo,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    child: const Text('Cerrar'),
-                  ),
+
+                    const SizedBox(height: 10),
+
+                    // Descripción
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        descripcion,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[900]),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Botones
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Botón de programa de mano
+                        if (programaurl != null && programaurl.isNotEmpty)
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              final previewLink = LinkHelper.vistaPreviaDrive(programaurl);
+                              OpenLink.abrirEnlace(previewLink);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[800],
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            icon: const Icon(Icons.picture_as_pdf, size: 18),
+                            label: const Text('Programa de Mano'),
+                          ),
+
+
+                        const SizedBox(width: 12),
+
+                        // Botón de cerrar
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            if (onClose != null) onClose();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.appbar,
+                            foregroundColor: AppColors.fondo,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text('Cerrar'),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         );
@@ -159,7 +316,8 @@ class WidgetsUtil {
     required String titulo,
     required String descripcion,
     List<String>? puntos,
-  }) {
+  })
+  {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12),
       padding: const EdgeInsets.all(16),
@@ -287,7 +445,8 @@ class WidgetsUtil {
     required String imagePath,
     required VoidCallback onTap,
     double? height,
-  }) {
+  })
+  {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -307,7 +466,8 @@ class OpenLink {
     String? path,
     required String url,
     double size = 24.0,
-  }) {
+  })
+  {
     if (path != null) {
       return GestureDetector(
         onTap: () => abrirEnlace(url),
