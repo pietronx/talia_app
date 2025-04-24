@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:talia_app/screens/about_us.dart';
+import 'package:talia_app/helpScreens/help_events.dart';
 
 import '../customColors/app_colors.dart';
 import '../widgets/widgets_util.dart';
@@ -18,7 +18,7 @@ class Events extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const AboutUs()),
+                MaterialPageRoute(builder: (_) => const HelpEvents()),
               );
             },
           ),

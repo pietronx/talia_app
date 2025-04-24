@@ -16,7 +16,7 @@ class HelpPreviousEvents extends StatelessWidget {
         child: ListView(
           children: [
             const Text(
-              '¿Qué hay en "Anteriores Eventos"?',
+              '¿Qué puedes hacer aquí?',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),

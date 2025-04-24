@@ -15,7 +15,7 @@ class HelpContact extends StatelessWidget {
         child: ListView(
           children: [
             const Text(
-              '¿Qué encontrarás en "Contacto"?',
+              '¿Qué puedes hacer aquí?',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),

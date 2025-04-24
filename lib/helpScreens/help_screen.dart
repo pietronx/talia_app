@@ -7,6 +7,7 @@ import 'package:talia_app/helpScreens/help_next_events.dart';
 import '../customColors/app_colors.dart';
 import '../screens/home_screen.dart';
 import 'help_about_us.dart';
+import 'help_events.dart';
 import 'help_previous_events.dart';
 
 class HelpScreen extends StatelessWidget {
@@ -18,6 +19,7 @@ class HelpScreen extends StatelessWidget {
       {'titulo': 'Inicio', 'pantalla': const HomeScreen(titulo: 'Inicio')},
       {'titulo': 'Sobre Nosotros', 'pantalla': const HelpAboutUs()},
       {'titulo': 'Contacto', 'pantalla': const HelpContact()},
+      {'titulo': 'Eventos', 'pantalla': const HelpEvents()},
       {'titulo': 'Anteriores Eventos', 'pantalla': const HelpPreviousEvents()},
       {'titulo': 'Próximos Eventos', 'pantalla': const HelpNextEvents()},
       {'titulo': 'Políticas de Privacidad', 'pantalla': const HelpLegal()},

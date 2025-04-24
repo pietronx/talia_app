@@ -16,7 +16,7 @@ class HelpAboutUs extends StatelessWidget {
         child: ListView(
           children: [
             const Text(
-              '¿Qué hay en "Sobre Nosotros"?',
+              '¿Que puedes hacer aquí?',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
