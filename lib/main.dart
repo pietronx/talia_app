@@ -15,7 +15,6 @@ import 'package:talia_app/screens/previous_events.dart';
 // Archivos internos del proyecto
 import 'customColors/app_colors.dart';
 import 'helpScreens/help_screen.dart';
-import 'models/concierto_model.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
@@ -24,8 +23,6 @@ void main() async {
   await initializeDateFormatting('es_ES', null);
 
   await Hive.initFlutter();
-  Hive.registerAdapter(ConciertoAdapter()); // ← necesario
-  await Hive.openBox<Concierto>('favoritos'); // ← abre caja de favoritos
 
   runApp(const MyApp());
 }

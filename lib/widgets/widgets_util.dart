@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../customColors/app_colors.dart';
 import '../helpers/link_helper.dart';
+import '../models/next_events_model.dart';
 
 // Función para crear los recuadros con texto o imagen
 class WidgetsUtil {
@@ -65,7 +66,8 @@ class WidgetsUtil {
     );
   }
 
-  static Widget popupCard({
+  // Grid o Tarjeta del evento
+  static Widget tarjetaAnteriorEvento({
     required BuildContext context,
     required String titulo,
     required String imagenUrl,
@@ -74,83 +76,125 @@ class WidgetsUtil {
     String? programaUrl,
   })
   {
+
+    // Obtener la URL de la vista previa
+    final previewLink = LinkHelper.vistaPreviaDrive(imagenUrl);
+
+    // Obtener el ancho de la pantalla
     double screenWidth = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: () {
-        WidgetsUtil.popupPersonalizado(
+        WidgetsUtil.mostrarDetallesEvento(
           context: context,
           titulo: titulo,
           descripcion: descripcion,
-          imagenUrl: imagenUrl,
+          imagenUrl: previewLink,
           programaurl: programaUrl,
         );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
-          // Cargar imagen
+          // Cargar los elementos
           FutureBuilder<Image>(
-            future: _cargarImagen(imagenUrl),
+            future: _cargarImagen(previewLink),
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
-                // Mientras carga, muestra loader
                 return Container(
                   width: screenWidth * 0.8,
                   height: screenWidth * 0.8,
                   alignment: Alignment.center,
-                  child: const CircularProgressIndicator(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Cargando evento...',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 );
               }
 
-              // Imagen cargada con sombra y bordes
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(80),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: SizedBox(
-                    width: screenWidth * 0.8,
-                    height: screenWidth * 0.8,
-                    child: snapshot.data!,
+              if (snapshot.hasError || snapshot.data == null) {
+                return Container(
+                  width: screenWidth * 0.8,
+                  height: screenWidth * 0.8,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(80),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                ),
+                  child: const Icon(
+                    Icons.image_not_supported,
+                    size: 60,
+                    color: Colors.grey,
+                  ),
+                );
+              }
+
+              // Imagen + Título + Subtítulo
+              return Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(80),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: SizedBox(
+                        width: screenWidth * 0.8,
+                        height: screenWidth * 0.8,
+                        child: snapshot.data!,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        Text(
+                          titulo,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        if (subtitulo != null && subtitulo.trim().isNotEmpty)
+                          Text(
+                            subtitulo,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
               );
             },
-          ),
-
-          const SizedBox(height: 20),
-
-          // Título y subtítulo
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: [
-                Text(
-                  titulo,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                if (subtitulo != null)
-                  Text(
-                    subtitulo,
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                    textAlign: TextAlign.center,
-                  ),
-              ],
-            ),
           ),
         ],
       ),
@@ -165,7 +209,7 @@ class WidgetsUtil {
 
     imageStream.addListener(
       ImageStreamListener(
-            (info, _) => completer.complete(image),
+        (info, _) => completer.complete(image),
         onError: (error, _) => completer.completeError(error),
       ),
     );
@@ -173,14 +217,14 @@ class WidgetsUtil {
     return completer.future;
   }
 
-
-  // Popup personalizable
-  static void popupPersonalizado({
+  // Popup Detalles del Evento al abrir la tarjeta
+  static void mostrarDetallesEvento({
     required BuildContext context,
     required String descripcion,
     required String titulo,
     required String imagenUrl,
     String? programaurl,
+
     VoidCallback? onClose,
   })
   {
@@ -206,7 +250,6 @@ class WidgetsUtil {
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(bottom: 30),
                   children: [
-
                     // Imagen
                     ClipRRect(
                       borderRadius: const BorderRadius.vertical(
@@ -266,7 +309,9 @@ class WidgetsUtil {
                         if (programaurl != null && programaurl.isNotEmpty)
                           ElevatedButton.icon(
                             onPressed: () {
-                              final previewLink = LinkHelper.vistaPreviaDrive(programaurl);
+                              final previewLink = LinkHelper.vistaPreviaDrive(
+                                programaurl,
+                              );
                               OpenLink.abrirEnlace(previewLink);
                             },
                             style: ElevatedButton.styleFrom(
@@ -279,7 +324,6 @@ class WidgetsUtil {
                             icon: const Icon(Icons.picture_as_pdf, size: 18),
                             label: const Text('Programa de Mano'),
                           ),
-
 
                         const SizedBox(width: 12),
 
@@ -309,6 +353,258 @@ class WidgetsUtil {
       },
     );
   }
+
+  static Widget tarjetaProximoEvento({
+    required BuildContext context,
+    required int index,
+    required ProximoEvento evento,
+  })
+  {
+    final previewLink = LinkHelper.vistaPreviaDrive(evento.portadaUrl);
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return GestureDetector(
+      onTap: () {
+        WidgetsUtil.mostrarDetallesProximoEvento(
+          context: context,
+          evento: evento,
+        );
+      },
+      child: FutureBuilder<Image>(
+        future: _cargarImagen(previewLink),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return Container(
+              width: screenWidth * 0.8,
+              height: screenWidth * 0.8,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Cargando evento ${index + 1}...',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (snapshot.hasError || snapshot.data == null) {
+            return Container(
+              width: screenWidth * 0.8,
+              height: screenWidth * 0.8,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(80),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Icon(Icons.image_not_supported, size: 60, color: Colors.grey),
+            );
+          }
+
+          return Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(80),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: SizedBox(
+                    width: screenWidth * 0.8,
+                    height: screenWidth * 0.8,
+                    child: snapshot.data!,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    Text(
+                      evento.titulo,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                    if (evento.subtitulo.trim().isNotEmpty)
+                      Text(
+                        evento.subtitulo,
+                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  static void mostrarDetallesProximoEvento({
+    required BuildContext context,
+    required ProximoEvento evento,
+  })
+  {
+    final previewLink = LinkHelper.vistaPreviaDrive(evento.portadaUrl);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.fondo,
+      isScrollControlled: true,
+      enableDrag: true,
+      isDismissible: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                ),
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(bottom: 30),
+                  children: [
+                    // Imagen
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                      child: Image.network(
+                        previewLink,
+                        fit: BoxFit.contain,
+                        width: double.infinity,
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) return child;
+                          return const Center(child: CircularProgressIndicator());
+                        },
+                        errorBuilder: (context, error, _) {
+                          return const Center(
+                            child: Text("No se pudo cargar la imagen"),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    // Título
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        evento.titulo,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    // Fecha y lugar
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        '${evento.fecha} — ${evento.lugar}',
+                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // Descripción
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        evento.descripcion,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[900]),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    // Botones
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (evento.linkEntradas != null)
+                          ElevatedButton.icon(
+                            onPressed: () => OpenLink.abrirEnlace(evento.linkEntradas!),
+                            icon: const Icon(Icons.shopping_cart),
+                            label: const Text('Comprar Entradas'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.deepPurple,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          ),
+
+                        if (evento.linkMasInfo != null)
+                          ElevatedButton.icon(
+                            onPressed: () => OpenLink.abrirEnlace(evento.linkMasInfo!),
+                            icon: const Icon(Icons.info_outline),
+                            label: const Text('Más Información'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueGrey[800],
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          ),
+
+                        ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.appbar,
+                            foregroundColor: AppColors.fondo,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text('Cerrar'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 
   // Ayuda
   static Widget bloqueAyuda({

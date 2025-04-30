@@ -1,19 +1,79 @@
-import "package:flutter/material.dart";
-import "package:talia_app/helpScreens/help_previous_events.dart";
+import 'dart:convert';
 
-import "../customColors/app_colors.dart";
-import "../data/previous_event_drive.dart";
-import "../helpers/link_helper.dart";
-import "../widgets/widgets_util.dart";
+import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class PreviousEvents extends StatelessWidget {
+import '../customColors/app_colors.dart';
+import '../helpScreens/help_previous_events.dart';
+import '../models/previous_events_model.dart';
+import '../widgets/widgets_util.dart';
+
+class PreviousEvents extends StatefulWidget {
   const PreviousEvents({super.key});
+
+  @override
+  State<PreviousEvents> createState() => _PreviousEventsState();
+}
+
+class _PreviousEventsState extends State<PreviousEvents> {
+  final String csvUrl =
+      'https://docs.google.com/spreadsheets/d/e/2PACX-1vRGhsvCt--uop_uX5RkZr3JtyRf75NfA1VyOgkynkcETzZsvb_QT6fhMv15lMVfuPx6XBog31KsSzIJ/pub?output=csv';
+
+  // Variables para almacenar los eventos
+  late Future<List<AnteriorEvento>> _futureEventos;
+
+  // Función para cargar los eventos desde el archivo CSV
+  Future<List<AnteriorEvento>> cargarEventos() async {
+    final response = await http.get(Uri.parse(csvUrl));
+
+    if (response.statusCode == 200) {
+      List<AnteriorEvento> eventos = [];
+
+      // Aquí está la diferencia importante:
+      final String contenido = utf8.decode(response.bodyBytes);
+
+      final List<List<dynamic>> filas = const CsvToListConverter().convert(
+        contenido,
+        eol: '\n',
+      );
+
+      for (int i = 1; i < filas.length; i++) {
+        // Saltar cabecera
+        List<dynamic> columnas = filas[i];
+        if (columnas.length >= 6) {
+          eventos.add(
+            AnteriorEvento(
+              titulo: columnas[0].toString(),
+              subtitulo: columnas[1].toString(),
+              descripcion: columnas[2].toString(),
+              imagenUrl: columnas[3].toString(),
+              programaUrl:
+                  columnas[4].toString().isNotEmpty
+                      ? columnas[4].toString()
+                      : null,
+              activo: columnas[5].toString().trim().toLowerCase() == 'sí',
+            ),
+          );
+        }
+      }
+      return eventos;
+    } else {
+      throw Exception('Error cargando los eventos');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _futureEventos = cargarEventos();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Anteriores Eventos"),
+        title: const Text("Eventos para Recordar"),
         actions: [
           IconButton(
             icon: const Icon(Icons.help),
@@ -27,98 +87,103 @@ class PreviousEvents extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+      body: FutureBuilder<List<AnteriorEvento>>(
+        future: _futureEventos,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError || snapshot.data == null) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      size: 80,
+                      color: Colors.redAccent,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "No se pudo cargar los eventos.\nPor favor, revisa tu conexión a Internet o inténtalo más tarde.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _futureEventos = cargarEventos();
+                        });
+                      },
+                      child: const Text("Reintentar"),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          final eventos = snapshot.data!;
+          final eventosActivos = eventos.where((e) => e.activo).toList();
+
+          if (eventosActivos.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.event_busy, size: 80, color: Colors.grey),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "No hay eventos disponibles en este momento.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          // Mostrar los eventos
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Titulo
-                WidgetsUtil.contenedorPersonalizado(
-                  text: "Eventos para Recordar",
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  textoColor: AppColors.titulo,
-                ),
-                Divider(
-                  height: 0.1,
-                  indent: 30,
-                  endIndent: 30,
-                  thickness: 2,
-                  color: AppColors.drawerCabecera,
-                ),
 
-                const SizedBox(height: 30),
-
+                // Grid de eventos
                 GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true, // importante para que no tome scroll infinito
+                  physics: const NeverScrollableScrollPhysics(), // usa el scroll de fuera
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 10,
                     childAspectRatio: 0.7,
                   ),
-                  itemCount: PreviousEventDrive.todos.length,
+                  itemCount: eventosActivos.length,
                   itemBuilder: (context, index) {
-                    final evento = PreviousEventDrive.todos[index];
-
-                    return FutureBuilder<List<dynamic>>(
-                      future: Future.wait([
-                        LinkHelper.descriptionDrive(evento.descripcionTxtUrl),
-                        if (evento.tituloTxtUrl.isNotEmpty)
-                          LinkHelper.cargarTituloYSubtitulo(evento.tituloTxtUrl)
-                        else
-                          Future.value(("Título no disponible", "")),
-                      ]),
-
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState != ConnectionState.done) {
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const CircularProgressIndicator(),
-                                const SizedBox(height: 16),
-                                Text(
-                                  "Cargando evento ${index + 1}...",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black54,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-
-                        if (snapshot.hasError || snapshot.data == null) {
-                          return const Text(
-                            "Error al cargar los datos del evento",
-                          );
-                        }
-
-                        final descripcion = snapshot.data![0] as String;
-                        final (titulo, subtitulo) =
-                            snapshot.data![1] as (String, String);
-
-                        return WidgetsUtil.popupCard(
-                          context: context,
-                          titulo: titulo,
-                          subtitulo: subtitulo,
-                          imagenUrl: LinkHelper.linkDrive(evento.imagenUrl),
-                          descripcion: descripcion,
-                          programaUrl: evento.programaUrl,
-                        );
-                      },
+                    final evento = eventosActivos[index];
+                    return WidgetsUtil.tarjetaAnteriorEvento(
+                      context: context,
+                      titulo: evento.titulo,
+                      subtitulo: evento.subtitulo,
+                      imagenUrl: evento.imagenUrl,
+                      descripcion: evento.descripcion,
+                      programaUrl: evento.programaUrl,
                     );
                   },
                 ),
               ],
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
