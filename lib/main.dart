@@ -9,6 +9,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:talia_app/screens/about_us.dart';
 import 'package:talia_app/screens/contact.dart';
 import 'package:talia_app/screens/events.dart';
+import 'package:talia_app/screens/news.dart';
 import 'package:talia_app/screens/next_events.dart';
 import 'package:talia_app/screens/previous_events.dart';
 
@@ -61,12 +62,14 @@ class MyApp extends StatelessWidget {
       ),
       home: const HomeScreen(titulo: 'Inicio'),
       routes: {
+        '/screens/home_screen': (context) => const HomeScreen(titulo: 'Inicio'),
         '/about_us': (context) => const AboutUs(),
         '/contact': (context) => const Contact(),
         '/screens/events': (context) => const Events(),
         '/screens/nextEvents': (context) => const NextEvents(),
-        '/helpScreens/help_screen': (context) => const HelpScreen(),
         '/screens/previousEvents': (context) => const PreviousEvents(),
+        '/screens/news': (context) => const News(),
+        '/helpScreens/help_screen': (context) => const HelpScreen(),
       },
     );
   }

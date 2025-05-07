@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisCount: 2,
 
                   // Espacio horizontal entre columnas
-                  crossAxisSpacing: 10,
+                  crossAxisSpacing: 15,
 
                   // Espacio vertical entre filas
                   mainAxisSpacing: 10,
@@ -106,6 +106,29 @@ class HomeScreen extends StatelessWidget {
                             color: AppColors.texto,
                           ),
                         ),
+                      ],
+                    ),
+
+                    // NOTICIAS
+                    Column(
+                      children: [
+                        WidgetsUtil.gridMenu(
+                          imagePath: 'assets/icons/newsIcon.png',
+                          onTap:
+                              () =>
+                                  Navigator.pushNamed(context, '/screens/news'),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Noticias',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.texto,
+                          ),
+                        ),
+
                       ],
                     ),
 

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../customColors/app_colors.dart';
-import '../screens/previous_events.dart';
+import '../screens/news.dart';
 import '../widgets/widgets_util.dart';
 
-class HelpPreviousEvents extends StatelessWidget {
-  const HelpPreviousEvents({super.key});
+class HelpNews extends StatelessWidget {
+  const HelpNews({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ayuda: Anteriores Eventos')),
+      appBar: AppBar(title: const Text('Ayuda: Noticias')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
@@ -23,10 +23,10 @@ class HelpPreviousEvents extends StatelessWidget {
             const SizedBox(height: 20),
 
             WidgetsUtil.bloqueAyuda(
-              icono: Icons.event_available,
-              titulo: 'Eventos para recordar',
+              icono: Icons.newspaper,
+              titulo: 'El día a día',
               descripcion:
-                  'Aquí encontrarás eventos ya celebrados por Grupo Talía.',
+                  'Aquí encontrarás las noticias más recientes de Grupo Talía.',
             ),
 
             WidgetsUtil.bloqueAyuda(
@@ -34,30 +34,30 @@ class HelpPreviousEvents extends StatelessWidget {
               titulo: 'Interacción con las tarjetas',
               descripcion:
                   'Puedes tocar sobre cada tarjeta '
-                  'para abrir una ventana con información detallada del evento.',
+                  'para abrir una ventana con información detallada de la noticia.',
             ),
 
             WidgetsUtil.bloqueAyuda(
               icono: Icons.image,
-              titulo: 'Eventos',
+              titulo: 'Noticias',
               descripcion:
-                  'Cada evento tiene una imagen representativa y una descripción.\n\n'
+                  'Cada noticia tiene una imagen representativa y una descripción.\n\n'
                   'Podrás ver la imagen completa, la descripción y, si está disponible, '
                   'un botón para dirigirte '
-                  'al programa mano en PDF.',
+                  'a la web con más información sobre la misma.',
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const PreviousEvents()),
+                    MaterialPageRoute(builder: (_) => const News()),
                   );
                 },
-                icon: const Icon(Icons.event),
-                label: const Text('Ir a "Anteriores Eventos"'),
+                icon: const Icon(Icons.calendar_month),
+                label: const Text('Ir a "Noticias"'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.texto,
                   foregroundColor: Colors.white,
