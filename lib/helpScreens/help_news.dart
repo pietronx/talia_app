@@ -30,21 +30,12 @@ class HelpNews extends StatelessWidget {
             ),
 
             WidgetsUtil.bloqueAyuda(
-              icono: Icons.touch_app,
-              titulo: 'Interacción con las tarjetas',
-              descripcion:
-                  'Puedes tocar sobre cada tarjeta '
-                  'para abrir una ventana con información detallada de la noticia.',
-            ),
-
-            WidgetsUtil.bloqueAyuda(
               icono: Icons.image,
               titulo: 'Noticias',
               descripcion:
                   'Cada noticia tiene una imagen representativa y una descripción.\n\n'
-                  'Podrás ver la imagen completa, la descripción y, si está disponible, '
-                  'un botón para dirigirte '
-                  'a la web con más información sobre la misma.',
+                  'Si tocas sobre cada tarjeta irás a la web oficial, '
+                  'donde podrás encontrar más informacion sobre la noticia.',
             ),
 
             const SizedBox(height: 10),

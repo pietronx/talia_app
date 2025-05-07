@@ -637,255 +637,134 @@ class WidgetsUtil {
     final previewLink = LinkHelper.vistaPreviaDrive(noticia.portadaUrl);
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return GestureDetector(
-      onTap: () {
-        WidgetsUtil.mostrarDetallesNoticia(context: context, noticia: noticia);
-      },
-
-      child: FutureBuilder<Image>(
-        future: _cargarImagen(previewLink),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Container(
-              width: screenWidth * 0.8,
-              height: screenWidth * 0.8,
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Cargando noticia...',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          if (snapshot.hasError || snapshot.data == null) {
-            return Container(
-              width: screenWidth * 0.8,
-              height: screenWidth * 0.8,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(80),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.image_not_supported,
-                size: 60,
-                color: Colors.grey,
-              ),
-            );
-          }
-
-          // Imagen + Título + Fecha
-          return Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(80),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+    return FutureBuilder<Image>(
+      future: _cargarImagen(previewLink),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Container(
+            width: screenWidth * 0.9,
+            height: screenWidth * 0.5,
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                CircularProgressIndicator(),
+                SizedBox(height: 10),
+                Text(
+                  'Cargando noticia...',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                child: ClipRRect(
-                  //borderRadius: BorderRadius.circular(0),
+              ],
+            ),
+          );
+        }
+
+        if (snapshot.hasError || snapshot.data == null) {
+          return Container(
+            width: screenWidth * 0.9,
+            height: screenWidth * 0.5,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(80),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.image_not_supported,
+              size: 60,
+              color: Colors.grey,
+            ),
+          );
+        }
+
+        return Card(
+          elevation: 10,
+          margin: const EdgeInsets.only(bottom: 30),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+          color: Colors.white,
+          child: InkWell(
+            onTap: () {
+              if (noticia.linkMasInfo != null &&
+                  noticia.linkMasInfo!.trim().isNotEmpty) {
+                OpenLink.abrirEnlace(noticia.linkMasInfo!.trim());
+              }
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
                   child: SizedBox(
                     width: screenWidth * 0.9,
-                    height: screenWidth * 0.5,
+                    height: screenWidth * 0.6,
                     child: snapshot.data!,
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  children: [
-                    if (noticia.fecha.trim().isNotEmpty)
-                      Text(
-                        noticia.fecha,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFFECBC00),
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
+                Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (noticia.fecha.trim().isNotEmpty)
+                        // Fecha
+                        Text(
+                          noticia.fecha.toUpperCase(),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFFECBC00),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    SizedBox(height: noticia.fecha.trim().isNotEmpty ? 10 : 0),
-                    Text(
-                      noticia.titulo,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  // Popup Detalles de Noticias al abrir la tarjeta
-  static Noticia mostrarDetallesNoticia({
-    required BuildContext context,
-    required Noticia noticia,
-  })
-  {
-    final previewLink = LinkHelper.vistaPreviaDrive(noticia.portadaUrl);
-
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.fondo,
-      isScrollControlled: true,
-      enableDrag: true,
-      isDismissible: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.8,
-                ),
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(bottom: 30),
-                  children: [
-                    // Imagen
-                    ClipRRect(
-                      /*borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(20),
-                      ),*/
-                      child: Image.network(
-                        previewLink,
-                        fit: BoxFit.contain,
-                        width: double.infinity,
-                        loadingBuilder: (context, child, progress) {
-                          if (progress == null) return child;
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                        errorBuilder: (context, error, _) {
-                          return const Center(
-                            child: Text("No se pudo cargar la imagen"),
-                          );
-                        },
-                      ),
-                    ),
-
-                    const SizedBox(height: 25),
-
-                    // Título
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Text(
+                      const SizedBox(height: 5),
+                      // Titulo
+                      Text(
                         noticia.titulo,
                         style: const TextStyle(
-                          fontSize: 22,
                           fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    // Fecha
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Text(
-                        '${noticia.fecha}',
+                      const SizedBox(height: 10),
+                      // Descripcion
+                      Text(
+                        noticia.descripcion.length > 300
+                            ? '${noticia.descripcion.substring(0, 300)}...'
+                            : noticia.descripcion,
                         style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
+                          fontSize: 14,
+                          color: Colors.black87,
                         ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    // Descripción
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Text(
-                        noticia.descripcion,
-                        style: TextStyle(fontSize: 16, color: Colors.grey[900]),
                         textAlign: TextAlign.justify,
                       ),
-                    ),
-
-                    const SizedBox(height: 25),
-
-                    // Botones
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Mas info
-                        if (noticia.linkMasInfo != null)
-                          ElevatedButton.icon(
-                            onPressed:
-                                () =>
-                                    OpenLink.abrirEnlace(noticia.linkMasInfo!),
-                            icon: const Icon(Icons.info_outline),
-                            label: const Text('Más Información'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueGrey[800],
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                          ),
-
-                        ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.appbar,
-                            foregroundColor: AppColors.fondo,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: const Text('Cerrar'),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Leer más',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         );
       },
     );
-    return noticia;
   }
+
 
   // Ayuda
   static Widget bloqueAyuda({

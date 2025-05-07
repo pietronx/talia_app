@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:talia_app/models/news_model.dart';
 
+import '../customColors/app_colors.dart';
+import '../helpScreens/help_news.dart';
 import '../widgets/widgets_util.dart';
 
 class News extends StatefulWidget {
@@ -95,7 +97,6 @@ class _NewsState extends State<News> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Noticias")),
       body: FutureBuilder<List<Noticia>>(
         future: _Noticia,
         builder: (context, snapshot) {
@@ -126,32 +127,77 @@ class _NewsState extends State<News> {
             );
           }
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.7,
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                expandedHeight: 250,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: const Text(
+                    'Noticias',
+                    style: TextStyle(
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 20.0,
+                          color: Colors.black54,
+                          offset: Offset(1.0, 1.0),
+                        ),
+                      ],
+                    ),
                   ),
-                  itemCount: activos.length,
-                  itemBuilder: (context, index) {
-                    final noticia = activos[index];
-                    return WidgetsUtil.tarjetaNoticia(
-                      context: context,
-                      index: index,
-                      noticia: noticia,
-                    );
-                  },
+                  background: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset(
+                        'assets/images/bannerNoticias.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black54,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.help),
+                    color: AppColors.appbarIcons,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const HelpNews()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                      final noticia = activos[index];
+                      return WidgetsUtil.tarjetaNoticia(
+                        context: context,
+                        index: index,
+                        noticia: noticia,
+                      );
+                    },
+                    childCount: activos.length,
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
