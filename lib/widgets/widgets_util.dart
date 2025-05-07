@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../customColors/app_colors.dart';
 import '../helpers/link_helper.dart';
+import '../models/news_model.dart';
 import '../models/next_events_model.dart';
 
 // Función para crear los recuadros con texto o imagen
@@ -22,8 +23,7 @@ class WidgetsUtil {
     Color? fondoColor,
     Color? textoColor,
     BoxFit? fit,
-  })
-  {
+  }) {
     if (path != null) {
       return Container(
         width: width,
@@ -66,7 +66,23 @@ class WidgetsUtil {
     );
   }
 
-  // Grid o Tarjeta del evento
+  // Función para cargar imagen
+  static Future<Image> _cargarImagen(String url) async {
+    final image = Image.network(url, fit: BoxFit.cover);
+    final completer = Completer<Image>();
+    final imageStream = image.image.resolve(const ImageConfiguration());
+
+    imageStream.addListener(
+      ImageStreamListener(
+        (info, _) => completer.complete(image),
+        onError: (error, _) => completer.completeError(error),
+      ),
+    );
+
+    return completer.future;
+  }
+
+  // Tarjeta del anterior evento
   static Widget tarjetaAnteriorEvento({
     required BuildContext context,
     required String titulo,
@@ -74,9 +90,7 @@ class WidgetsUtil {
     required String descripcion,
     String? subtitulo,
     String? programaUrl,
-  })
-  {
-
+  }) {
     // Obtener la URL de la vista previa
     final previewLink = LinkHelper.vistaPreviaDrive(imagenUrl);
 
@@ -85,7 +99,7 @@ class WidgetsUtil {
 
     return GestureDetector(
       onTap: () {
-        WidgetsUtil.mostrarDetallesEvento(
+        WidgetsUtil.mostrarDetallesAnteriorEvento(
           context: context,
           titulo: titulo,
           descripcion: descripcion,
@@ -113,7 +127,10 @@ class WidgetsUtil {
                       Text(
                         'Cargando evento...',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
@@ -201,24 +218,8 @@ class WidgetsUtil {
     );
   }
 
-  // Función para cargar imagen
-  static Future<Image> _cargarImagen(String url) async {
-    final image = Image.network(url, fit: BoxFit.cover);
-    final completer = Completer<Image>();
-    final imageStream = image.image.resolve(const ImageConfiguration());
-
-    imageStream.addListener(
-      ImageStreamListener(
-        (info, _) => completer.complete(image),
-        onError: (error, _) => completer.completeError(error),
-      ),
-    );
-
-    return completer.future;
-  }
-
   // Popup Detalles del Evento al abrir la tarjeta
-  static void mostrarDetallesEvento({
+  static void mostrarDetallesAnteriorEvento({
     required BuildContext context,
     required String descripcion,
     required String titulo,
@@ -226,8 +227,7 @@ class WidgetsUtil {
     String? programaurl,
 
     VoidCallback? onClose,
-  })
-  {
+  }) {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.fondo,
@@ -354,12 +354,12 @@ class WidgetsUtil {
     );
   }
 
+  // Tarjeta del próximo evento
   static Widget tarjetaProximoEvento({
     required BuildContext context,
     required int index,
     required ProximoEvento evento,
-  })
-  {
+  }) {
     final previewLink = LinkHelper.vistaPreviaDrive(evento.portadaUrl);
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -370,6 +370,7 @@ class WidgetsUtil {
           evento: evento,
         );
       },
+
       child: FutureBuilder<Image>(
         future: _cargarImagen(previewLink),
         builder: (context, snapshot) {
@@ -409,7 +410,11 @@ class WidgetsUtil {
                   ),
                 ],
               ),
-              child: const Icon(Icons.image_not_supported, size: 60, color: Colors.grey),
+              child: const Icon(
+                Icons.image_not_supported,
+                size: 60,
+                color: Colors.grey,
+              ),
             );
           }
 
@@ -442,13 +447,19 @@ class WidgetsUtil {
                   children: [
                     Text(
                       evento.titulo,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     if (evento.subtitulo.trim().isNotEmpty)
                       Text(
                         evento.subtitulo,
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                   ],
@@ -461,6 +472,7 @@ class WidgetsUtil {
     );
   }
 
+  // Popup Detalles de Próximo Evento al abrir la tarjeta
   static void mostrarDetallesProximoEvento({
     required BuildContext context,
     required ProximoEvento evento,
@@ -501,7 +513,9 @@ class WidgetsUtil {
                         width: double.infinity,
                         loadingBuilder: (context, child, progress) {
                           if (progress == null) return child;
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         },
                         errorBuilder: (context, error, _) {
                           return const Center(
@@ -532,7 +546,10 @@ class WidgetsUtil {
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Text(
                         '${evento.fecha} — ${evento.lugar}',
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
 
@@ -554,9 +571,12 @@ class WidgetsUtil {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Entradas
                         if (evento.linkEntradas != null)
                           ElevatedButton.icon(
-                            onPressed: () => OpenLink.abrirEnlace(evento.linkEntradas!),
+                            onPressed:
+                                () =>
+                                    OpenLink.abrirEnlace(evento.linkEntradas!),
                             icon: const Icon(Icons.shopping_cart),
                             label: const Text('Comprar Entradas'),
                             style: ElevatedButton.styleFrom(
@@ -568,9 +588,11 @@ class WidgetsUtil {
                             ),
                           ),
 
+                        // Mas info
                         if (evento.linkMasInfo != null)
                           ElevatedButton.icon(
-                            onPressed: () => OpenLink.abrirEnlace(evento.linkMasInfo!),
+                            onPressed:
+                                () => OpenLink.abrirEnlace(evento.linkMasInfo!),
                             icon: const Icon(Icons.info_outline),
                             label: const Text('Más Información'),
                             style: ElevatedButton.styleFrom(
@@ -605,6 +627,265 @@ class WidgetsUtil {
     );
   }
 
+  // Tarjeta de Noticias
+  static Widget tarjetaNoticia({
+    required BuildContext context,
+    required int index,
+    required Noticia noticia,
+  })
+  {
+    final previewLink = LinkHelper.vistaPreviaDrive(noticia.portadaUrl);
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return GestureDetector(
+      onTap: () {
+        WidgetsUtil.mostrarDetallesNoticia(context: context, noticia: noticia);
+      },
+
+      child: FutureBuilder<Image>(
+        future: _cargarImagen(previewLink),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return Container(
+              width: screenWidth * 0.8,
+              height: screenWidth * 0.8,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Cargando noticia...',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (snapshot.hasError || snapshot.data == null) {
+            return Container(
+              width: screenWidth * 0.8,
+              height: screenWidth * 0.8,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(80),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.image_not_supported,
+                size: 60,
+                color: Colors.grey,
+              ),
+            );
+          }
+
+          // Imagen + Título + Fecha
+          return Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(80),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  //borderRadius: BorderRadius.circular(0),
+                  child: SizedBox(
+                    width: screenWidth * 0.9,
+                    height: screenWidth * 0.5,
+                    child: snapshot.data!,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    if (noticia.fecha.trim().isNotEmpty)
+                      Text(
+                        noticia.fecha,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFFECBC00),
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    SizedBox(height: noticia.fecha.trim().isNotEmpty ? 10 : 0),
+                    Text(
+                      noticia.titulo,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  // Popup Detalles de Noticias al abrir la tarjeta
+  static Noticia mostrarDetallesNoticia({
+    required BuildContext context,
+    required Noticia noticia,
+  })
+  {
+    final previewLink = LinkHelper.vistaPreviaDrive(noticia.portadaUrl);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.fondo,
+      isScrollControlled: true,
+      enableDrag: true,
+      isDismissible: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                ),
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(bottom: 30),
+                  children: [
+                    // Imagen
+                    ClipRRect(
+                      /*borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),*/
+                      child: Image.network(
+                        previewLink,
+                        fit: BoxFit.contain,
+                        width: double.infinity,
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) return child;
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                        errorBuilder: (context, error, _) {
+                          return const Center(
+                            child: Text("No se pudo cargar la imagen"),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    // Título
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        noticia.titulo,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    // Fecha
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        '${noticia.fecha}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // Descripción
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        noticia.descripcion,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[900]),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    // Botones
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Mas info
+                        if (noticia.linkMasInfo != null)
+                          ElevatedButton.icon(
+                            onPressed:
+                                () =>
+                                    OpenLink.abrirEnlace(noticia.linkMasInfo!),
+                            icon: const Icon(Icons.info_outline),
+                            label: const Text('Más Información'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueGrey[800],
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          ),
+
+                        ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.appbar,
+                            foregroundColor: AppColors.fondo,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text('Cerrar'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+    return noticia;
+  }
 
   // Ayuda
   static Widget bloqueAyuda({
@@ -612,8 +893,7 @@ class WidgetsUtil {
     required String titulo,
     required String descripcion,
     List<String>? puntos,
-  })
-  {
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12),
       padding: const EdgeInsets.all(16),
@@ -741,8 +1021,7 @@ class WidgetsUtil {
     required String imagePath,
     required VoidCallback onTap,
     double? height,
-  })
-  {
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -762,8 +1041,7 @@ class OpenLink {
     String? path,
     required String url,
     double size = 24.0,
-  })
-  {
+  }) {
     if (path != null) {
       return GestureDetector(
         onTap: () => abrirEnlace(url),

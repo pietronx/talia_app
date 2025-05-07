@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:talia_app/models/next_events_model.dart';
+
 import '../widgets/widgets_util.dart';
 
 class NextEvents extends StatefulWidget {
@@ -30,47 +31,49 @@ class _NextEventsState extends State<NextEvents> {
     }
 
     final contenido = utf8.decode(response.bodyBytes);
-    final filas = const CsvToListConverter().convert(contenido, eol: '\n');
+    final columnas = const CsvToListConverter().convert(contenido, eol: '\n');
 
     List<ProximoEvento> eventos = [];
 
     if (kDebugMode) {
-      print('📄 Total de filas: ${filas.length}');
+      print('📄 Total de columnas: ${columnas.length}');
     }
-    for (int i = 1; i < filas.length; i++) {
-      final fila = filas[i];
+    for (int i = 1; i < columnas.length; i++) {
+      final columna = columnas[i];
       if (kDebugMode) {
-        print('➡️ Fila $i: $fila');
+        print('➡️ Columna $i: $columna');
       }
 
-      if (fila.length < 9) {
+      if (columna.length < 9) {
         if (kDebugMode) {
-          print('⚠️ Fila $i ignorada (faltan columnas)');
+          print('⚠️ columna $i ignorada (faltan filas)');
         }
         continue;
       }
 
-      final activo = fila[8].toString().trim().toLowerCase().startsWith('s');
+      final activo = columna[8].toString().trim().toLowerCase().startsWith('s');
       if (kDebugMode) {
         print('🟡 Activo: $activo');
       }
 
       if (!activo) {
         if (kDebugMode) {
-          print('🚫 Fila $i no está activa');
+          print('🚫 Columna $i no está activa');
         }
         continue;
       }
 
       final evento = ProximoEvento(
-        titulo: fila[0].toString(),
-        subtitulo: fila[1].toString(),
-        descripcion: fila[2].toString(),
-        fecha: fila[3].toString(),
-        lugar: fila[4].toString(),
-        portadaUrl: fila[5].toString(),
-        linkEntradas: fila[6].toString().isEmpty ? null : fila[6].toString(),
-        linkMasInfo: fila[7].toString().isEmpty ? null : fila[7].toString(),
+        titulo: columna[0].toString(),
+        subtitulo: columna[1].toString(),
+        descripcion: columna[2].toString(),
+        fecha: columna[3].toString(),
+        lugar: columna[4].toString(),
+        portadaUrl: columna[5].toString(),
+        linkEntradas:
+            columna[6].toString().isEmpty ? null : columna[6].toString(),
+        linkMasInfo:
+            columna[7].toString().isEmpty ? null : columna[7].toString(),
         activo: true,
       );
 

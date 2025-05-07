@@ -37,6 +37,17 @@ class IconCredits extends StatelessWidget {
         'url': 'https://www.flaticon.es/icono-gratis/contact-us_9194840',
       },
       {
+        'icon': 'assets/icons/infoIcon.png',
+        'descripcion': 'Icono de Informacion creado por Mehwish',
+        'url':
+        'https://www.flaticon.es/icono-gratis/lista_6592963?related_id=6592952&origin=search',
+      },
+      {
+        'icon': 'assets/icons/newsIcon.png',
+        'descripcion': 'Icono de Noticias creado por Freepik',
+        'url': 'https://www.flaticon.es/icono-gratis/periodico_2965879?term=noticias&related_id=2965879'
+      },
+      {
         'icon': 'assets/icons/facebookIcon.png',
         'descripcion': 'Icono de Facebook creado por Indygo',
         'url':
@@ -53,12 +64,6 @@ class IconCredits extends StatelessWidget {
         'descripcion': 'Icono de LinkedIn creado por riajulislam',
         'url':
         'https://www.flaticon.es/icono-gratis/linkedin_3536569?term=linkedin&page=1&position=2&origin=style&related_id=3536569',
-      },
-      {
-        'icon': 'assets/icons/infoIcon.png',
-        'descripcion': 'Icono de Informacion creado por Mehwish',
-        'url':
-        'https://www.flaticon.es/icono-gratis/lista_6592963?related_id=6592952&origin=search',
       },
       {
         'icon': 'assets/icons/tiktokIcon.png',
