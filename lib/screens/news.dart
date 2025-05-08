@@ -8,6 +8,7 @@ import 'package:talia_app/models/news_model.dart';
 
 import '../customColors/app_colors.dart';
 import '../helpScreens/help_news.dart';
+import '../widgets/banner.dart';
 import '../widgets/widgets_util.dart';
 
 class News extends StatefulWidget {
@@ -129,46 +130,11 @@ class _NewsState extends State<News> {
 
           return CustomScrollView(
             slivers: [
-              SliverAppBar(
-                expandedHeight: 250,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: const Text(
-                    'Noticias',
-                    style: TextStyle(
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 20.0,
-                          color: Colors.black54,
-                          offset: Offset(1.0, 1.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                  background: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.asset(
-                        'assets/images/bannerNoticias.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black54,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                actions: [
+              BannerPersonalizado(
+                titulo: 'Noticias',
+                fontSize: 20,
+                assetImage: 'assets/images/bannerNoticias.jpg',
+                acciones: [
                   IconButton(
                     icon: const Icon(Icons.help),
                     color: AppColors.appbarIcons,
@@ -181,6 +147,7 @@ class _NewsState extends State<News> {
                   ),
                 ],
               ),
+
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 sliver: SliverList(

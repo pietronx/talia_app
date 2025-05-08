@@ -42,9 +42,8 @@ class HelpPreviousEvents extends StatelessWidget {
               titulo: 'Eventos',
               descripcion:
                   'Cada evento tiene una imagen representativa y una descripción.\n\n'
-                  'Podrás ver la imagen completa, la descripción y, si está disponible, '
-                  'un botón para dirigirte '
-                  'al programa mano en PDF.',
+                  'Debajo de esta, si está disponible, podrás ver un para botón que al tocarlo, '
+                  'te abrirá un PDF con el programa de mano del evento.',
             ),
 
             const SizedBox(height: 20),

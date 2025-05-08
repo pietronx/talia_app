@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../customColors/app_colors.dart';
+import '../widgets/banner.dart';
 import '../widgets/widgets_util.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,157 +12,92 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 30, backgroundColor: AppColors.fondo),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Banner
-                WidgetsUtil.contenedorPersonalizado(
-                  width: 300,
-                  height: 130,
-                  path: 'assets/images/bannerGrupoTalia.png',
-                  fit: BoxFit.cover,
-                ),
-
-                const SizedBox(height: 50),
-
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  // Muestra dos columnas
-                  crossAxisCount: 2,
-
-                  // Espacio horizontal entre columnas
-                  crossAxisSpacing: 15,
-
-                  // Espacio vertical entre filas
-                  mainAxisSpacing: 10,
-
-                  // Relación ancho/alto de cada celda: 0.7 = más alta que ancha
-                  childAspectRatio: 0.7,
-                  children: [
-                    // SOBRE NOSOTROS
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/infoIcon.png',
-                          onTap:
-                              () => Navigator.pushNamed(context, '/about_us'),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Sobre Nosotros',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    // CONTACTO
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/contactIcon.png',
-                          onTap: () => Navigator.pushNamed(context, '/contact'),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Contacto',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    // EVENTOS
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/eventsIcon.png',
-                          onTap:
-                              () => Navigator.pushNamed(
-                                context,
-                                '/screens/events',
-                              ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Eventos',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    // NOTICIAS
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/newsIcon.png',
-                          onTap:
-                              () =>
-                                  Navigator.pushNamed(context, '/screens/news'),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Noticias',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-
-                      ],
-                    ),
-
-                    // AYUDA
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/supportIcon.png',
-                          onTap:
-                              () => Navigator.pushNamed(
-                                context,
-                                '/helpScreens/help_screen',
-                              ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Ayuda',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+      body: CustomScrollView(
+        slivers: [
+          BannerPersonalizado(
+            titulo: 'Inicio',
+            fontSize: 20,
+            assetImage: 'assets/images/bannerPrincipal.jpg',
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Grid de accesos
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.7,
+                    children: [
+                      _gridItem(
+                        context,
+                        'Sobre Nosotros',
+                        'assets/icons/infoIcon.png',
+                        '/about_us',
+                      ),
+                      _gridItem(
+                        context,
+                        'Contacto',
+                        'assets/icons/contactIcon.png',
+                        '/contact',
+                      ),
+                      _gridItem(
+                        context,
+                        'Eventos',
+                        'assets/icons/eventsIcon.png',
+                        '/screens/events',
+                      ),
+                      _gridItem(
+                        context,
+                        'Noticias',
+                        'assets/icons/newsIcon.png',
+                        '/screens/news',
+                      ),
+                      _gridItem(
+                        context,
+                        'Ayuda',
+                        'assets/icons/supportIcon.png',
+                        '/helpScreens/help_screen',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
+    );
+  }
+
+  Widget _gridItem(
+    BuildContext context,
+    String label,
+    String iconPath,
+    String route,
+  ) {
+    return Column(
+      children: [
+        WidgetsUtil.gridMenu(
+          imagePath: iconPath,
+          onTap: () => Navigator.pushNamed(context, route),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.texto,
+          ),
+        ),
+      ],
     );
   }
 }

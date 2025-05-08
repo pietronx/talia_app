@@ -23,37 +23,30 @@ class HelpNextEvents extends StatelessWidget {
             const SizedBox(height: 20),
 
             WidgetsUtil.bloqueAyuda(
-              icono: Icons.calendar_today,
-              titulo: 'Calendario interactivo',
-              descripcion: 'Aquí puedes consultar los próximos conciertos y actividades programadas.',
-              puntos: [
-                'Los días con eventos se marcan con un círculo especial.',
-                'Toca cualquier día del calendario para ver si hay un concierto planificado.',
-              ],
+              icono: Icons.event_available,
+              titulo: 'Próximos Eventos',
+              descripcion:
+              'Aquí encontrarás los próximos eventos que celebrará el Grupo Talía.',
             ),
 
             WidgetsUtil.bloqueAyuda(
-              icono: Icons.info_outline,
-              titulo: 'Detalles del evento',
-              descripcion: 'Al seleccionar un día con evento, verás la información relevante:',
-              puntos: [
-                'Nombre del concierto',
-                'Hora y lugar',
-                'Notas adicionales si las hay',
-              ],
+              icono: Icons.touch_app,
+              titulo: 'Interacción con las tarjetas',
+              descripcion:
+              'Puedes tocar sobre cada tarjeta '
+                  'para abrir una ventana con información detallada del evento.',
             ),
 
             WidgetsUtil.bloqueAyuda(
-              icono: Icons.favorite,
-              titulo: 'Eventos favoritos',
-              descripcion: 'Puedes marcar tus eventos preferidos tocando el icono del corazón.',
-              puntos: [
-                'Accede a la lista completa desde el botón "Favoritos".',
-                'Puedes quitar o añadir conciertos en cualquier momento.',
-              ],
+              icono: Icons.image,
+              titulo: 'Eventos',
+              descripcion:
+              'Cada evento tiene una imagen representativa y una descripción.\n\n'
+                  'Debajo de esta podrás ver un para botón que al tocarlo, '
+                  'te dirigirá a la página webs donde podrás comprar las entradas del evento'
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
@@ -62,12 +55,15 @@ class HelpNextEvents extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const NextEvents()),
                   );
                 },
-                icon: const Icon(Icons.calendar_month),
+                icon: const Icon(Icons.event),
                 label: const Text('Ir a "Próximos Eventos"'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.texto,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

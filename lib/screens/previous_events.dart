@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import '../customColors/app_colors.dart';
 import '../helpScreens/help_previous_events.dart';
 import '../models/previous_events_model.dart';
+import '../widgets/banner.dart';
 import '../widgets/widgets_util.dart';
 
 class PreviousEvents extends StatefulWidget {
@@ -72,21 +73,6 @@ class _PreviousEventsState extends State<PreviousEvents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Eventos para Recordar"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.help),
-            color: AppColors.appbarIcons,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const HelpPreviousEvents()),
-              );
-            },
-          ),
-        ],
-      ),
       body: FutureBuilder<List<AnteriorEvento>>(
         future: _futureEventos,
         builder: (context, snapshot) {
@@ -101,11 +87,7 @@ class _PreviousEventsState extends State<PreviousEvents> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.error_outline,
-                      size: 80,
-                      color: Colors.redAccent,
-                    ),
+                    const Icon(Icons.error_outline, size: 80, color: Colors.redAccent),
                     const SizedBox(height: 20),
                     const Text(
                       "No se pudo cargar los eventos.\nPor favor, revisa tu conexión a Internet o inténtalo más tarde.",
@@ -150,38 +132,48 @@ class _PreviousEventsState extends State<PreviousEvents> {
             );
           }
 
-          // Mostrar los eventos
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-
-                // Grid de eventos
-                GridView.builder(
-                  shrinkWrap: true, // importante para que no tome scroll infinito
-                  physics: const NeverScrollableScrollPhysics(), // usa el scroll de fuera
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.7,
+          return CustomScrollView(
+            slivers: [
+              BannerPersonalizado(
+                titulo: 'Anteriores Eventos',
+                fontSize: 20,
+                assetImage: 'assets/images/bannerEventosRecordar.jpg',
+                acciones: [
+                  IconButton(
+                    icon: const Icon(Icons.help),
+                    color: AppColors.appbarIcons,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const HelpPreviousEvents()),
+                      );
+                    },
                   ),
-                  itemCount: eventosActivos.length,
-                  itemBuilder: (context, index) {
-                    final evento = eventosActivos[index];
-                    return WidgetsUtil.tarjetaAnteriorEvento(
-                      context: context,
-                      titulo: evento.titulo,
-                      subtitulo: evento.subtitulo,
-                      imagenUrl: evento.imagenUrl,
-                      descripcion: evento.descripcion,
-                      programaUrl: evento.programaUrl,
-                    );
-                  },
+                ],
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                      final evento = eventosActivos[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: WidgetsUtil.tarjetaAnteriorEvento(
+                          context: context,
+                          titulo: evento.titulo,
+                          subtitulo: evento.subtitulo,
+                          imagenUrl: evento.imagenUrl,
+                          descripcion: evento.descripcion,
+                          programaUrl: evento.programaUrl,
+                        ),
+                      );
+                    },
+                    childCount: eventosActivos.length,
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),

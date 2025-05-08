@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:talia_app/models/next_events_model.dart';
 
+import '../customColors/app_colors.dart';
+import '../helpScreens/help_next_events.dart';
+import '../widgets/banner.dart';
 import '../widgets/widgets_util.dart';
 
 class NextEvents extends StatefulWidget {
@@ -98,7 +101,6 @@ class _NextEventsState extends State<NextEvents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Próximos Eventos")),
       body: FutureBuilder<List<ProximoEvento>>(
         future: _futureEventos,
         builder: (context, snapshot) {
@@ -129,32 +131,56 @@ class _NextEventsState extends State<NextEvents> {
             );
           }
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.7,
+          return CustomScrollView(
+            slivers: [
+              BannerPersonalizado(
+                titulo: 'Próximos Eventos',
+                fontSize: 20,
+                assetImage: 'assets/images/bannerProximosEventos.jpg',
+                acciones: [
+                  IconButton(
+                    icon: const Icon(Icons.help),
+                    color: AppColors.appbarIcons,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const HelpNextEvents(),
+                        ),
+                      );
+                    },
                   ),
-                  itemCount: activos.length,
-                  itemBuilder: (context, index) {
-                    final evento = activos[index];
-                    return WidgetsUtil.tarjetaProximoEvento(
-                      context: context,
-                      index: index,
-                      evento: evento,
-                    );
-                  },
+                ],
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 30,
                 ),
-              ],
-            ),
+                sliver: SliverToBoxAdapter(
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 0.7,
+                        ),
+                    itemCount: activos.length,
+                    itemBuilder: (context, index) {
+                      final evento = activos[index];
+                      return WidgetsUtil.tarjetaProximoEvento(
+                        context: context,
+                        index: index,
+                        evento: evento,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
