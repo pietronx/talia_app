@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           BannerPersonalizado(
-            titulo: 'Inicio',
+            titulo: 'Grupo Talía',
             fontSize: 20,
             assetImage: 'assets/images/bannerPrincipal.jpg',
           ),
