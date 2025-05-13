@@ -9,6 +9,13 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final horizontalPadding = screenWidth * 0.05;
+    final tituloFontSize = screenWidth * 0.09;
+    final espacioGrande = screenHeight * 0.04;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sobre Nosotros'),
@@ -26,170 +33,233 @@ class AboutUs extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+          vertical: 20,
+        ),
         child: Column(
           children: [
-
-            // Webs oficiales
+            // Redes Oficiales
             WidgetsUtil.contenedorPersonalizado(
               text: 'Redes Oficiales',
-              fontSize: 28,
+              fontSize: tituloFontSize,
               fontWeight: FontWeight.bold,
               textoColor: AppColors.titulo,
             ),
 
             Divider(
               height: 0.1,
-              indent: 55,
-              endIndent: 55,
+              indent: screenWidth * 0.15,
+              endIndent: screenWidth * 0.15,
               color: AppColors.drawerCabecera,
               thickness: 2,
             ),
-            const SizedBox(height: 30),
+
+            SizedBox(height: espacioGrande),
 
             Column(
               children: [
-
                 WidgetsUtil.contenedorPersonalizado(
-                  width: 220,
-                  height: 100,
+                  width: screenWidth * 0.7,
+                  height: screenHeight * 0.15,
                   path: 'assets/images/bannerGrupoTalia.png',
                   fit: BoxFit.contain,
                 ),
+                SizedBox(height: espacioGrande),
 
-                const SizedBox(height: 30),
-
-                // Redes de Grupo Talía
                 Wrap(
                   alignment: WrapAlignment.center,
                   spacing: 15,
                   children:
-                  [
-                    {
-                      'path': 'assets/icons/webIcon.png',
-                      'url': 'https://www.grupotalia.org/',
-                    },
-                    {
-                      'path': 'assets/icons/facebookIcon.png',
-                      'url':
-                      'https://www.facebook.com/GrupoConcertanteTalia/',
-                    },
-                    {
-                      'path': 'assets/icons/twitterIcon.png',
-                      'url': 'https://x.com/GrupoTalia',
-                    },
-                    {
-                      'path': 'assets/icons/tiktokIcon.png',
-                      'url': 'https://www.tiktok.com/@grupotalia',
-                    },
-                    {
-                      'path': 'assets/icons/instagramIcon.png',
-                      'url': 'https://www.instagram.com/grupo.talia/',
-                    },
-                    {
-                      'path': 'assets/icons/youtubeIcon.png',
-                      'url': 'https://www.youtube.com/user/grupotalia',
-                    },
-                  ].map((item) {
-                    return OpenLink.socialMediaIcon(
-                      path: item['path']!,
-                      url: item['url']!,
-                      size: 35,
-                    );
-                  }).toList(),
+                      [
+                        {
+                          'path': 'assets/icons/webIcon.png',
+                          'url': 'https://www.grupotalia.org/',
+                        },
+                        {
+                          'path': 'assets/icons/facebookIcon.png',
+                          'url':
+                              'https://www.facebook.com/GrupoConcertanteTalia/',
+                        },
+                        {
+                          'path': 'assets/icons/twitterIcon.png',
+                          'url': 'https://x.com/GrupoTalia',
+                        },
+                        {
+                          'path': 'assets/icons/tiktokIcon.png',
+                          'url': 'https://www.tiktok.com/@grupotalia',
+                        },
+                        {
+                          'path': 'assets/icons/instagramIcon.png',
+                          'url': 'https://www.instagram.com/grupo.talia/',
+                        },
+                        {
+                          'path': 'assets/icons/youtubeIcon.png',
+                          'url': 'https://www.youtube.com/user/grupotalia',
+                        },
+                      ].map((item) {
+                        return OpenLink.socialMediaIcon(
+                          path: item['path']!,
+                          url: item['url']!,
+                          size: screenWidth * 0.1,
+                        );
+                      }).toList(),
                 ),
               ],
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: espacioGrande),
 
-            // Directores
+            // Título Directores
             WidgetsUtil.contenedorPersonalizado(
               text: 'Directores',
-              fontSize: 28,
+              fontSize: tituloFontSize,
               fontWeight: FontWeight.bold,
               textoColor: AppColors.titulo,
             ),
+
             Divider(
               height: 0.1,
-              indent: 75,
-              endIndent: 75,
+              indent: screenWidth * 0.2,
+              endIndent: screenWidth * 0.2,
               color: AppColors.drawerCabecera,
               thickness: 2,
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: espacioGrande),
 
-            // Perfil de Silvia Sanz
+            //------- Apartado de Directores
+
+            // Perfil de Silvia
             Column(
               children: [
                 CircleAvatar(
-                  radius: 50,
-                  backgroundImage: const AssetImage('assets/images/silviaimg.png'),
+                  radius: screenWidth * 0.2,
+                  backgroundImage: const AssetImage(
+                    'assets/images/silviaimg.png',
+                  ),
                 ),
-                const SizedBox(height: 10),
-                const Text(
+                SizedBox(height: screenHeight * 0.03),
+                Text(
                   'SILVIA SANZ',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.06,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text(
+                Text(
                   '"DIRECTORA TITULAR"',
-                  style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: screenHeight * 0.02),
                 Wrap(
                   spacing: 15,
                   runSpacing: 10,
                   alignment: WrapAlignment.center,
                   children: [
-                    OpenLink.socialMediaIcon(path: 'assets/icons/facebookIcon.png', url: 'https://www.facebook.com/people/Silvia-Sanz-Torre/100054562743950/', size: 30),
-                    OpenLink.socialMediaIcon(path: 'assets/icons/instagramIcon.png', url: 'https://www.instagram.com/silviasanztorre/', size: 30),
-                    OpenLink.socialMediaIcon(path: 'assets/icons/twitterIcon.png', url: 'https://x.com/silviasanztorre', size: 30),
-                    OpenLink.socialMediaIcon(path: 'assets/icons/linkedinIcon.png', url: 'https://www.linkedin.com/in/silvia-sanz-torre-59764668/', size: 30),
-                    OpenLink.socialMediaIcon(path: 'assets/icons/tiktokIcon.png', url: 'https://www.tiktok.com/@silviasanztorre', size: 30),
-                    OpenLink.socialMediaIcon(path: 'assets/icons/webIcon.png', url: 'https://www.silviasanz.com/', size: 30),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/facebookIcon.png',
+                      url:
+                          'https://www.facebook.com/people/Silvia-Sanz-Torre/100054562743950/',
+                      size: screenWidth * 0.1,
+                    ),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/instagramIcon.png',
+                      url: 'https://www.instagram.com/silviasanztorre/',
+                      size: screenWidth * 0.1,
+                    ),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/twitterIcon.png',
+                      url: 'https://x.com/silviasanztorre',
+                      size: screenWidth * 0.1,
+                    ),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/linkedinIcon.png',
+                      url:
+                          'https://www.linkedin.com/in/silvia-sanz-torre-59764668/',
+                      size: screenWidth * 0.1,
+                    ),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/tiktokIcon.png',
+                      url: 'https://www.tiktok.com/@silviasanztorre',
+                      size: screenWidth * 0.1,
+                    ),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/webIcon.png',
+                      url: 'https://www.silviasanz.com/',
+                      size: screenWidth * 0.1,
+                    ),
                   ],
                 ),
               ],
             ),
 
-            const SizedBox(height: 50),
+            SizedBox(height: screenHeight * 0.08),
 
             // Perfil de Alejandro
             Column(
               children: [
                 CircleAvatar(
-                  radius: 50,
-                  backgroundImage: const AssetImage('assets/images/alejandroimg.png'),
+                  radius: screenWidth * 0.2,
+                  backgroundImage: const AssetImage(
+                    'assets/images/alejandroimg.png',
+                  ),
                 ),
-                const SizedBox(height: 10),
-                const Text(
+                SizedBox(height: screenHeight * 0.03),
+                Text(
                   'ALEJANDRO VIVAS',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.06,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const Text(
+                Text(
                   '"DIRECTOR ARTÍSTICO"',
-                  style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: screenHeight * 0.02),
                 Wrap(
                   spacing: 15,
                   runSpacing: 10,
                   alignment: WrapAlignment.center,
                   children: [
-                    OpenLink.socialMediaIcon(path: 'assets/icons/facebookIcon.png', url: 'https://www.facebook.com/Alejandro-VIVAS-PUIG-1485352031719047/', size: 30),
-                    OpenLink.socialMediaIcon(path: 'assets/icons/instagramIcon.png', url: 'https://www.instagram.com/alevivasmusic/', size: 30),
-                    OpenLink.socialMediaIcon(path: 'assets/icons/twitterIcon.png', url: 'https://x.com/avivasMusic', size: 30),
-                    OpenLink.socialMediaIcon(path: 'assets/icons/linkedinIcon.png', url: 'https://www.linkedin.com/in/alejandro-vivas-puig-a3152044/', size: 30),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/facebookIcon.png',
+                      url:
+                          'https://www.facebook.com/Alejandro-VIVAS-PUIG-1485352031719047/',
+                      size: screenWidth * 0.1,
+                    ),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/instagramIcon.png',
+                      url: 'https://www.instagram.com/alevivasmusic/',
+                      size: screenWidth * 0.1,
+                    ),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/twitterIcon.png',
+                      url: 'https://x.com/avivasMusic',
+                      size: screenWidth * 0.1,
+                    ),
+                    OpenLink.socialMediaIcon(
+                      path: 'assets/icons/linkedinIcon.png',
+                      url:
+                          'https://www.linkedin.com/in/alejandro-vivas-puig-a3152044/',
+                      size: screenWidth * 0.1,
+                    ),
                   ],
                 ),
               ],
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: screenHeight * 0.01),
 
             // Politica y Privacidad
-            WidgetsUtil.pieDePagina(),
+            WidgetsUtil.pieDePagina(context),
           ],
         ),
       ),

@@ -9,12 +9,30 @@ class Events extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final horizontalPadding = screenWidth * 0.08;
+    final fontSize = screenWidth * 0.048;
+
+    final items = [
+      {
+        'label': 'Anteriores\nEventos',
+        'icon': 'assets/icons/pastEventsIcon.png',
+        'route': '/screens/previousEvents',
+      },
+      {
+        'label': 'Próximos\nEventos',
+        'icon': 'assets/icons/futureEventsIcon.png',
+        'route': '/screens/nextEvents',
+      },
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Eventos'),
+        title: const Text('Eventos'),
         actions: [
           IconButton(
-            icon: Icon(Icons.help),
+            icon: const Icon(Icons.help),
             onPressed: () {
               Navigator.push(
                 context,
@@ -25,72 +43,43 @@ class Events extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 600),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  // Muestra dos columnas
-                  crossAxisCount: 2,
-
-                  // Espacio horizontal entre columnas
-                  crossAxisSpacing: 35,
-
-                  // Relación ancho/alto de cada celda: 0.7 = más alta que ancha
-                  childAspectRatio: 0.6,
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: 20,
+            ),
+            child: GridView.builder(
+              shrinkWrap: true,
+              itemCount: items.length,
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 250,
+                mainAxisSpacing: 25,
+                crossAxisSpacing: 25,
+                childAspectRatio: 0.7,
+              ),
+              itemBuilder: (context, index) {
+                final item = items[index];
+                return Column(
                   children: [
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/pastEventsIcon.png',
-                          onTap:
-                              () => Navigator.pushNamed(
-                                context,
-                                '/screens/previousEvents',
-                              ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Anteriores Eventos',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-                      ],
+                    WidgetsUtil.gridMenu(
+                      imagePath: item['icon']!,
+                      onTap: () => Navigator.pushNamed(context, item['route']!),
                     ),
-
-                    Column(
-                      children: [
-                        WidgetsUtil.gridMenu(
-                          imagePath: 'assets/icons/futureEventsIcon.png',
-                          onTap:
-                              () => Navigator.pushNamed(
-                            context,
-                            '/screens/nextEvents',
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Próximos Eventos',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.texto,
-                          ),
-                        ),
-                      ],
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      item['label']!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.texto,
+                      ),
                     ),
                   ],
-                ),
-              ],
+                );
+              },
             ),
           ),
         ),

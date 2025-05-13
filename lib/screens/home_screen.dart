@@ -11,6 +11,19 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final horizontalPadding = screenWidth * 0.09;
+    final verticalPadding = screenHeight * 0.05;
+
+    final items = [
+      ['Sobre Nosotros', 'assets/icons/infoIcon.png', '/about_us'],
+      ['Contacto', 'assets/icons/contactIcon.png', '/contact'],
+      ['Eventos', 'assets/icons/eventsIcon.png', '/screens/events'],
+      ['Noticias', 'assets/icons/newsIcon.png', '/screens/news'],
+      ['Ayuda', 'assets/icons/supportIcon.png', '/helpScreens/help_screen'],
+    ];
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -19,54 +32,23 @@ class HomeScreen extends StatelessWidget {
             fontSize: 20,
             assetImage: 'assets/images/bannerPrincipal.jpg',
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Grid de accesos
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.7,
-                    children: [
-                      _gridItem(
-                        context,
-                        'Sobre Nosotros',
-                        'assets/icons/infoIcon.png',
-                        '/about_us',
-                      ),
-                      _gridItem(
-                        context,
-                        'Contacto',
-                        'assets/icons/contactIcon.png',
-                        '/contact',
-                      ),
-                      _gridItem(
-                        context,
-                        'Eventos',
-                        'assets/icons/eventsIcon.png',
-                        '/screens/events',
-                      ),
-                      _gridItem(
-                        context,
-                        'Noticias',
-                        'assets/icons/newsIcon.png',
-                        '/screens/news',
-                      ),
-                      _gridItem(
-                        context,
-                        'Ayuda',
-                        'assets/icons/supportIcon.png',
-                        '/helpScreens/help_screen',
-                      ),
-                    ],
-                  ),
-                ],
+
+          // QUITA el SliverToBoxAdapter aquí
+          SliverPadding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: verticalPadding,
+            ),
+            sliver: SliverGrid(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final item = items[index];
+                return _gridItem(context, item[0], item[1], item[2]);
+              }, childCount: items.length),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 250,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 25,
+                childAspectRatio: 0.7,
               ),
             ),
           ),
@@ -81,18 +63,21 @@ class HomeScreen extends StatelessWidget {
     String iconPath,
     String route,
   ) {
+
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Column(
       children: [
         WidgetsUtil.gridMenu(
           imagePath: iconPath,
           onTap: () => Navigator.pushNamed(context, route),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: screenHeight * 0.01),
         Text(
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: MediaQuery.of(context).size.width * 0.05,
             fontWeight: FontWeight.bold,
             color: AppColors.texto,
           ),

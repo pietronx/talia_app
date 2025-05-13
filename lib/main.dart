@@ -1,5 +1,6 @@
 // Flutter SDK
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Paquetes externos
 import 'package:hive_flutter/hive_flutter.dart';
@@ -22,8 +23,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initializeDateFormatting('es_ES', null);
-
   await Hive.initFlutter();
+
+  // Solo permitir orientación vertical
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   runApp(const MyApp());
 }

@@ -476,8 +476,7 @@ class WidgetsUtil {
   static void mostrarDetallesProximoEvento({
     required BuildContext context,
     required ProximoEvento evento,
-  })
-  {
+  }) {
     final previewLink = LinkHelper.vistaPreviaDrive(evento.portadaUrl);
 
     showModalBottomSheet(
@@ -632,8 +631,7 @@ class WidgetsUtil {
     required BuildContext context,
     required int index,
     required Noticia noticia,
-  })
-  {
+  }) {
     final previewLink = LinkHelper.vistaPreviaDrive(noticia.portadaUrl);
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -687,9 +685,7 @@ class WidgetsUtil {
         return Card(
           elevation: 10,
           margin: const EdgeInsets.only(bottom: 30),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           color: Colors.white,
           child: InkWell(
             onTap: () {
@@ -709,8 +705,10 @@ class WidgetsUtil {
                   ),
                 ),
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -765,7 +763,6 @@ class WidgetsUtil {
     );
   }
 
-
   // Ayuda
   static Widget bloqueAyuda({
     IconData? icono,
@@ -817,19 +814,27 @@ class WidgetsUtil {
   }
 
   // Apartado de Copyright y Aviso Legal
-  static Widget pieDePagina() {
+  static Widget pieDePagina(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final horizontalMargin = screenWidth * 0.05;
+    final iconSize = screenWidth * 0.050;
+    final fontSize = screenWidth * 0.04;
+    final spacing = screenHeight * 0.01;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      padding: EdgeInsets.symmetric(vertical: spacing),
       child: Column(
         children: [
-          const Divider(
-            indent: 20,
-            endIndent: 20,
+          Divider(
+            indent: horizontalMargin,
+            endIndent: horizontalMargin,
             thickness: 1,
             color: AppColors.drawerCabecera,
           ),
 
-          const SizedBox(height: 10),
+          SizedBox(height: spacing),
 
           // Botones legales
           Column(
@@ -840,12 +845,14 @@ class WidgetsUtil {
                     'https://www.grupotalia.org/privacidad/',
                   );
                 },
-                icon: const Icon(Icons.privacy_tip),
-                label: const Text('Política de Privacidad'),
+                icon: Icon(Icons.privacy_tip, size: iconSize),
+                label: Text(
+                  'Política de Privacidad',
+                  style: TextStyle(fontSize: fontSize),
+                ),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                   backgroundColor: AppColors.texto,
-                  // Fondo del botón
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -858,10 +865,13 @@ class WidgetsUtil {
                     'https://www.grupotalia.org/avisolegal/',
                   );
                 },
-                icon: const Icon(Icons.gavel),
-                label: const Text('Aviso Legal'),
+                icon: Icon(Icons.gavel, size: iconSize),
+                label: Text(
+                  'Aviso Legal',
+                  style: TextStyle(fontSize: fontSize),
+                ),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                   backgroundColor: AppColors.texto,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -872,7 +882,7 @@ class WidgetsUtil {
             ],
           ),
 
-          const SizedBox(height: 20),
+          SizedBox(height: screenHeight * 0.02),
 
           // Derechos
           Column(
@@ -880,13 +890,19 @@ class WidgetsUtil {
               Text(
                 '© ${DateTime.now().year} Grupo Talía',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+                style: TextStyle(
+                  fontSize: fontSize * 0.9,
+                  color: Colors.grey[700],
+                ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: spacing),
               Text(
                 'Todos los derechos reservados',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+                style: TextStyle(
+                  fontSize: fontSize * 0.9,
+                  color: Colors.grey[700],
+                ),
               ),
             ],
           ),
@@ -919,7 +935,7 @@ class OpenLink {
     IconData? icono,
     String? path,
     required String url,
-    double size = 24.0,
+    double size = 24,
   }) {
     if (path != null) {
       return GestureDetector(
