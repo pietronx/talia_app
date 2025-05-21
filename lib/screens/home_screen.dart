@@ -29,11 +29,10 @@ class HomeScreen extends StatelessWidget {
         slivers: [
           BannerPersonalizado(
             titulo: 'Grupo Talía',
-            fontSize: 20,
+            fontSize: screenWidth * 0.06,
             assetImage: 'assets/images/bannerPrincipal.jpg',
           ),
 
-          // QUITA el SliverToBoxAdapter aquí
           SliverPadding(
             padding: EdgeInsets.symmetric(
               horizontal: horizontalPadding,

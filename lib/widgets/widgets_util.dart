@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../customColors/app_colors.dart';
 import '../helpers/link_helper.dart';
@@ -17,52 +18,70 @@ class WidgetsUtil {
     double? height,
     String? text,
     String? path,
-    double fontSize = 16,
+    double? fontSize,
     FontWeight fontWeight = FontWeight.normal,
     double? textHeight, // Interlineado
     Color? fondoColor,
     Color? textoColor,
     BoxFit? fit,
-  }) {
-    if (path != null) {
-      return Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: fondoColor ?? Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
-        ),
-      );
-    }
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        color: fondoColor ?? AppColors.fondo,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow:
-            fondoColor == null
-                ? []
-                : [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(100),
-                    blurRadius: 10,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-      ),
-      child: Text(
-        text ?? '',
-        style: TextStyle(
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          color: textoColor ?? AppColors.texto,
-          height: textHeight,
-        ),
-        textAlign: TextAlign.center,
-      ),
+  })
+  {
+    return Builder(
+      builder: (context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
+
+        final resolvedWidth = width ?? screenWidth * 0.8;
+        final resolvedHeight = height ?? screenHeight * 0.1;
+        final resolvedFontSize = fontSize ?? screenWidth * 0.045;
+
+        if (path != null) {
+          return Container(
+            width: resolvedWidth,
+            height: resolvedHeight,
+            decoration: BoxDecoration(
+              color: fondoColor ?? Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: AssetImage(path),
+                fit: fit ?? BoxFit.cover,
+              ),
+            ),
+          );
+        }
+
+        return Container(
+          padding: EdgeInsets.all(screenWidth * 0.025),
+          margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+          decoration: BoxDecoration(
+            color: fondoColor ?? AppColors.fondo,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow:
+                fondoColor == null
+                    ? []
+                    : [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(100),
+                        blurRadius: 10,
+                        spreadRadius: 2,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+          ),
+          child: Text(
+            text ?? '',
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: resolvedFontSize,
+              fontWeight: fontWeight,
+              color: textoColor ?? AppColors.texto,
+              height: textHeight,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
     );
   }
 
@@ -78,7 +97,6 @@ class WidgetsUtil {
         onError: (error, _) => completer.completeError(error),
       ),
     );
-
     return completer.future;
   }
 
@@ -90,12 +108,15 @@ class WidgetsUtil {
     required String descripcion,
     String? subtitulo,
     String? programaUrl,
-  }) {
-    // Obtener la URL de la vista previa
-    final previewLink = LinkHelper.vistaPreviaDrive(imagenUrl);
+  })
+  {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final cardSize = screenWidth * 0.8;
+    final titleFontSize = screenWidth * 0.045;
+    final subtitleFontSize = screenWidth * 0.04;
 
-    // Obtener el ancho de la pantalla
-    double screenWidth = MediaQuery.of(context).size.width;
+    final previewLink = LinkHelper.vistaPreviaDrive(imagenUrl);
 
     return GestureDetector(
       onTap: () {
@@ -110,25 +131,28 @@ class WidgetsUtil {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Cargar los elementos
           FutureBuilder<Image>(
             future: _cargarImagen(previewLink),
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
-                return Container(
-                  width: screenWidth * 0.8,
-                  height: screenWidth * 0.8,
-                  alignment: Alignment.center,
+                return SizedBox(
+                  width: cardSize,
+                  height: cardSize,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const CircularProgressIndicator(),
-                      const SizedBox(height: 10),
+                      Lottie.asset(
+                        'assets/animations/loading_card.json',
+                        width: screenWidth * 0.2,
+                        height: screenHeight * 0.2,
+                        repeat: true,
+                      ),
+                      SizedBox(height: screenHeight * 0.01),
                       Text(
                         'Cargando evento...',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: subtitleFontSize,
                           color: Colors.grey,
                         ),
                       ),
@@ -139,8 +163,8 @@ class WidgetsUtil {
 
               if (snapshot.hasError || snapshot.data == null) {
                 return Container(
-                  width: screenWidth * 0.8,
-                  height: screenWidth * 0.8,
+                  width: cardSize,
+                  height: cardSize,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
@@ -161,7 +185,6 @@ class WidgetsUtil {
                 );
               }
 
-              // Imagen + Título + Subtítulo
               return Column(
                 children: [
                   Container(
@@ -178,33 +201,39 @@ class WidgetsUtil {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: SizedBox(
-                        width: screenWidth * 0.8,
-                        height: screenWidth * 0.8,
+                        width: cardSize,
+                        height: cardSize,
                         child: snapshot.data!,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.025),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.03,
+                    ),
                     child: Column(
                       children: [
                         Text(
                           titulo,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: titleFontSize,
                           ),
                           textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         if (subtitulo != null && subtitulo.trim().isNotEmpty)
                           Text(
                             subtitulo,
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: subtitleFontSize,
                               color: Colors.grey,
                             ),
                             textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                       ],
                     ),
@@ -225,9 +254,16 @@ class WidgetsUtil {
     required String titulo,
     required String imagenUrl,
     String? programaurl,
-
     VoidCallback? onClose,
-  }) {
+  })
+  {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final titleFontSize = screenWidth * 0.06;
+    final bodyFontSize = screenWidth * 0.04;
+    final paddingHorizontal = screenWidth * 0.06;
+    final spacing = screenHeight * 0.02;
+
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.fondo,
@@ -240,15 +276,13 @@ class WidgetsUtil {
       builder: (context) {
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
+            padding: EdgeInsets.only(bottom: spacing),
             child: SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.75,
-                ),
+                constraints: BoxConstraints(maxHeight: screenHeight * 0.75),
                 child: ListView(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.only(bottom: 30),
+                  padding: EdgeInsets.only(bottom: spacing * 1.5),
                   children: [
                     // Imagen
                     ClipRRect(
@@ -273,39 +307,46 @@ class WidgetsUtil {
                       ),
                     ),
 
-                    const SizedBox(height: 25),
+                    SizedBox(height: spacing * 1.5),
 
-                    // Titulo
+                    // Título
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: paddingHorizontal,
+                      ),
                       child: Text(
                         titulo,
-                        style: const TextStyle(
-                          fontSize: 22,
+                        style: TextStyle(
+                          fontSize: titleFontSize,
                           fontWeight: FontWeight.bold,
                         ),
+                        textAlign: TextAlign.left,
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    SizedBox(height: spacing * 1),
 
                     // Descripción
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: paddingHorizontal,
+                      ),
                       child: Text(
                         descripcion,
-                        style: TextStyle(fontSize: 16, color: Colors.grey[900]),
+                        style: TextStyle(
+                          fontSize: bodyFontSize,
+                          color: Colors.grey[900],
+                        ),
                         textAlign: TextAlign.justify,
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    SizedBox(height: spacing * 1.2),
 
                     // Botones
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Botón de programa de mano
                         if (programaurl != null && programaurl.isNotEmpty)
                           ElevatedButton.icon(
                             onPressed: () {
@@ -322,12 +363,14 @@ class WidgetsUtil {
                               ),
                             ),
                             icon: const Icon(Icons.picture_as_pdf, size: 18),
-                            label: const Text('Programa de Mano'),
+                            label: Text(
+                              'Programa de Mano',
+                              style: TextStyle(fontSize: bodyFontSize),
+                            ),
                           ),
 
-                        const SizedBox(width: 12),
+                        SizedBox(height: spacing),
 
-                        // Botón de cerrar
                         ElevatedButton(
                           onPressed: () {
                             Navigator.of(context).pop();
@@ -340,7 +383,10 @@ class WidgetsUtil {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text('Cerrar'),
+                          child: Text(
+                            'Cerrar',
+                            style: TextStyle(fontSize: bodyFontSize),
+                          ),
                         ),
                       ],
                     ),
@@ -359,66 +405,80 @@ class WidgetsUtil {
     required BuildContext context,
     required int index,
     required ProximoEvento evento,
-  }) {
+  })
+  {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final cardSize = screenWidth * 0.8;
+    final titleFontSize = screenWidth * 0.050;
+    final subtitleFontSize = screenWidth * 0.05;
+    final spacing = screenHeight * 0.025;
+
     final previewLink = LinkHelper.vistaPreviaDrive(evento.portadaUrl);
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    return GestureDetector(
-      onTap: () {
-        WidgetsUtil.mostrarDetallesProximoEvento(
-          context: context,
-          evento: evento,
-        );
-      },
-
-      child: FutureBuilder<Image>(
-        future: _cargarImagen(previewLink),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Container(
-              width: screenWidth * 0.8,
-              height: screenWidth * 0.8,
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Cargando evento ${index + 1}...',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+    return FutureBuilder<Image>(
+      future: _cargarImagen(previewLink),
+      builder: (context, snapshot) {
+        // CARGANDO
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Container(
+            width: cardSize,
+            height: cardSize,
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  'assets/animations/loading_card.json',
+                  width: screenWidth * 0.2,
+                  height: screenHeight * 0.2,
+                  repeat: true,
+                ),
+                SizedBox(height: screenHeight * 0.01),
+                Text(
+                  'Cargando evento...',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: subtitleFontSize,
+                    color: Colors.grey,
                   ),
-                ],
-              ),
-            );
-          }
+                ),
+              ],
+            ),
+          );
+        }
 
-          if (snapshot.hasError || snapshot.data == null) {
-            return Container(
-              width: screenWidth * 0.8,
-              height: screenWidth * 0.8,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(80),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.image_not_supported,
-                size: 60,
-                color: Colors.grey,
-              ),
-            );
-          }
-
+        // SIN INTERNET
+        if (snapshot.hasError || snapshot.data == null) {
           return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.wifi_off,
+                  size: 50,
+                  color: Colors.grey,
+                ),
+                SizedBox(height: spacing),
+                Text(
+                  "Sin conexión",
+                  style: TextStyle(
+                    fontSize: subtitleFontSize,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+          );
+        }
+
+        // IMAGEN Y TEXTO
+        return GestureDetector(
+          onTap: () {
+            WidgetsUtil.mostrarDetallesProximoEvento(
+              context: context,
+              evento: evento,
+            );
+          },
+          child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -434,41 +494,45 @@ class WidgetsUtil {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: SizedBox(
-                    width: screenWidth * 0.8,
-                    height: screenWidth * 0.8,
+                    width: cardSize,
+                    height: cardSize,
                     child: snapshot.data!,
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: spacing),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                 child: Column(
                   children: [
                     Text(
                       evento.titulo,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: titleFontSize,
                       ),
                       textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     if (evento.subtitulo.trim().isNotEmpty)
                       Text(
                         evento.subtitulo,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: subtitleFontSize,
                           color: Colors.grey,
                         ),
                         textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                   ],
                 ),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -476,8 +540,16 @@ class WidgetsUtil {
   static void mostrarDetallesProximoEvento({
     required BuildContext context,
     required ProximoEvento evento,
-  }) {
+  })
+  {
     final previewLink = LinkHelper.vistaPreviaDrive(evento.portadaUrl);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final titleFontSize = screenWidth * 0.055;
+    final subtitleFontSize = screenWidth * 0.04;
+    final descriptionFontSize = screenWidth * 0.04;
+    final spacing = screenHeight * 0.02;
+    final horizontalPadding = screenWidth * 0.06;
 
     showModalBottomSheet(
       context: context,
@@ -491,15 +563,13 @@ class WidgetsUtil {
       builder: (context) {
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
+            padding: EdgeInsets.only(bottom: spacing),
             child: SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.8,
-                ),
+                constraints: BoxConstraints(maxHeight: screenHeight * 0.8),
                 child: ListView(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.only(bottom: 30),
+                  padding: EdgeInsets.only(bottom: spacing * 1.5),
                   children: [
                     // Imagen
                     ClipRRect(
@@ -524,60 +594,73 @@ class WidgetsUtil {
                       ),
                     ),
 
-                    const SizedBox(height: 25),
+                    SizedBox(height: spacing * 1.25),
 
                     // Título
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                      ),
                       child: Text(
                         evento.titulo,
-                        style: const TextStyle(
-                          fontSize: 22,
+                        style: TextStyle(
+                          fontSize: titleFontSize,
                           fontWeight: FontWeight.bold,
                         ),
+                        textAlign: TextAlign.left,
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    SizedBox(height: spacing * 0.75),
 
                     // Fecha y lugar
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                      ),
                       child: Text(
                         '${evento.fecha} — ${evento.lugar}',
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: subtitleFontSize,
                           color: Colors.grey,
                         ),
+                        textAlign: TextAlign.left,
                       ),
                     ),
 
-                    const SizedBox(height: 15),
+                    SizedBox(height: spacing),
 
                     // Descripción
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                      ),
                       child: Text(
                         evento.descripcion,
-                        style: TextStyle(fontSize: 16, color: Colors.grey[900]),
+                        style: TextStyle(
+                          fontSize: descriptionFontSize,
+                          color: Colors.grey[900],
+                        ),
                         textAlign: TextAlign.justify,
                       ),
                     ),
 
-                    const SizedBox(height: 25),
+                    SizedBox(height: spacing * 1.25),
 
                     // Botones
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Entradas
                         if (evento.linkEntradas != null)
                           ElevatedButton.icon(
                             onPressed:
                                 () =>
                                     OpenLink.abrirEnlace(evento.linkEntradas!),
                             icon: const Icon(Icons.shopping_cart),
-                            label: const Text('Comprar Entradas'),
+                            label: Text(
+                              'Comprar Entradas',
+                              style: TextStyle(fontSize: subtitleFontSize),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepPurple,
                               foregroundColor: Colors.white,
@@ -587,13 +670,15 @@ class WidgetsUtil {
                             ),
                           ),
 
-                        // Mas info
                         if (evento.linkMasInfo != null)
                           ElevatedButton.icon(
                             onPressed:
                                 () => OpenLink.abrirEnlace(evento.linkMasInfo!),
                             icon: const Icon(Icons.info_outline),
-                            label: const Text('Más Información'),
+                            label: Text(
+                              'Más Información',
+                              style: TextStyle(fontSize: subtitleFontSize),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueGrey[800],
                               foregroundColor: Colors.white,
@@ -612,7 +697,10 @@ class WidgetsUtil {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text('Cerrar'),
+                          child: Text(
+                            'Cerrar',
+                            style: TextStyle(fontSize: subtitleFontSize),
+                          ),
                         ),
                       ],
                     ),
@@ -632,36 +720,85 @@ class WidgetsUtil {
     required int index,
     required Noticia noticia,
   }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final cardWidth = screenWidth * 0.9;
+    final cardHeight = screenWidth * 0.5;
+    final titleFontSize = screenWidth * 0.05;
+    final descriptionFontSize = screenWidth * 0.04;
+    final leerMasFontSize = screenWidth * 0.05;
+    final dateFontSize = screenWidth * 0.04;
+    final spacing = screenHeight * 0.02;
+
     final previewLink = LinkHelper.vistaPreviaDrive(noticia.portadaUrl);
-    double screenWidth = MediaQuery.of(context).size.width;
 
     return FutureBuilder<Image>(
       future: _cargarImagen(previewLink),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Container(
-            width: screenWidth * 0.9,
-            height: screenWidth * 0.5,
+            width: cardWidth,
+            height: cardHeight,
             alignment: Alignment.center,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                CircularProgressIndicator(),
-                SizedBox(height: 10),
+              children: [
+                Lottie.asset(
+                  'assets/animations/loading_card.json',
+                  width: screenWidth * 0.2,
+                  height: screenHeight * 0.2,
+                  repeat: true,
+                ),
+                SizedBox(height: screenHeight * 0.01),
                 Text(
-                  'Cargando noticia...',
+                  'Cargando evento...',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: descriptionFontSize,
+                    color: Colors.grey,
+                  ),
                 ),
               ],
             ),
           );
         }
 
+        /*
+        // CARGANDO
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Container(
+            width: cardSize,
+            height: cardSize,
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  'assets/animations/loading_card.json',
+                  width: screenWidth * 0.2,
+                  height: screenHeight * 0.2,
+                  repeat: true,
+                ),
+                SizedBox(height: screenHeight * 0.01),
+                Text(
+                  'Cargando evento...',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: subtitleFontSize,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        */
+
         if (snapshot.hasError || snapshot.data == null) {
           return Container(
-            width: screenWidth * 0.9,
-            height: screenWidth * 0.5,
+            width: cardWidth,
+            height: cardHeight,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: Colors.grey[300],
@@ -684,7 +821,7 @@ class WidgetsUtil {
 
         return Card(
           elevation: 10,
-          margin: const EdgeInsets.only(bottom: 30),
+          margin: EdgeInsets.only(bottom: spacing * 2),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           color: Colors.white,
           child: InkWell(
@@ -699,55 +836,52 @@ class WidgetsUtil {
               children: [
                 ClipRRect(
                   child: SizedBox(
-                    width: screenWidth * 0.9,
-                    height: screenWidth * 0.6,
+                    width: cardWidth,
+                    height: cardHeight,
                     child: snapshot.data!,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.05,
+                    vertical: screenHeight * 0.02,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (noticia.fecha.trim().isNotEmpty)
-                        // Fecha
                         Text(
                           noticia.fecha.toUpperCase(),
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: Color(0xFFECBC00),
+                          style: TextStyle(
+                            fontSize: dateFontSize,
+                            color: const Color(0xFFECBC00),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      const SizedBox(height: 5),
-                      // Titulo
+                      SizedBox(height: spacing * 0.4),
                       Text(
                         noticia.titulo,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: titleFontSize,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      // Descripcion
+                      SizedBox(height: spacing),
                       Text(
                         noticia.descripcion.length > 300
                             ? '${noticia.descripcion.substring(0, 300)}...'
                             : noticia.descripcion,
-                        style: const TextStyle(
-                          fontSize: 14,
+                        style: TextStyle(
+                          fontSize: descriptionFontSize,
                           color: Colors.black87,
                         ),
                         textAlign: TextAlign.justify,
                       ),
-                      const SizedBox(height: 10),
-                      const Text(
+                      SizedBox(height: spacing),
+                      Text(
                         'Leer más',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: leerMasFontSize,
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
                         ),
@@ -770,46 +904,75 @@ class WidgetsUtil {
     required String descripcion,
     List<String>? puntos,
   }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 8),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Builder(
+      builder: (context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
+
+        final iconSize = screenWidth * 0.07;
+        final titleFontSize = screenWidth * 0.05;
+        final bodyFontSize = screenWidth * 0.045;
+        final spacing = screenHeight * 0.015;
+
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: spacing),
+          padding: EdgeInsets.all(screenWidth * 0.04),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 8),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (icono != null) Icon(icono, size: 28, color: AppColors.appbar),
-              SizedBox(width: icono != null ? 10 : 0),
+              Row(
+                children: [
+                  if (icono != null)
+                    Icon(icono, size: iconSize, color: AppColors.appbar),
+                  SizedBox(width: icono != null ? screenWidth * 0.025 : 0),
+                  Expanded(
+                    child: Text(
+                      titulo,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: titleFontSize,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: spacing),
               Text(
-                titulo,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                descripcion,
+                style: TextStyle(fontSize: bodyFontSize),
+                textAlign: TextAlign.start,
+              ),
+              SizedBox(height: spacing * 0.8),
+              ...(puntos ?? []).map(
+                (p) => Padding(
+                  padding: EdgeInsets.only(bottom: spacing * 0.5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('• ', style: TextStyle(fontSize: bodyFontSize)),
+                      Expanded(
+                        child: Text(
+                          p,
+                          style: TextStyle(fontSize: bodyFontSize),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          Text(descripcion, style: const TextStyle(fontSize: 16)),
-          const SizedBox(height: 8),
-          ...(puntos ?? []).map(
-            (p) => Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('• ', style: TextStyle(fontSize: 16)),
-                Expanded(child: Text(p, style: const TextStyle(fontSize: 16))),
-              ],
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -819,12 +982,12 @@ class WidgetsUtil {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final horizontalMargin = screenWidth * 0.05;
-    final iconSize = screenWidth * 0.050;
+    final iconSize = screenWidth * 0.05;
     final fontSize = screenWidth * 0.04;
-    final spacing = screenHeight * 0.01;
+    final spacing = screenHeight * 0.015;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: spacing),
+      padding: EdgeInsets.symmetric(vertical: spacing * 1.5),
       child: Column(
         children: [
           Divider(
@@ -859,6 +1022,7 @@ class WidgetsUtil {
                   ),
                 ),
               ),
+              SizedBox(height: spacing),
               ElevatedButton.icon(
                 onPressed: () {
                   OpenLink.abrirEnlace(
@@ -882,7 +1046,7 @@ class WidgetsUtil {
             ],
           ),
 
-          SizedBox(height: screenHeight * 0.02),
+          SizedBox(height: spacing * 1.5),
 
           // Derechos
           Column(
@@ -894,6 +1058,8 @@ class WidgetsUtil {
                   fontSize: fontSize * 0.9,
                   color: Colors.grey[700],
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: spacing),
               Text(
@@ -903,6 +1069,8 @@ class WidgetsUtil {
                   fontSize: fontSize * 0.9,
                   color: Colors.grey[700],
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

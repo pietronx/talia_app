@@ -26,7 +26,7 @@ class Contact extends StatelessWidget {
         slivers: [
           BannerPersonalizado(
             titulo: 'Contacto',
-            fontSize: 20,
+            fontSize: screenWidth * 0.05,
             assetImage: 'assets/images/bannerContacto.jpg',
             acciones: [
               IconButton(

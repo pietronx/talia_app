@@ -1,7 +1,6 @@
-import 'dart:convert';
 
+import 'dart:convert';
 import 'package:csv/csv.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:talia_app/models/next_events_model.dart';
@@ -9,6 +8,7 @@ import 'package:talia_app/models/next_events_model.dart';
 import '../customColors/app_colors.dart';
 import '../helpScreens/help_next_events.dart';
 import '../widgets/banner.dart';
+import '../widgets/loading_animation.dart';
 import '../widgets/widgets_util.dart';
 
 class NextEvents extends StatefulWidget {
@@ -20,75 +20,36 @@ class NextEvents extends StatefulWidget {
 
 class _NextEventsState extends State<NextEvents> {
   final String csvUrl =
-      'https://docs.google.com/spreadsheets/d/e/2PACX-1vStDcPA-zY1JFnVRKGE8GaUcIDSPHAYcu8NZrmfDBsMJCOS452wNU5MSeIckU__xctVpYC0eUPO_Vwz/pub?output=csv';
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2YQtyNcsOlsksWWq4bdIuzXZ_7iS7TyiPDOL_1a_miRgKc2gIJM1nopedVdjE9cmc4T5H5SY4C63D/pub?output=csv';
   late Future<List<ProximoEvento>> _futureEventos;
 
+  // Función para cargar los eventos desde el CSV
   Future<List<ProximoEvento>> cargarEventosProximos() async {
     final response = await http.get(Uri.parse(csvUrl));
-
-    if (response.statusCode != 200) {
-      if (kDebugMode) {
-        print('❌ Error al cargar el CSV. Código: ${response.statusCode}');
-      }
-      throw Exception('Error al cargar el CSV');
-    }
-
     final contenido = utf8.decode(response.bodyBytes);
     final columnas = const CsvToListConverter().convert(contenido, eol: '\n');
 
     List<ProximoEvento> eventos = [];
 
-    if (kDebugMode) {
-      print('📄 Total de columnas: ${columnas.length}');
-    }
     for (int i = 1; i < columnas.length; i++) {
       final columna = columnas[i];
-      if (kDebugMode) {
-        print('➡️ Columna $i: $columna');
-      }
-
-      if (columna.length < 9) {
-        if (kDebugMode) {
-          print('⚠️ columna $i ignorada (faltan filas)');
-        }
-        continue;
-      }
-
+      if (columna.length < 9) continue;
       final activo = columna[8].toString().trim().toLowerCase().startsWith('s');
-      if (kDebugMode) {
-        print('🟡 Activo: $activo');
-      }
+      if (!activo) continue;
 
-      if (!activo) {
-        if (kDebugMode) {
-          print('🚫 Columna $i no está activa');
-        }
-        continue;
-      }
-
-      final evento = ProximoEvento(
+      eventos.add(ProximoEvento(
         titulo: columna[0].toString(),
         subtitulo: columna[1].toString(),
         descripcion: columna[2].toString(),
         fecha: columna[3].toString(),
         lugar: columna[4].toString(),
         portadaUrl: columna[5].toString(),
-        linkEntradas:
-            columna[6].toString().isEmpty ? null : columna[6].toString(),
-        linkMasInfo:
-            columna[7].toString().isEmpty ? null : columna[7].toString(),
+        linkEntradas: columna[6].toString().isEmpty ? null : columna[6].toString(),
+        linkMasInfo: columna[7].toString().isEmpty ? null : columna[7].toString(),
         activo: true,
-      );
-
-      if (kDebugMode) {
-        print('✅ Evento cargado: ${evento.titulo}');
-      }
-      eventos.add(evento);
+      ));
     }
 
-    if (kDebugMode) {
-      print('🎯 Eventos activos totales: ${eventos.length}');
-    }
     return eventos;
   }
 
@@ -100,30 +61,71 @@ class _NextEventsState extends State<NextEvents> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final horizontalPadding = screenWidth * 0.08;
+    final verticalPadding = screenHeight * 0.02;
+    final fontSize = screenWidth * 0.05;
+
     return Scaffold(
       body: FutureBuilder<List<ProximoEvento>>(
         future: _futureEventos,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator());
+
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const LoadingAnimation(mensaje: "Cargando próximos eventos...");
+          }
+
+          // ERROR AL CARGAR
+          if (snapshot.hasError || snapshot.data == null) {
+            final iconSize = screenWidth * 0.2;
+            final padding = screenWidth * 0.1;
+
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.all(padding),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error_outline, size: iconSize, color: Colors.redAccent),
+                    SizedBox(height: screenHeight * 0.02),
+                    Text(
+                      "No se pudo cargar los eventos.\nRevisa tu conexión a Internet.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: fontSize),
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _futureEventos = cargarEventosProximos();
+                        });
+                      },
+                      child: Text("Reintentar", style: TextStyle(fontSize: fontSize * 0.9)),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
 
           final eventos = snapshot.data!;
           final activos = eventos.where((e) => e.activo).toList();
 
+          // SIN EVENTOS
           if (activos.isEmpty) {
-            return const Center(
+            return Center(
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(horizontalPadding),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.event_busy, size: 80, color: Colors.grey),
-                    SizedBox(height: 20),
+                    Icon(Icons.event_busy, size: screenWidth * 0.2, color: Colors.grey),
+                    SizedBox(height: screenHeight * 0.02),
                     Text(
                       "No hay próximos eventos disponibles.",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: fontSize),
                     ),
                   ],
                 ),
@@ -135,7 +137,7 @@ class _NextEventsState extends State<NextEvents> {
             slivers: [
               BannerPersonalizado(
                 titulo: 'Próximos Eventos',
-                fontSize: 20,
+                fontSize: screenWidth * 0.05,
                 assetImage: 'assets/images/bannerProximosEventos.jpg',
                 acciones: [
                   IconButton(
@@ -153,21 +155,20 @@ class _NextEventsState extends State<NextEvents> {
                 ],
               ),
               SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 30,
+                padding: EdgeInsets.symmetric(
+                  vertical: verticalPadding,
+                  horizontal: horizontalPadding,
                 ),
                 sliver: SliverToBoxAdapter(
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 0.7,
-                        ),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 1,
+                      childAspectRatio: 0.7,
+                    ),
                     itemCount: activos.length,
                     itemBuilder: (context, index) {
                       final evento = activos[index];

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 // Paquetes externos
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:talia_app/helpScreens/help_offline.dart';
 
 // Clases
 import 'package:talia_app/screens/about_us.dart';
@@ -13,6 +14,7 @@ import 'package:talia_app/screens/events.dart';
 import 'package:talia_app/screens/news.dart';
 import 'package:talia_app/screens/next_events.dart';
 import 'package:talia_app/screens/previous_events.dart';
+import 'package:talia_app/screens/splash_screen.dart';
 
 // Archivos internos del proyecto
 import 'customColors/app_colors.dart';
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(titulo: 'Inicio'),
+      home: const SplashScreen(),
       routes: {
         '/screens/home_screen': (context) => const HomeScreen(titulo: 'Inicio'),
         '/about_us': (context) => const AboutUs(),
@@ -75,6 +77,8 @@ class MyApp extends StatelessWidget {
         '/screens/previousEvents': (context) => const PreviousEvents(),
         '/screens/news': (context) => const News(),
         '/helpScreens/help_screen': (context) => const HelpScreen(),
+        '/helpScreens/help_offline': (context) => const HelpOffline(),
+        '/splash_screen': (context) => const SplashScreen(),
       },
     );
   }

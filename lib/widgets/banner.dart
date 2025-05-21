@@ -16,15 +16,20 @@ class BannerPersonalizado extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return SliverAppBar(
-      expandedHeight: 250,
+      expandedHeight: screenHeight * 0.3, // Adaptativo
       pinned: true,
       actions: acciones,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           titulo,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            fontSize: fontSize ?? 20, // valor por defecto si no se especifica
+            fontSize: fontSize ?? screenWidth * 0.05,
             color: Colors.white,
             fontWeight: FontWeight.bold,
             shadows: const [

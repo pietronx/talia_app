@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../customColors/app_colors.dart';
-import '../screens/home_screen.dart';
 import 'icon_credits.dart';
 
 class CreditsScreen extends StatelessWidget {
@@ -9,10 +7,16 @@ class CreditsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final padding = screenWidth * 0.07;
+    final titleFontSize = screenWidth * 0.07;
+    final bodyFontSize = screenWidth * 0.04;
+    final spacing = screenHeight * 0.02;
+
     final secciones = [
-      {'titulo': 'Inicio', 'pantalla': const HomeScreen(titulo: 'Inicio',)},
       {'titulo': 'Iconos', 'pantalla': const IconCredits()},
-      {'titulo': 'Koobin', 'pantalla': const CreditsScreen()},
     ];
 
     return Scaffold(
@@ -20,26 +24,29 @@ class CreditsScreen extends StatelessWidget {
         title: const Text('Créditos'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(padding),
         child: ListView(
           children: [
-            const Text(
+            Text(
               'Información',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            const SizedBox(height: 10),
-            const Text(
+            SizedBox(height: spacing * 0.6),
+            Text(
               'Encontrarás enlaces y autores acreditados para cada uno de los recursos utilizados en la aplicación.',
-              style: TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: bodyFontSize),
+              textAlign: TextAlign.justify,
             ),
-            const SizedBox(height: 30),
-
+            SizedBox(height: spacing * 1),
             // Lista de secciones
             ...secciones.map((seccion) {
               return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                margin: EdgeInsets.symmetric(vertical: spacing * 0.6, horizontal: spacing * 0.3),
                 color: AppColors.fondo,
-                elevation: 3,
+                elevation: 5,
                 shadowColor: AppColors.titulo,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -47,7 +54,12 @@ class CreditsScreen extends StatelessWidget {
                 child: ListTile(
                   title: Text(
                     seccion['titulo'] as String,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: bodyFontSize,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () {
