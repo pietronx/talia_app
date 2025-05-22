@@ -15,6 +15,17 @@ class HelpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final maxContentWidth = 600.0;
+
+    final horizontalPadding = screenWidth * 0.07;
+    final verticalPadding = screenHeight * 0.05;
+    final titleFontSize = screenWidth * 0.06;
+    final bodyFontSize = screenWidth * 0.045;
+    final sectionSpacing = screenHeight * 0.03;
+    final iconSize = screenWidth * 0.06;
+
     final secciones = [
       {'titulo': 'Inicio', 'pantalla': const HomeScreen(titulo: 'Inicio')},
       {'titulo': 'Sobre Nosotros', 'pantalla': const HelpAboutUs()},
@@ -28,50 +39,96 @@ class HelpScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Ayuda')),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          children: [
-            const Text(
-              'Guía de Ayuda',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxContentWidth),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: verticalPadding,
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Selecciona una sección para recibir ayuda sobre cómo usar esa parte de la aplicación.\n\n'
-              'Encontrarás exlicaciones sencillas y enlaces útiles para navegar sin dificultad.',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 30),
-
-            // Lista de secciones
-            ...secciones.map((seccion) {
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                color: AppColors.fondo,
-                elevation: 3,
-                shadowColor: AppColors.titulo,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ListTile(
-                  title: Text(
-                    seccion['titulo'] as String,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+            child: ListView(
+              children: [
+                Text(
+                  'Guía de Ayuda',
+                  style: TextStyle(
+                    fontSize: titleFontSize,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.texto,
                   ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => seccion['pantalla'] as Widget,
-                      ),
-                    );
-                  },
                 ),
-              );
-            }),
-          ],
+                SizedBox(height: sectionSpacing * 0.6),
+
+                RichText(
+                  textAlign: TextAlign.justify,
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontSize: bodyFontSize,
+                      color: AppColors.texto,
+                    ),
+                    children: [
+                      const TextSpan(
+                        text: 'Selecciona una sección para recibir ayuda sobre cómo usar esa parte de la aplicación.\n\n'
+                            'Encontrarás explicaciones sencillas y enlaces útiles para navegar sin dificultad.\n\n'
+                            'En la ',
+                      ),
+                      TextSpan(
+                        text: 'pantalla de inicio',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const TextSpan(
+                        text: ', encontrarás cinco iconos que te ayudarán a navegar por la aplicación.\n\n'
+                            'El primer icono, ',
+                      ),
+                      TextSpan(
+                        text: '"Refrescar"',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const TextSpan(
+                        text: ' , sirve para actualizar el contenido de la app como eventos, noticias, etc.',
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: sectionSpacing),
+
+                ...secciones.map((seccion) {
+                  return Card(
+                    margin: EdgeInsets.symmetric(
+                      vertical: sectionSpacing * 0.3,
+                      horizontal: sectionSpacing * 0.3,
+                    ),
+                    color: AppColors.fondo,
+                    elevation: 3,
+                    shadowColor: AppColors.titulo,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        seccion['titulo'] as String,
+                        style: TextStyle(
+                          fontSize: bodyFontSize,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.texto,
+                        ),
+                      ),
+                      trailing: Icon(Icons.arrow_forward_ios, size: iconSize),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => seccion['pantalla'] as Widget,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
         ),
       ),
     );

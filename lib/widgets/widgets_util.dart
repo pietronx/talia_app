@@ -737,63 +737,33 @@ class WidgetsUtil {
       future: _cargarImagen(previewLink),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return Container(
+          return SizedBox(
             width: cardWidth,
-            height: cardHeight,
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.asset(
-                  'assets/animations/loading_card.json',
-                  width: screenWidth * 0.2,
-                  height: screenHeight * 0.2,
-                  repeat: true,
-                ),
-                SizedBox(height: screenHeight * 0.01),
-                Text(
-                  'Cargando evento...',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: descriptionFontSize,
-                    color: Colors.grey,
+            height: cardHeight + screenHeight * 0.35, // espacio reservado
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/loading_card.json',
+                    width: screenWidth * 0.2,
+                    height: screenHeight * 0.2,
+                    repeat: true,
                   ),
-                ),
-              ],
+                  SizedBox(height: screenHeight * 0.01),
+                  Text(
+                    'Cargando noticia...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: descriptionFontSize,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }
-
-        /*
-        // CARGANDO
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Container(
-            width: cardSize,
-            height: cardSize,
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.asset(
-                  'assets/animations/loading_card.json',
-                  width: screenWidth * 0.2,
-                  height: screenHeight * 0.2,
-                  repeat: true,
-                ),
-                SizedBox(height: screenHeight * 0.01),
-                Text(
-                  'Cargando evento...',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: subtitleFontSize,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-        */
 
         if (snapshot.hasError || snapshot.data == null) {
           return Container(

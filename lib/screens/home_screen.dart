@@ -17,12 +17,12 @@ class HomeScreen extends StatelessWidget {
     final verticalPadding = screenHeight * 0.05;
 
     final items = [
+      ['Refrescar', 'assets/icons/refreshIcon.png', 'REFRESCAR'],
       ['Sobre Nosotros', 'assets/icons/infoIcon.png', '/about_us'],
       ['Contacto', 'assets/icons/contactIcon.png', '/contact'],
       ['Eventos', 'assets/icons/eventsIcon.png', '/screens/events'],
       ['Noticias', 'assets/icons/newsIcon.png', '/screens/news'],
       ['Ayuda', 'assets/icons/supportIcon.png', '/helpScreens/help_screen'],
-      ['Refrescar','assets/icons/recargar.png','']
     ];
 
     return Scaffold(
@@ -63,14 +63,32 @@ class HomeScreen extends StatelessWidget {
     String iconPath,
     String route,
   ) {
-
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Column(
       children: [
         WidgetsUtil.gridMenu(
           imagePath: iconPath,
-          onTap: () => Navigator.pushNamed(context, route),
+          onTap: () {
+            if (route == 'REFRESCAR') {
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Refrescando contenido...'),
+                    duration: Duration(seconds: 2),
+                  ),
+              );
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(titulo: "Grupo Talía"),
+                ),
+              );
+            } else {
+              Navigator.pushNamed(context, route);
+            }
+          },
         ),
         SizedBox(height: screenHeight * 0.01),
         Text(

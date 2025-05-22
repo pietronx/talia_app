@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../customColors/app_colors.dart';
+import 'AnimationCredits.dart';
 import 'icon_credits.dart';
 
 class CreditsScreen extends StatelessWidget {
@@ -17,6 +18,7 @@ class CreditsScreen extends StatelessWidget {
 
     final secciones = [
       {'titulo': 'Iconos', 'pantalla': const IconCredits()},
+      {'titulo': 'Animaciones', 'pantalla': const AnimationCredits()},
     ];
 
     return Scaffold(

@@ -50,6 +50,11 @@ class IconCredits extends StatelessWidget {
         'url': 'https://www.flaticon.es/icono-gratis/lista_6592963?related_id=6592952&origin=search',
       },
       {
+        'icon' : 'assets/icons/refreshIcon.png',
+        'descripcion': 'Icono de Recargar creado por mavadee',
+        'url': 'https://www.flaticon.es/icono-gratis/recargar_3580324?related_id=3580284&origin=search&k=1747900843411&log-in=google',
+      },
+      {
         'icon': 'assets/icons/newsIcon.png',
         'descripcion': 'Icono de Noticias creado por Freepik',
         'url': 'https://www.flaticon.es/icono-gratis/periodico_2965879?term=noticias&related_id=2965879'
