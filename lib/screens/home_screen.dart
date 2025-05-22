@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
       ['Eventos', 'assets/icons/eventsIcon.png', '/screens/events'],
       ['Noticias', 'assets/icons/newsIcon.png', '/screens/news'],
       ['Ayuda', 'assets/icons/supportIcon.png', '/helpScreens/help_screen'],
+      ['Refrescar','assets/icons/recargar.png','']
     ];
 
     return Scaffold(
@@ -46,7 +47,7 @@ class HomeScreen extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250,
                 mainAxisSpacing: 20,
-                crossAxisSpacing: 25,
+                crossAxisSpacing: 30,
                 childAspectRatio: 0.7,
               ),
             ),
