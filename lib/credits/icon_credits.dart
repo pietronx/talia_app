@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:talia_app/customColors/app_colors.dart';
 import '../widgets/widgets_util.dart';
 
+// Clase para mostrar los creditos de los iconos
 class IconCredits extends StatelessWidget {
   const IconCredits({super.key});
 
@@ -18,6 +19,7 @@ class IconCredits extends StatelessWidget {
     final spacing = screenHeight * 0.015;
     final iconSize = screenWidth * 0.12;
 
+    // Secciones de creditos
     final creditos = [
       {
         'icon': 'assets/icons/helpIcon.png',
@@ -132,7 +134,10 @@ class IconCredits extends StatelessWidget {
                 ],
               ),
             ),
+
             SizedBox(height: spacing * 2),
+
+            // Mapeo de secciones
             ...creditos.map(
                   (item) => Card(
                 shape: RoundedRectangleBorder(

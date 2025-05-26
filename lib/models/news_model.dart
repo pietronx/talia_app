@@ -1,3 +1,4 @@
+// Clase modelo para las noticias
 class Noticia {
   final String titulo;
   final String fecha;

@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: const SplashScreen(),
+      // Definir rutas para las pantallas
       routes: {
         '/screens/home_screen': (context) => const HomeScreen(titulo: 'Inicio'),
         '/about_us': (context) => const AboutUs(),

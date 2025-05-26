@@ -1,3 +1,4 @@
+// Clase modelo para los eventos anteriores
 class AnteriorEvento {
   final String titulo;
   final String subtitulo;

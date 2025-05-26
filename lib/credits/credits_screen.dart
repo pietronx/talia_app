@@ -1,8 +1,10 @@
+// Librerias importadas
 import 'package:flutter/material.dart';
 import '../customColors/app_colors.dart';
 import 'animation_credits.dart';
 import 'icon_credits.dart';
 
+// Clase de Creditos
 class CreditsScreen extends StatelessWidget {
   const CreditsScreen({super.key});
 
@@ -16,6 +18,7 @@ class CreditsScreen extends StatelessWidget {
     final bodyFontSize = screenWidth * 0.04;
     final spacing = screenHeight * 0.02;
 
+    // Secciones de creditos
     final secciones = [
       {'titulo': 'Iconos', 'pantalla': const IconCredits()},
       {'titulo': 'Animaciones', 'pantalla': const AnimationCredits()},
@@ -44,6 +47,7 @@ class CreditsScreen extends StatelessWidget {
             ),
             SizedBox(height: spacing * 1),
 
+            // Mapeo de secciones
             ...secciones.map((seccion) {
               return Card(
                 margin: EdgeInsets.symmetric(vertical: spacing * 0.6, horizontal: spacing * 0.3),

@@ -1,22 +1,26 @@
+// Librerias importadas
 import 'package:flutter/material.dart';
 import 'package:talia_app/customColors/app_colors.dart';
 
 import '../widgets/widgets_util.dart';
 import 'splash_screen.dart';
 
+// Pantalla que se muestra cuando no hay conexión a Internet
 class NoConnection extends StatelessWidget {
   const NoConnection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Dimensiones responsivas
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final isTablet = screenWidth > 600;
 
+    // Opciones disponibles en modo offline
     final items = [
       ['Sobre Nosotros', 'assets/icons/infoIcon.png', '/about_us'],
       ['Contacto', 'assets/icons/contactIcon.png', '/contact'],
-      ['Ayuda', 'assets/icons/helpIcon.png', '/helpScreens/help_offline']
+      ['Ayuda', 'assets/icons/helpIcon.png', '/helpScreens/help_offline'],
     ];
 
     return Scaffold(
@@ -27,6 +31,7 @@ class NoConnection extends StatelessWidget {
       ),
       body: CustomScrollView(
         slivers: [
+          // Sección de advertencia y botón de reintento
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -43,13 +48,14 @@ class NoConnection extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.03),
                   Text(
                     "No se ha detectado conexión a Internet.\n"
-                    "Para utilizar más funciones de la app.\n"
-                    "Vuelva a intentarlo.",
+                    "Para utilizar más funciones de la app,\n"
+                    "conéctese a Internet y vuelva a intentarlo.",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: screenWidth * 0.045),
                   ),
                   SizedBox(height: screenHeight * 0.02),
 
+                  // Botón para recargar el SplashScreen y forzar nuevo intento de conexión
                   ElevatedButton.icon(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -79,6 +85,7 @@ class NoConnection extends StatelessWidget {
             ),
           ),
 
+          // Grid de las dos primeras opciones
           SliverPadding(
             padding: EdgeInsets.symmetric(
               horizontal: screenWidth * 0.09,
@@ -88,7 +95,7 @@ class NoConnection extends StatelessWidget {
               delegate: SliverChildBuilderDelegate((context, index) {
                 if (index >= 2) {
                   return const SizedBox();
-                }
+                } // Solo muestra los 2 primeros
                 final item = items[index];
                 return _gridItem(
                   context,
@@ -108,9 +115,13 @@ class NoConnection extends StatelessWidget {
             ),
           ),
 
+          // Último ítem (Ayuda) centrado de forma independiente
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.only(top: screenHeight * 0.01, bottom: screenHeight * 0.05),
+              padding: EdgeInsets.only(
+                top: screenHeight * 0.01,
+                bottom: screenHeight * 0.05,
+              ),
               child: Center(
                 child: _gridItem(
                   context,
@@ -128,6 +139,7 @@ class NoConnection extends StatelessWidget {
     );
   }
 
+  // Widget reutilizable para los elementos del grid
   Widget _gridItem(
     BuildContext context,
     String label,

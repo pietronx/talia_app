@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
   android_intent_plus: ^4.0.3
-  table_calendar: ^3.0.9
   intl: ^0.18.1
   cupertino_icons: ^1.0.8
   http: ^0.13.6

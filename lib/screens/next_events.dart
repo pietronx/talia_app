@@ -1,4 +1,4 @@
-
+// Librerías necesarias para carga remota, parsing CSV y UI
 import 'dart:convert';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import '../widgets/banner.dart';
 import '../widgets/loading_animation.dart';
 import '../widgets/widgets_util.dart';
 
+// Pantalla que muestra los próximos eventos
 class NextEvents extends StatefulWidget {
   const NextEvents({super.key});
 
@@ -19,10 +20,13 @@ class NextEvents extends StatefulWidget {
 }
 
 class _NextEventsState extends State<NextEvents> {
+  // URL de Google Sheets en formato CSV
   final String csvUrl =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2YQtyNcsOlsksWWq4bdIuzXZ_7iS7TyiPDOL_1a_miRgKc2gIJM1nopedVdjE9cmc4T5H5SY4C63D/pub?output=csv';
+      'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2YQtyNcsOlsksWWq4bdIuzXZ_7iS7TyiPDOL_1a_miRgKc2gIJM1nopedVdjE9cmc4T5H5SY4C63D/pub?output=csv';
+
   late Future<List<ProximoEvento>> _futureEventos;
 
+  // Carga de eventos desde el CSV remoto
   Future<List<ProximoEvento>> cargarEventosProximos() async {
     final response = await http.get(Uri.parse(csvUrl));
     final contenido = utf8.decode(response.bodyBytes);
@@ -33,6 +37,8 @@ class _NextEventsState extends State<NextEvents> {
     for (int i = 1; i < columnas.length; i++) {
       final columna = columnas[i];
       if (columna.length < 9) continue;
+
+      // Solo eventos marcados como activos ("sí")
       final activo = columna[8].toString().trim().toLowerCase().startsWith('s');
       if (!activo) continue;
 
@@ -55,11 +61,12 @@ class _NextEventsState extends State<NextEvents> {
   @override
   void initState() {
     super.initState();
-    _futureEventos = cargarEventosProximos();
+    _futureEventos = cargarEventosProximos(); // Se inicia la carga al iniciar la pantalla
   }
 
   @override
   Widget build(BuildContext context) {
+    // Variables responsivas
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.08;
@@ -70,11 +77,12 @@ class _NextEventsState extends State<NextEvents> {
       body: FutureBuilder<List<ProximoEvento>>(
         future: _futureEventos,
         builder: (context, snapshot) {
-
+          // Estado de carga
           if (snapshot.connectionState != ConnectionState.done) {
             return const LoadingAnimation(mensaje: "Cargando próximos eventos...");
           }
 
+          // Manejo de error o datos nulos
           if (snapshot.hasError || snapshot.data == null) {
             final iconSize = screenWidth * 0.2;
             final padding = screenWidth * 0.1;
@@ -96,7 +104,7 @@ class _NextEventsState extends State<NextEvents> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          _futureEventos = cargarEventosProximos();
+                          _futureEventos = cargarEventosProximos(); // Reintento
                         });
                       },
                       child: Text("Reintentar", style: TextStyle(fontSize: fontSize * 0.9)),
@@ -110,6 +118,7 @@ class _NextEventsState extends State<NextEvents> {
           final eventos = snapshot.data!;
           final activos = eventos.where((e) => e.activo).toList();
 
+          // Caso: no hay eventos activos
           if (activos.isEmpty) {
             return Center(
               child: Padding(
@@ -130,8 +139,10 @@ class _NextEventsState extends State<NextEvents> {
             );
           }
 
+          // Renderizado de eventos
           return CustomScrollView(
             slivers: [
+              // Banner de sección con botón de ayuda
               BannerPersonalizado(
                 titulo: 'Próximos Eventos',
                 fontSize: screenWidth * 0.05,
@@ -151,6 +162,8 @@ class _NextEventsState extends State<NextEvents> {
                   ),
                 ],
               ),
+
+              // Lista de eventos activos renderizados como tarjetas
               SliverPadding(
                 padding: EdgeInsets.symmetric(
                   vertical: verticalPadding,
@@ -161,7 +174,7 @@ class _NextEventsState extends State<NextEvents> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
+                      crossAxisCount: 1, // Tarjetas apiladas verticalmente
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 1,
                       childAspectRatio: 0.7,

@@ -1,3 +1,4 @@
+// Librerías necesarias para carga remota, parsing CSV y UI
 import 'dart:convert';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import '../models/previous_events_model.dart';
 import '../widgets/banner.dart';
 import '../widgets/widgets_util.dart';
 
+// Pantalla que muestra eventos pasados obtenidos desde un CSV remoto
 class PreviousEvents extends StatefulWidget {
   const PreviousEvents({super.key});
 
@@ -18,12 +20,14 @@ class PreviousEvents extends StatefulWidget {
 }
 
 class _PreviousEventsState extends State<PreviousEvents> {
+  // URL del CSV publicado en Google Sheets
   final String csvUrl =
       'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpj5i8wyfi_5Iyb2KNhVQsL7k2EMICxVhs2cjNTEbJN5PMXObKcGqvI1jaEOOqqA2qbv10IP7P6VYE/pub?output=csv';
 
   late Future<List<AnteriorEvento>> _futureEventos;
 
-  Future<List<AnteriorEvento>> cargarEventos() async {
+  // Función que descarga, decodifica y parsea los eventos desde el CSV
+  Future<List<AnteriorEvento>> cargarAnterioresEventos() async {
     final response = await http.get(Uri.parse(csvUrl));
 
     if (response.statusCode == 200) {
@@ -58,11 +62,12 @@ class _PreviousEventsState extends State<PreviousEvents> {
   @override
   void initState() {
     super.initState();
-    _futureEventos = cargarEventos();
+    _futureEventos = cargarAnterioresEventos(); // Se lanza la carga al inicio
   }
 
   @override
   Widget build(BuildContext context) {
+    // Variables para diseño responsivo
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.08;
@@ -77,10 +82,12 @@ class _PreviousEventsState extends State<PreviousEvents> {
           final fontSize = screenWidth * 0.05;
           final padding = screenWidth * 0.1;
 
+          // Estado de carga
           if (snapshot.connectionState != ConnectionState.done) {
             return const LoadingAnimation(mensaje: "Cargando anteriores eventos...");
           }
 
+          // Manejo de errores o datos nulos
           if (snapshot.hasError || snapshot.data == null) {
             return Center(
               child: Padding(
@@ -99,7 +106,7 @@ class _PreviousEventsState extends State<PreviousEvents> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          _futureEventos = cargarEventos();
+                          _futureEventos = cargarAnterioresEventos(); // Reintento de carga
                         });
                       },
                       child: Text("Reintentar", style: TextStyle(fontSize: fontSize * 0.9)),
@@ -113,6 +120,7 @@ class _PreviousEventsState extends State<PreviousEvents> {
           final eventos = snapshot.data!;
           final eventosActivos = eventos.where((e) => e.activo).toList();
 
+          // Si no hay eventos activos
           if (eventosActivos.isEmpty) {
             return Center(
               child: Padding(
@@ -133,8 +141,10 @@ class _PreviousEventsState extends State<PreviousEvents> {
             );
           }
 
+          // Renderizado del contenido si hay eventos válidos
           return CustomScrollView(
             slivers: [
+              // Banner superior con botón de ayuda
               BannerPersonalizado(
                 titulo: 'Anteriores Eventos',
                 fontSize: screenWidth * 0.05,
@@ -152,6 +162,8 @@ class _PreviousEventsState extends State<PreviousEvents> {
                   ),
                 ],
               ),
+
+              // Lista de tarjetas, centradas y con ancho máximo definido
               SliverPadding(
                 padding: EdgeInsets.symmetric(
                   horizontal: horizontalPadding,

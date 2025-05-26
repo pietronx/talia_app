@@ -1,16 +1,28 @@
+// Librerias importadas
 import 'package:flutter/material.dart';
 import 'package:talia_app/customColors/app_colors.dart';
 import 'package:talia_app/helpScreens/help_about_us.dart';
 import 'package:talia_app/helpScreens/help_contact.dart';
 import 'package:talia_app/helpScreens/help_legal.dart';
-
 import '../credits/credits_screen.dart';
 
+// Clase para la pantalla de ayuda sin conexión
 class HelpOffline extends StatelessWidget {
   const HelpOffline({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final horizontalPadding = screenWidth * 0.06;
+    final titleFontSize = screenWidth * 0.06;
+    final bodyFontSize = screenWidth * 0.045;
+    final spacingLarge = screenHeight * 0.03;
+    final spacingSmall = screenHeight * 0.015;
+    final iconSize = screenWidth * 0.06;
+
+    // Mapeo de secciones
     final secciones = [
       {'titulo': 'Sobre Nosotros', 'pantalla': const HelpAboutUs()},
       {'titulo': 'Contacto', 'pantalla': const HelpContact()},
@@ -25,23 +37,27 @@ class HelpOffline extends StatelessWidget {
       ),
       backgroundColor: AppColors.fondo,
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(horizontalPadding),
         child: ListView(
           children: [
-            const Text(
+            Text(
               'Guía de Ayuda sin conexión',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
-            const Text(
+            SizedBox(height: spacingSmall),
+            Text(
               'Estás en modo sin conexión. Aquí puedes acceder a algunas secciones informativas de la aplicación.',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: bodyFontSize),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: spacingLarge),
 
+            // Mapeo de secciones
             ...secciones.map((seccion) {
               return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                margin: EdgeInsets.symmetric(
+                  vertical: spacingSmall,
+                  horizontal: spacingSmall * 0.7,
+                ),
                 color: AppColors.fondo,
                 elevation: 3,
                 shadowColor: AppColors.titulo,
@@ -51,9 +67,13 @@ class HelpOffline extends StatelessWidget {
                 child: ListTile(
                   title: Text(
                     seccion['titulo'] as String,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: bodyFontSize,
+                      color: AppColors.texto,
+                    ),
                   ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
+                  trailing: Icon(Icons.arrow_forward_ios, size: iconSize),
                   onTap: () {
                     Navigator.push(
                       context,

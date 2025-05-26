@@ -1,8 +1,10 @@
+// Librerias importadas
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:talia_app/customColors/app_colors.dart';
 import '../widgets/widgets_util.dart';
 
+// Clase de Creditos de animaciones
 class AnimationCredits extends StatelessWidget {
   const AnimationCredits({super.key});
 
@@ -17,15 +19,16 @@ class AnimationCredits extends StatelessWidget {
     final bodyFontSize = screenWidth * 0.042;
     final spacing = screenHeight * 0.015;
 
+    // Link de animaciones (mapeo)
     final creditos = [
       {
         'animation': 'assets/animations/loading_guitar.json',
-        'descripcion': 'Animación de carga creada por Mehran',
+        'description': 'Animación de carga creada por Mehran',
         'url': 'https://lottiefiles.com/free-animation/ukulele-loading-fP3ZkohebE',
       },
       {
         'animation': 'assets/animations/loading_card.json',
-        'descripcion': 'Animación de carga de eventos creada por Endri K',
+        'description': 'Animación de carga de eventos creada por Endri K',
         'url': 'https://lottiefiles.com/free-animation/loading-musick-track-ndOSAWvZul',
       },
     ];
@@ -77,7 +80,7 @@ class AnimationCredits extends StatelessWidget {
             ),
             SizedBox(height: spacing * 2),
 
-            
+            // Mapa (tarjetas de animaciones)
             ...creditos.map(
                   (item) => Card(
                 shape: RoundedRectangleBorder(
@@ -101,7 +104,7 @@ class AnimationCredits extends StatelessWidget {
                       ),
                       SizedBox(height: spacing),
                       Text(
-                        item['descripcion'] as String,
+                        item['description'] as String,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: bodyFontSize),
                       ),

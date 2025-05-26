@@ -1,3 +1,4 @@
+// Librerías necesarias
 import 'dart:convert';
 
 import 'package:csv/csv.dart';
@@ -11,6 +12,7 @@ import '../widgets/banner.dart';
 import '../widgets/loading_animation.dart';
 import '../widgets/widgets_util.dart';
 
+// Pantalla de noticias del
 class News extends StatefulWidget {
   const News({super.key});
 
@@ -19,11 +21,13 @@ class News extends StatefulWidget {
 }
 
 class _NewsState extends State<News> {
+  // URL pública del CSV publicado desde Google Sheets
   final String csvUrl =
       'https://docs.google.com/spreadsheets/d/e/2PACX-1vT_XFNr2J3C4AUMez56ZcFDosf5XkDz_yKKWrn0aHTZugLmX2Ig2_ahkviYmr_vRnTYnlp58diI38VA/pub?output=csv';
 
   late Future<List<Noticia>> _noticia;
 
+  // Función para cargar y parsear las noticias desde el CSV remoto
   Future<List<Noticia>> cargarNoticias() async {
     final response = await http.get(Uri.parse(csvUrl));
     final contenido = utf8.decode(response.bodyBytes);
@@ -56,11 +60,12 @@ class _NewsState extends State<News> {
   @override
   void initState() {
     super.initState();
-    _noticia = cargarNoticias();
+    _noticia = cargarNoticias(); // Se inicia la carga al arrancar la pantalla
   }
 
   @override
   Widget build(BuildContext context) {
+    // Valores responsivos
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.08;
@@ -71,11 +76,12 @@ class _NewsState extends State<News> {
       body: FutureBuilder<List<Noticia>>(
         future: _noticia,
         builder: (context, snapshot) {
-
+          // Pantalla de carga mientras se recuperan los datos
           if (snapshot.connectionState != ConnectionState.done) {
             return const LoadingAnimation(mensaje: "Cargando noticias...");
           }
 
+          // Manejo de errores o fallo de conexión
           if (snapshot.hasError || snapshot.data == null) {
             final iconSize = screenWidth * 0.2;
             final padding = screenWidth * 0.1;
@@ -97,7 +103,7 @@ class _NewsState extends State<News> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          _noticia = cargarNoticias();
+                          _noticia = cargarNoticias(); // Reintento manual
                         });
                       },
                       child: Text("Reintentar", style: TextStyle(fontSize: fontSize * 0.9)),
@@ -111,6 +117,7 @@ class _NewsState extends State<News> {
           final noticias = snapshot.data!;
           final activos = noticias.where((e) => e.activo).toList();
 
+          // Si no hay noticias activas disponibles
           if (activos.isEmpty) {
             return Center(
               child: Padding(
@@ -131,8 +138,10 @@ class _NewsState extends State<News> {
             );
           }
 
+          // Renderizado de noticias activas en formato scroll + tarjetas
           return CustomScrollView(
             slivers: [
+              // Banner de sección con botón de ayuda
               BannerPersonalizado(
                 titulo: 'Noticias',
                 fontSize: 20,
@@ -151,6 +160,7 @@ class _NewsState extends State<News> {
                 ],
               ),
 
+              // Lista de tarjetas de noticias
               SliverPadding(
                 padding: EdgeInsets.symmetric(
                   horizontal: horizontalPadding,

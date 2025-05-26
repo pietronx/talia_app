@@ -1,3 +1,4 @@
+// Clase modelo para los próximos eventos
 class ProximoEvento {
   final String titulo;
   final String subtitulo;
