@@ -16,7 +16,7 @@ class NoConnection extends StatelessWidget {
     final items = [
       ['Sobre Nosotros', 'assets/icons/infoIcon.png', '/about_us'],
       ['Contacto', 'assets/icons/contactIcon.png', '/contact'],
-      ['Ayuda', 'assets/icons/supportIcon.png', '/helpScreens/help_offline']
+      ['Ayuda', 'assets/icons/helpIcon.png', '/helpScreens/help_offline']
     ];
 
     return Scaffold(
@@ -50,7 +50,6 @@ class NoConnection extends StatelessWidget {
                   ),
                   SizedBox(height: screenHeight * 0.02),
 
-                  // Botón de Reintentar
                   ElevatedButton.icon(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -80,7 +79,6 @@ class NoConnection extends StatelessWidget {
             ),
           ),
 
-          // Mostrar los dos primeros en grid
           SliverPadding(
             padding: EdgeInsets.symmetric(
               horizontal: screenWidth * 0.09,
@@ -89,7 +87,7 @@ class NoConnection extends StatelessWidget {
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
                 if (index >= 2) {
-                  return const SizedBox(); // solo los dos primeros
+                  return const SizedBox();
                 }
                 final item = items[index];
                 return _gridItem(
@@ -110,7 +108,6 @@ class NoConnection extends StatelessWidget {
             ),
           ),
 
-          // El último ítem centrado manualmente
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(top: screenHeight * 0.01, bottom: screenHeight * 0.05),

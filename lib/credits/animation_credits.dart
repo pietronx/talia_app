@@ -19,7 +19,7 @@ class AnimationCredits extends StatelessWidget {
 
     final creditos = [
       {
-        'animation': 'assets/animations/loading.json',
+        'animation': 'assets/animations/loading_guitar.json',
         'descripcion': 'Animación de carga creada por Mehran',
         'url': 'https://lottiefiles.com/free-animation/ukulele-loading-fP3ZkohebE',
       },
@@ -77,7 +77,7 @@ class AnimationCredits extends StatelessWidget {
             ),
             SizedBox(height: spacing * 2),
 
-            // Lista de tarjetas con animaciones
+            
             ...creditos.map(
                   (item) => Card(
                 shape: RoundedRectangleBorder(

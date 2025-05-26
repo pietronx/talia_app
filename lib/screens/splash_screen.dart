@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     inicializarApp();
   }
 
+// ignore_for_file: avoid_print, use_build_context_synchronously
   Future<void> inicializarApp() async {
     print("Inicializando...");
 

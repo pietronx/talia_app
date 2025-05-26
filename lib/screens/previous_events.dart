@@ -77,12 +77,10 @@ class _PreviousEventsState extends State<PreviousEvents> {
           final fontSize = screenWidth * 0.05;
           final padding = screenWidth * 0.1;
 
-          // CARGANDO DATOS
           if (snapshot.connectionState != ConnectionState.done) {
             return const LoadingAnimation(mensaje: "Cargando anteriores eventos...");
           }
 
-          // ERROR AL CARGAR
           if (snapshot.hasError || snapshot.data == null) {
             return Center(
               child: Padding(
@@ -115,7 +113,6 @@ class _PreviousEventsState extends State<PreviousEvents> {
           final eventos = snapshot.data!;
           final eventosActivos = eventos.where((e) => e.activo).toList();
 
-          // SIN EVENTOS
           if (eventosActivos.isEmpty) {
             return Center(
               child: Padding(
@@ -136,7 +133,6 @@ class _PreviousEventsState extends State<PreviousEvents> {
             );
           }
 
-          // CARGA COMPLETA, MOSTRAR CONTENIDO
           return CustomScrollView(
             slivers: [
               BannerPersonalizado(

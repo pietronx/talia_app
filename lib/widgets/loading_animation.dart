@@ -17,7 +17,7 @@ class LoadingAnimation extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Lottie.asset(
-            'assets/animations/loading.json',
+            'assets/animations/loading_guitar.json',
             width: screenWidth * 0.5,
             height: screenWidth * 0.5,
             repeat: true,

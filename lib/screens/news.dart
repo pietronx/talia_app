@@ -72,12 +72,10 @@ class _NewsState extends State<News> {
         future: _noticia,
         builder: (context, snapshot) {
 
-          // CARGANDO
           if (snapshot.connectionState != ConnectionState.done) {
             return const LoadingAnimation(mensaje: "Cargando noticias...");
           }
 
-          // ERROR AL CARGAR
           if (snapshot.hasError || snapshot.data == null) {
             final iconSize = screenWidth * 0.2;
             final padding = screenWidth * 0.1;
@@ -113,7 +111,6 @@ class _NewsState extends State<News> {
           final noticias = snapshot.data!;
           final activos = noticias.where((e) => e.activo).toList();
 
-          // SIN NOTICIAS
           if (activos.isEmpty) {
             return Center(
               child: Padding(
@@ -154,7 +151,6 @@ class _NewsState extends State<News> {
                 ],
               ),
 
-              // Lista de noticias
               SliverPadding(
                 padding: EdgeInsets.symmetric(
                   horizontal: horizontalPadding,

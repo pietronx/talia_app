@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
       ['Contacto', 'assets/icons/contactIcon.png', '/contact'],
       ['Eventos', 'assets/icons/eventsIcon.png', '/screens/events'],
       ['Noticias', 'assets/icons/newsIcon.png', '/screens/news'],
-      ['Ayuda', 'assets/icons/supportIcon.png', '/helpScreens/help_screen'],
+      ['Ayuda', 'assets/icons/helpIcon.png', '/helpScreens/help_screen'],
     ];
 
     return Scaffold(

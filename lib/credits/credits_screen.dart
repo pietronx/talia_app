@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../customColors/app_colors.dart';
-import 'AnimationCredits.dart';
+import 'animation_credits.dart';
 import 'icon_credits.dart';
 
 class CreditsScreen extends StatelessWidget {
@@ -43,7 +43,7 @@ class CreditsScreen extends StatelessWidget {
               textAlign: TextAlign.justify,
             ),
             SizedBox(height: spacing * 1),
-            // Lista de secciones
+
             ...secciones.map((seccion) {
               return Card(
                 margin: EdgeInsets.symmetric(vertical: spacing * 0.6, horizontal: spacing * 0.3),

@@ -10,9 +10,7 @@ import '../helpers/link_helper.dart';
 import '../models/news_model.dart';
 import '../models/next_events_model.dart';
 
-// Función para crear los recuadros con texto o imagen
 class WidgetsUtil {
-  // Contenedor personalizable
   static Widget contenedorPersonalizado({
     double? width,
     double? height,
@@ -20,12 +18,11 @@ class WidgetsUtil {
     String? path,
     double? fontSize,
     FontWeight fontWeight = FontWeight.normal,
-    double? textHeight, // Interlineado
+    double? textHeight,
     Color? fondoColor,
     Color? textoColor,
     BoxFit? fit,
-  })
-  {
+  }) {
     return Builder(
       builder: (context) {
         final screenWidth = MediaQuery.of(context).size.width;
@@ -85,7 +82,6 @@ class WidgetsUtil {
     );
   }
 
-  // Función para cargar imagen
   static Future<Image> _cargarImagen(String url) async {
     final image = Image.network(url, fit: BoxFit.cover);
     final completer = Completer<Image>();
@@ -100,7 +96,6 @@ class WidgetsUtil {
     return completer.future;
   }
 
-  // Tarjeta del anterior evento
   static Widget tarjetaAnteriorEvento({
     required BuildContext context,
     required String titulo,
@@ -108,8 +103,7 @@ class WidgetsUtil {
     required String descripcion,
     String? subtitulo,
     String? programaUrl,
-  })
-  {
+  }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final cardSize = screenWidth * 0.8;
@@ -247,7 +241,6 @@ class WidgetsUtil {
     );
   }
 
-  // Popup Detalles del Evento al abrir la tarjeta
   static void mostrarDetallesAnteriorEvento({
     required BuildContext context,
     required String descripcion,
@@ -255,14 +248,13 @@ class WidgetsUtil {
     required String imagenUrl,
     String? programaurl,
     VoidCallback? onClose,
-  })
-  {
+  }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final titleFontSize = screenWidth * 0.06;
     final bodyFontSize = screenWidth * 0.04;
     final paddingHorizontal = screenWidth * 0.06;
-    final spacing = screenHeight * 0.02;
+    final spacing = screenHeight * 0.01;
 
     showModalBottomSheet(
       context: context,
@@ -284,7 +276,6 @@ class WidgetsUtil {
                   shrinkWrap: true,
                   padding: EdgeInsets.only(bottom: spacing * 1.5),
                   children: [
-                    // Imagen
                     ClipRRect(
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(20),
@@ -309,7 +300,6 @@ class WidgetsUtil {
 
                     SizedBox(height: spacing * 1.5),
 
-                    // Título
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: paddingHorizontal,
@@ -326,7 +316,6 @@ class WidgetsUtil {
 
                     SizedBox(height: spacing * 1),
 
-                    // Descripción
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: paddingHorizontal,
@@ -343,7 +332,6 @@ class WidgetsUtil {
 
                     SizedBox(height: spacing * 1.2),
 
-                    // Botones
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -369,7 +357,7 @@ class WidgetsUtil {
                             ),
                           ),
 
-                        SizedBox(height: spacing),
+                        SizedBox(height: spacing - 0.9),
 
                         ElevatedButton(
                           onPressed: () {
@@ -400,13 +388,11 @@ class WidgetsUtil {
     );
   }
 
-  // Tarjeta del próximo evento
   static Widget tarjetaProximoEvento({
     required BuildContext context,
     required int index,
     required ProximoEvento evento,
-  })
-  {
+  }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final cardSize = screenWidth * 0.8;
@@ -419,7 +405,6 @@ class WidgetsUtil {
     return FutureBuilder<Image>(
       future: _cargarImagen(previewLink),
       builder: (context, snapshot) {
-        // CARGANDO
         if (snapshot.connectionState != ConnectionState.done) {
           return Container(
             width: cardSize,
@@ -448,29 +433,23 @@ class WidgetsUtil {
           );
         }
 
-        // SIN INTERNET
         if (snapshot.hasError || snapshot.data == null) {
           return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.wifi_off,
-                  size: 50,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.wifi_off, size: 50, color: Colors.grey),
+              SizedBox(height: spacing),
+              Text(
+                "Sin conexión",
+                style: TextStyle(
+                  fontSize: subtitleFontSize,
                   color: Colors.grey,
                 ),
-                SizedBox(height: spacing),
-                Text(
-                  "Sin conexión",
-                  style: TextStyle(
-                    fontSize: subtitleFontSize,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+              ),
+            ],
           );
         }
 
-        // IMAGEN Y TEXTO
         return GestureDetector(
           onTap: () {
             WidgetsUtil.mostrarDetallesProximoEvento(
@@ -536,12 +515,10 @@ class WidgetsUtil {
     );
   }
 
-  // Popup Detalles de Próximo Evento al abrir la tarjeta
   static void mostrarDetallesProximoEvento({
     required BuildContext context,
     required ProximoEvento evento,
-  })
-  {
+  }) {
     final previewLink = LinkHelper.vistaPreviaDrive(evento.portadaUrl);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -571,7 +548,6 @@ class WidgetsUtil {
                   shrinkWrap: true,
                   padding: EdgeInsets.only(bottom: spacing * 1.5),
                   children: [
-                    // Imagen
                     ClipRRect(
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(20),
@@ -596,7 +572,7 @@ class WidgetsUtil {
 
                     SizedBox(height: spacing * 1.25),
 
-                    // Título
+
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: horizontalPadding,
@@ -613,7 +589,7 @@ class WidgetsUtil {
 
                     SizedBox(height: spacing * 0.75),
 
-                    // Fecha y lugar
+
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: horizontalPadding,
@@ -630,7 +606,6 @@ class WidgetsUtil {
 
                     SizedBox(height: spacing),
 
-                    // Descripción
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: horizontalPadding,
@@ -647,7 +622,6 @@ class WidgetsUtil {
 
                     SizedBox(height: spacing * 1.25),
 
-                    // Botones
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -662,7 +636,7 @@ class WidgetsUtil {
                               style: TextStyle(fontSize: subtitleFontSize),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurple,
+                              backgroundColor: AppColors.titulo,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -714,7 +688,6 @@ class WidgetsUtil {
     );
   }
 
-  // Tarjeta de Noticias
   static Widget tarjetaNoticia({
     required BuildContext context,
     required int index,
@@ -739,7 +712,8 @@ class WidgetsUtil {
         if (snapshot.connectionState != ConnectionState.done) {
           return SizedBox(
             width: cardWidth,
-            height: cardHeight + screenHeight * 0.35, // espacio reservado
+            height: cardHeight + screenHeight * 0.35,
+
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -852,7 +826,7 @@ class WidgetsUtil {
                         'Leer más',
                         style: TextStyle(
                           fontSize: leerMasFontSize,
-                          color: Colors.blue,
+                          color: Color(0xFF1A2D93),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -867,7 +841,6 @@ class WidgetsUtil {
     );
   }
 
-  // Ayuda
   static Widget bloqueAyuda({
     IconData? icono,
     required String titulo,
@@ -946,7 +919,6 @@ class WidgetsUtil {
     );
   }
 
-  // Apartado de Copyright y Aviso Legal
   static Widget pieDePagina(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -964,12 +936,11 @@ class WidgetsUtil {
             indent: horizontalMargin,
             endIndent: horizontalMargin,
             thickness: 1,
-            color: AppColors.drawerCabecera,
+            color: AppColors.dividerColor,
           ),
 
           SizedBox(height: spacing),
 
-          // Botones legales
           Column(
             children: [
               ElevatedButton.icon(
@@ -1018,7 +989,6 @@ class WidgetsUtil {
 
           SizedBox(height: spacing * 1.5),
 
-          // Derechos
           Column(
             children: [
               Text(
@@ -1049,7 +1019,6 @@ class WidgetsUtil {
     );
   }
 
-  // Grid del inicio
   static Widget gridMenu({
     required String imagePath,
     required VoidCallback onTap,

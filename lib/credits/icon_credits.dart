@@ -20,7 +20,7 @@ class IconCredits extends StatelessWidget {
 
     final creditos = [
       {
-        'icon': 'assets/icons/supportIcon.png',
+        'icon': 'assets/icons/helpIcon.png',
         'descripcion': 'Icono de Ayuda creado por Freepik',
         'url': 'https://www.flaticon.es/icono-gratis/servicio-al-cliente_2706962?term=soporte&page=1&position=15&origin=search&related_id=2706962',
       },

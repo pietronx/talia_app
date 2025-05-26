@@ -30,7 +30,6 @@ class HelpLegal extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // Botón Política de Privacidad
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
@@ -54,7 +53,6 @@ class HelpLegal extends StatelessWidget {
 
             const SizedBox(height: 15),
 
-            // Botón Aviso Legal
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {

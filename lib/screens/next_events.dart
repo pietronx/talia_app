@@ -23,7 +23,6 @@ class _NextEventsState extends State<NextEvents> {
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2YQtyNcsOlsksWWq4bdIuzXZ_7iS7TyiPDOL_1a_miRgKc2gIJM1nopedVdjE9cmc4T5H5SY4C63D/pub?output=csv';
   late Future<List<ProximoEvento>> _futureEventos;
 
-  // Función para cargar los eventos desde el CSV
   Future<List<ProximoEvento>> cargarEventosProximos() async {
     final response = await http.get(Uri.parse(csvUrl));
     final contenido = utf8.decode(response.bodyBytes);
@@ -76,7 +75,6 @@ class _NextEventsState extends State<NextEvents> {
             return const LoadingAnimation(mensaje: "Cargando próximos eventos...");
           }
 
-          // ERROR AL CARGAR
           if (snapshot.hasError || snapshot.data == null) {
             final iconSize = screenWidth * 0.2;
             final padding = screenWidth * 0.1;
@@ -112,7 +110,6 @@ class _NextEventsState extends State<NextEvents> {
           final eventos = snapshot.data!;
           final activos = eventos.where((e) => e.activo).toList();
 
-          // SIN EVENTOS
           if (activos.isEmpty) {
             return Center(
               child: Padding(

@@ -1,5 +1,4 @@
 class LinkHelper {
-  // Vista previa de los programas de mano
   static String vistaPreviaDrive(String linkOriginal) {
     final regex = RegExp(r'd/([a-zA-Z0-9_-]+)');
     final match = regex.firstMatch(linkOriginal);

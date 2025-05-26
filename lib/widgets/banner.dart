@@ -20,7 +20,7 @@ class BannerPersonalizado extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SliverAppBar(
-      expandedHeight: screenHeight * 0.3, // Adaptativo
+      expandedHeight: screenHeight * 0.3,
       pinned: true,
       actions: acciones,
       flexibleSpace: FlexibleSpaceBar(

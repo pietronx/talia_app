@@ -39,7 +39,6 @@ class AboutUs extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Redes Oficiales
             WidgetsUtil.contenedorPersonalizado(
               text: 'Redes Oficiales',
               fontSize: tituloFontSize,
@@ -51,7 +50,7 @@ class AboutUs extends StatelessWidget {
               height: 0.1,
               indent: screenWidth * 0.15,
               endIndent: screenWidth * 0.15,
-              color: AppColors.drawerCabecera,
+              color: AppColors.dividerColor,
               thickness: 2,
             ),
 
@@ -110,7 +109,6 @@ class AboutUs extends StatelessWidget {
 
             SizedBox(height: espacioGrande),
 
-            // Título Directores
             WidgetsUtil.contenedorPersonalizado(
               text: 'Directores',
               fontSize: tituloFontSize,
@@ -122,15 +120,13 @@ class AboutUs extends StatelessWidget {
               height: 0.1,
               indent: screenWidth * 0.2,
               endIndent: screenWidth * 0.2,
-              color: AppColors.drawerCabecera,
+              color: AppColors.dividerColor,
               thickness: 2,
             ),
 
             SizedBox(height: espacioGrande),
 
-            //------- Apartado de Directores
 
-            // Perfil de Silvia
             Column(
               children: [
                 CircleAvatar(
@@ -199,7 +195,6 @@ class AboutUs extends StatelessWidget {
 
             SizedBox(height: screenHeight * 0.08),
 
-            // Perfil de Alejandro
             Column(
               children: [
                 CircleAvatar(
@@ -258,7 +253,6 @@ class AboutUs extends StatelessWidget {
 
             SizedBox(height: screenHeight * 0.01),
 
-            // Politica y Privacidad
             WidgetsUtil.pieDePagina(context),
           ],
         ),

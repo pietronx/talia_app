@@ -76,24 +76,11 @@ class AppColors {
   static const Color fondo = Color(0xFFF8F4F1);
   static const Color texto = Color(0xFF2D2D2D);
   static const Color titulo = Color(0xFF8B4513);
-  static const Color contenedor = Color(0xFFEDE0D4);
-  static const Color contenedor2 = Color(0xFFFAF3F3);
+  static const Color dividerColor = Color(0xFF5A3E36);
 
   //----------------------> AppBar <----------------------\\
   static const Color appbar = Color(0xFF5A3E36);
   static const Color appbarTitulo = Color(0xFFFFFFFF);
   static const Color appbarIcons = Color(0xFFD4A373);
 
-  //----------------------> Drawer (Barra lateral) <----------------------\\
-  static const Color drawerFondo = Color(0xFFF0E6DD);
-  static const Color drawerTexto = Color(0xFF2D2D2D);
-  static const Color drawerTitulo = Color(0xFFFFFFFF);
-  static const Color drawerCabecera = Color(0xFF5A3E36);
-
-  //----------------------> Calendario y Eventos <----------------------\\
-
-  static const Color diaConcierto = Color(0xFFFFB4A1);
-  static const Color diaActual = Color(0xFF6E0901);
-  static const Color diaSeleccionado = Color(0xFFDA432B);
-  static const Color diaConciertoTexto = Color(0xFF4E1E1E);
 }

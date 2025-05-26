@@ -61,7 +61,7 @@ class Contact extends StatelessWidget {
                     indent: screenWidth * 0.1,
                     endIndent: screenWidth * 0.1,
                     thickness: 2,
-                    color: AppColors.drawerCabecera,
+                    color: AppColors.dividerColor,
                   ),
                   SizedBox(height: espacio),
                   ListTile(
