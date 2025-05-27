@@ -1,6 +1,7 @@
 // Librerias Importadas
 import 'package:flutter/material.dart';
 import 'package:talia_app/helpScreens/help_events.dart';
+
 import '../customColors/app_colors.dart';
 import '../widgets/widgets_util.dart';
 
@@ -21,7 +22,8 @@ class Events extends StatelessWidget {
       {
         'label': 'Anteriores\nEventos',
         'icon': 'assets/icons/pastEventsIcon.png',
-        'route': '/screens/previousEvents', // Ruta a la pantalla correspondiente
+        'route': '/screens/previousEvents',
+        // Ruta a la pantalla correspondiente
       },
       {
         'label': 'Próximos\nEventos',
@@ -39,10 +41,14 @@ class Events extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.help),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const HelpEvents()),
-              );
+              try {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const HelpEvents()),
+                );
+              } catch (e) {
+                debugPrint('Error al navegar a HelpEvents: $e');
+              }
             },
           ),
         ],
@@ -51,7 +57,8 @@ class Events extends StatelessWidget {
       // Contenido principal de la pantalla
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600), // Límite útil en tablets
+          constraints: const BoxConstraints(maxWidth: 600),
+          // Límite útil en tablets
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: horizontalPadding,
@@ -61,7 +68,8 @@ class Events extends StatelessWidget {
               shrinkWrap: true,
               itemCount: items.length,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 250, // Tamaño máximo por celda
+                maxCrossAxisExtent: 250,
+                // Tamaño máximo por celda
                 mainAxisSpacing: 25,
                 crossAxisSpacing: 25,
                 childAspectRatio: 0.7,
@@ -75,7 +83,13 @@ class Events extends StatelessWidget {
                     // Imagen interactiva con navegación
                     WidgetsUtil.gridMenu(
                       imagePath: item['icon']!,
-                      onTap: () => Navigator.pushNamed(context, item['route']!),
+                      onTap: () {
+                        try {
+                          Navigator.pushNamed(context, item['route']!);
+                        } catch (e) {
+                          debugPrint('Error al navegar: $e');
+                        }
+                      },
                     ),
 
                     // Espaciado y etiqueta debajo de cada icono

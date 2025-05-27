@@ -1,5 +1,6 @@
 // Librerias importadas
 import 'package:flutter/material.dart';
+
 import '../customColors/app_colors.dart';
 import '../screens/news.dart';
 import '../widgets/widgets_util.dart';
@@ -27,7 +28,10 @@ class HelpNews extends StatelessWidget {
             Text(
               '¿Qué puedes hacer aquí?',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
             SizedBox(height: spacingLarge),
@@ -37,14 +41,14 @@ class HelpNews extends StatelessWidget {
               icono: Icons.newspaper,
               titulo: 'El día a día',
               descripcion:
-              'Aquí encontrarás las noticias más recientes de Grupo Talía.',
+                  'Aquí encontrarás las noticias más recientes de Grupo Talía.',
             ),
 
             WidgetsUtil.bloqueAyuda(
               icono: Icons.image,
               titulo: 'Noticias',
               descripcion:
-              'Cada noticia tiene una imagen representativa y una descripción.\n\n'
+                  'Cada noticia tiene una imagen representativa y una descripción.\n\n'
                   'Si tocas sobre cada tarjeta irás a la web oficial, '
                   'donde podrás encontrar más informacion sobre la noticia.',
             ),
@@ -55,10 +59,14 @@ class HelpNews extends StatelessWidget {
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const News()),
-                  );
+                  try {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const News()),
+                    );
+                  } catch (e) {
+                    debugPrint('Error al navegar a News: $e');
+                  }
                 },
                 icon: const Icon(Icons.calendar_month),
                 label: const Text('Ir a "Noticias"'),

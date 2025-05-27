@@ -1,5 +1,6 @@
 // Librerías necesarias para la lógica de arranque
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:talia_app/customColors/app_colors.dart';
@@ -25,28 +26,32 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // Función que controla la transición según el estado de la conexión
   Future<void> inicializarApp() async {
-    //print("Inicializando...");
+    try {
+      debugPrint("Inicializando...");
 
-    // Espera artificial para mostrar la animación unos segundos
-    await Future.delayed(const Duration(seconds: 2));
-    //print("Pasado delay");
+      // Espera artificial para mostrar la animación unos segundos
+      await Future.delayed(const Duration(seconds: 2));
+      debugPrint("Pasado delay");
 
-    final conectado = await comprobarConexion();
-    //print("¿Hay conexión? $conectado");
+      final conectado = await comprobarConexion();
+      debugPrint("¿Hay conexión? $conectado");
 
-    // Navegación condicional según si hay conexión
-    if (conectado) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const HomeScreen(titulo: 'Pantalla de Carga'),
-        ),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const NoConnection()),
-      );
+      // Navegación condicional según si hay conexión
+      if (conectado) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const HomeScreen(titulo: 'Pantalla de Carga'),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const NoConnection()),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error en inicializarApp: $e');
     }
   }
 

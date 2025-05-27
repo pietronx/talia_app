@@ -1,5 +1,6 @@
 // Librerías necesarias para carga remota, parsing CSV y UI
 import 'dart:convert';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -28,40 +29,52 @@ class _NextEventsState extends State<NextEvents> {
 
   // Carga de eventos desde el CSV remoto
   Future<List<ProximoEvento>> cargarEventosProximos() async {
-    final response = await http.get(Uri.parse(csvUrl));
-    final contenido = utf8.decode(response.bodyBytes);
-    final columnas = const CsvToListConverter().convert(contenido, eol: '\n');
+    try {
+      final response = await http.get(Uri.parse(csvUrl));
+      final contenido = utf8.decode(response.bodyBytes);
+      final columnas = const CsvToListConverter().convert(contenido, eol: '\n');
 
-    List<ProximoEvento> eventos = [];
+      List<ProximoEvento> eventos = [];
 
-    for (int i = 1; i < columnas.length; i++) {
-      final columna = columnas[i];
-      if (columna.length < 9) continue;
+      for (int i = 1; i < columnas.length; i++) {
+        final columna = columnas[i];
+        if (columna.length < 9) continue;
 
-      // Solo eventos marcados como activos ("sí")
-      final activo = columna[8].toString().trim().toLowerCase().startsWith('s');
-      if (!activo) continue;
+        // Solo eventos marcados como activos ("sí")
+        final activo = columna[8].toString().trim().toLowerCase().startsWith(
+          's',
+        );
+        if (!activo) continue;
 
-      eventos.add(ProximoEvento(
-        titulo: columna[0].toString(),
-        subtitulo: columna[1].toString(),
-        descripcion: columna[2].toString(),
-        fecha: columna[3].toString(),
-        lugar: columna[4].toString(),
-        portadaUrl: columna[5].toString(),
-        linkEntradas: columna[6].toString().isEmpty ? null : columna[6].toString(),
-        linkMasInfo: columna[7].toString().isEmpty ? null : columna[7].toString(),
-        activo: true,
-      ));
+        eventos.add(
+          ProximoEvento(
+            titulo: columna[0].toString(),
+            subtitulo: columna[1].toString(),
+            descripcion: columna[2].toString(),
+            fecha: columna[3].toString(),
+            lugar: columna[4].toString(),
+            portadaUrl: columna[5].toString(),
+            linkEntradas:
+                columna[6].toString().isEmpty ? null : columna[6].toString(),
+            linkMasInfo:
+                columna[7].toString().isEmpty ? null : columna[7].toString(),
+            activo: true,
+          ),
+        );
+      }
+
+      return eventos;
+    } catch (e) {
+      debugPrint('Error al cargar los eventos: $e');
+      return []; // Si algo falla, devuelve la lista vacía
     }
-
-    return eventos;
   }
 
   @override
   void initState() {
     super.initState();
-    _futureEventos = cargarEventosProximos(); // Se inicia la carga al iniciar la pantalla
+    _futureEventos =
+        cargarEventosProximos(); // Se inicia la carga al iniciar la pantalla
   }
 
   @override
@@ -79,7 +92,9 @@ class _NextEventsState extends State<NextEvents> {
         builder: (context, snapshot) {
           // Estado de carga
           if (snapshot.connectionState != ConnectionState.done) {
-            return const LoadingAnimation(mensaje: "Cargando próximos eventos...");
+            return const LoadingAnimation(
+              mensaje: "Cargando próximos eventos...",
+            );
           }
 
           // Manejo de error o datos nulos
@@ -93,7 +108,11 @@ class _NextEventsState extends State<NextEvents> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.error_outline, size: iconSize, color: Colors.redAccent),
+                    Icon(
+                      Icons.error_outline,
+                      size: iconSize,
+                      color: Colors.redAccent,
+                    ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
                       "No se pudo cargar los eventos.\nRevisa tu conexión a Internet.",
@@ -107,7 +126,10 @@ class _NextEventsState extends State<NextEvents> {
                           _futureEventos = cargarEventosProximos(); // Reintento
                         });
                       },
-                      child: Text("Reintentar", style: TextStyle(fontSize: fontSize * 0.9)),
+                      child: Text(
+                        "Reintentar",
+                        style: TextStyle(fontSize: fontSize * 0.9),
+                      ),
                     ),
                   ],
                 ),
@@ -126,7 +148,11 @@ class _NextEventsState extends State<NextEvents> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.event_busy, size: screenWidth * 0.2, color: Colors.grey),
+                    Icon(
+                      Icons.event_busy,
+                      size: screenWidth * 0.2,
+                      color: Colors.grey,
+                    ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
                       "No hay próximos eventos disponibles.",
@@ -152,12 +178,16 @@ class _NextEventsState extends State<NextEvents> {
                     icon: const Icon(Icons.help),
                     color: AppColors.appbarIcons,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const HelpNextEvents(),
-                        ),
-                      );
+                      try {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const HelpNextEvents(),
+                          ),
+                        );
+                      } catch (e) {
+                        debugPrint('Error al navegar a HelpNextEvents: $e');
+                      }
                     },
                   ),
                 ],
@@ -173,12 +203,13 @@ class _NextEventsState extends State<NextEvents> {
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1, // Tarjetas apiladas verticalmente
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 1,
-                      childAspectRatio: 0.7,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1, // Tarjetas apiladas verticalmente
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 1,
+                          childAspectRatio: 0.7,
+                        ),
                     itemCount: activos.length,
                     itemBuilder: (context, index) {
                       final evento = activos[index];

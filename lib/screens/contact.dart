@@ -1,5 +1,6 @@
 // Librerias importadas
 import 'package:flutter/material.dart';
+
 import '../customColors/app_colors.dart';
 import '../helpScreens/help_contact.dart';
 import '../widgets/banner.dart';
@@ -37,10 +38,14 @@ class Contact extends StatelessWidget {
                 icon: const Icon(Icons.help),
                 color: AppColors.appbarIcons,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const HelpContact()),
-                  );
+                  try {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const HelpContact()),
+                    );
+                  } catch (e) {
+                    debugPrint('Error al navegar a HelpContact: $e');
+                  }
                 },
               ),
             ],
@@ -118,7 +123,9 @@ class Contact extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onTap: () => OpenLink.abrirEnlace('mailto:info@grupotalia.org'),
+                    onTap:
+                        () =>
+                            OpenLink.abrirEnlace('mailto:info@grupotalia.org'),
                   ),
 
                   // Horario de atención
@@ -133,9 +140,9 @@ class Contact extends StatelessWidget {
                     ),
                     subtitle: Text(
                       'Lunes a viernes:\n'
-                          '8:00 – 14:00 y 17:00 – 20:00\n\n'
-                          'Sábados y domingos:\n'
-                          'Ensayos programados',
+                      '8:00 – 14:00 y 17:00 – 20:00\n\n'
+                      'Sábados y domingos:\n'
+                      'Ensayos programados',
                       style: TextStyle(
                         fontSize: bodyFontSize * 0.9,
                         fontWeight: FontWeight.w500,

@@ -77,10 +77,14 @@ class HelpContact extends StatelessWidget {
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(
+                  try {
+                    Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const Contact()),
                   );
+                  } catch (e) {
+                    print('Error al navegar a Contact: $e');
+                  }
                 },
                 icon: const Icon(Icons.people),
                 label: const Text('Ir a "Contacto"'),

@@ -28,7 +28,10 @@ class HelpEvents extends StatelessWidget {
             Text(
               '¿Qué puedes hacer aquí?',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
             SizedBox(height: spacingLarge),
@@ -37,13 +40,15 @@ class HelpEvents extends StatelessWidget {
             WidgetsUtil.bloqueAyuda(
               icono: Icons.calendar_today,
               titulo: 'Anteriores Eventos',
-              descripcion: 'Si tocas el icono, puedes consultar los conciertos y eventos para recordar.',
+              descripcion:
+                  'Si tocas el icono, puedes consultar los conciertos y eventos para recordar.',
             ),
 
             WidgetsUtil.bloqueAyuda(
               icono: Icons.calendar_today,
               titulo: 'Próximos Eventos',
-              descripcion: 'Si tocas el icono, puedes consultar los próximos conciertos y actividades programadas.',
+              descripcion:
+                  'Si tocas el icono, puedes consultar los próximos conciertos y actividades programadas.',
             ),
 
             SizedBox(height: spacingSmall),
@@ -52,10 +57,14 @@ class HelpEvents extends StatelessWidget {
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => Events()),
-                  );
+                  try {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => Events()),
+                    );
+                  } catch (e) {
+                    print('Error al navegar a Events: $e');
+                  }
                 },
                 icon: const Icon(Icons.calendar_month),
                 label: const Text('Ir a "Eventos"'),

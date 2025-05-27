@@ -1,5 +1,6 @@
 // Librerías necesarias para carga remota, parsing CSV y UI
 import 'dart:convert';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -29,33 +30,43 @@ class _PreviousEventsState extends State<PreviousEvents> {
   // Función que descarga, decodifica y parsea los eventos desde el CSV
   Future<List<AnteriorEvento>> cargarAnterioresEventos() async {
     final response = await http.get(Uri.parse(csvUrl));
+    try {
+      if (response.statusCode == 200) {
+        List<AnteriorEvento> eventos = [];
+        final String contenido = utf8.decode(response.bodyBytes);
+        final List<List<dynamic>> filas = const CsvToListConverter().convert(
+          contenido,
+          eol: '\n',
+        );
 
-    if (response.statusCode == 200) {
-      List<AnteriorEvento> eventos = [];
-      final String contenido = utf8.decode(response.bodyBytes);
-      final List<List<dynamic>> filas = const CsvToListConverter().convert(
-        contenido,
-        eol: '\n',
-      );
-
-      for (int i = 1; i < filas.length; i++) {
-        List<dynamic> columnas = filas[i];
-        if (columnas.length >= 6) {
-          eventos.add(
-            AnteriorEvento(
-              titulo: columnas[0].toString(),
-              subtitulo: columnas[1].toString(),
-              descripcion: columnas[2].toString(),
-              imagenUrl: columnas[3].toString(),
-              programaUrl: columnas[4].toString().isNotEmpty ? columnas[4].toString() : null,
-              activo: columnas[5].toString().trim().toLowerCase() == 'sí',
-            ),
-          );
+        for (int i = 1; i < filas.length; i++) {
+          List<dynamic> columnas = filas[i];
+          if (columnas.length >= 6) {
+            eventos.add(
+              AnteriorEvento(
+                titulo: columnas[0].toString(),
+                subtitulo: columnas[1].toString(),
+                descripcion: columnas[2].toString(),
+                imagenUrl: columnas[3].toString(),
+                programaUrl:
+                    columnas[4].toString().isNotEmpty
+                        ? columnas[4].toString()
+                        : null,
+                activo: columnas[5].toString().trim().toLowerCase() == 'sí',
+              ),
+            );
+          }
         }
+        return eventos;
+      } else {
+        debugPrint(
+          'Error HTTP al cargar eventos anteriores: ${response.statusCode}',
+        );
+        return [];
       }
-      return eventos;
-    } else {
-      throw Exception('Error cargando los eventos');
+    } catch (e) {
+      debugPrint('Error al cargar eventos anteriores: $e');
+      return [];
     }
   }
 
@@ -84,7 +95,9 @@ class _PreviousEventsState extends State<PreviousEvents> {
 
           // Estado de carga
           if (snapshot.connectionState != ConnectionState.done) {
-            return const LoadingAnimation(mensaje: "Cargando anteriores eventos...");
+            return const LoadingAnimation(
+              mensaje: "Cargando anteriores eventos...",
+            );
           }
 
           // Manejo de errores o datos nulos
@@ -95,7 +108,11 @@ class _PreviousEventsState extends State<PreviousEvents> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.error_outline, size: iconSize, color: Colors.redAccent),
+                    Icon(
+                      Icons.error_outline,
+                      size: iconSize,
+                      color: Colors.redAccent,
+                    ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
                       "No se pudo cargar los eventos.\nRevisa tu conexión a Internet.",
@@ -106,10 +123,14 @@ class _PreviousEventsState extends State<PreviousEvents> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          _futureEventos = cargarAnterioresEventos(); // Reintento de carga
+                          _futureEventos =
+                              cargarAnterioresEventos(); // Reintento de carga
                         });
                       },
-                      child: Text("Reintentar", style: TextStyle(fontSize: fontSize * 0.9)),
+                      child: Text(
+                        "Reintentar",
+                        style: TextStyle(fontSize: fontSize * 0.9),
+                      ),
                     ),
                   ],
                 ),
@@ -154,10 +175,16 @@ class _PreviousEventsState extends State<PreviousEvents> {
                     icon: const Icon(Icons.help),
                     color: AppColors.appbarIcons,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const HelpPreviousEvents()),
-                      );
+                      try {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const HelpPreviousEvents(),
+                          ),
+                        );
+                      } catch (e) {
+                        debugPrint('Error al navegar a HelpPreviousEvents: $e');
+                      }
                     },
                   ),
                 ],
@@ -170,28 +197,25 @@ class _PreviousEventsState extends State<PreviousEvents> {
                   vertical: verticalPadding,
                 ),
                 sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                      final evento = eventosActivos[index];
-                      return Center(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: contentMaxWidth),
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: screenHeight * 0.08),
-                            child: WidgetsUtil.tarjetaAnteriorEvento(
-                              context: context,
-                              titulo: evento.titulo,
-                              subtitulo: evento.subtitulo,
-                              imagenUrl: evento.imagenUrl,
-                              descripcion: evento.descripcion,
-                              programaUrl: evento.programaUrl,
-                            ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final evento = eventosActivos[index];
+                    return Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: contentMaxWidth),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: screenHeight * 0.08),
+                          child: WidgetsUtil.tarjetaAnteriorEvento(
+                            context: context,
+                            titulo: evento.titulo,
+                            subtitulo: evento.subtitulo,
+                            imagenUrl: evento.imagenUrl,
+                            descripcion: evento.descripcion,
+                            programaUrl: evento.programaUrl,
                           ),
                         ),
-                      );
-                    },
-                    childCount: eventosActivos.length,
-                  ),
+                      ),
+                    );
+                  }, childCount: eventosActivos.length),
                 ),
               ),
             ],

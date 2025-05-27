@@ -1,5 +1,6 @@
 // Librerias importadas
 import 'package:flutter/material.dart';
+
 import '../customColors/app_colors.dart';
 import '../screens/previous_events.dart';
 import '../widgets/widgets_util.dart';
@@ -27,7 +28,10 @@ class HelpPreviousEvents extends StatelessWidget {
             Text(
               '¿Qué puedes hacer aquí?',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(height: spacingLarge),
 
@@ -35,14 +39,14 @@ class HelpPreviousEvents extends StatelessWidget {
               icono: Icons.event_available,
               titulo: 'Eventos para recordar',
               descripcion:
-              'Aquí encontrarás eventos ya celebrados por Grupo Talía.',
+                  'Aquí encontrarás eventos ya celebrados por Grupo Talía.',
             ),
 
             WidgetsUtil.bloqueAyuda(
               icono: Icons.touch_app,
               titulo: 'Interacción con las tarjetas',
               descripcion:
-              'Puedes tocar sobre cada tarjeta '
+                  'Puedes tocar sobre cada tarjeta '
                   'para abrir una ventana con información detallada del evento.',
             ),
 
@@ -50,7 +54,7 @@ class HelpPreviousEvents extends StatelessWidget {
               icono: Icons.image,
               titulo: 'Eventos',
               descripcion:
-              'Cada evento tiene una imagen representativa y una descripción.\n\n'
+                  'Cada evento tiene una imagen representativa y una descripción.\n\n'
                   'Debajo de esta, si está disponible, podrás ver un para botón que al tocarlo, '
                   'te abrirá un PDF con el programa de mano del evento.',
             ),
@@ -60,10 +64,14 @@ class HelpPreviousEvents extends StatelessWidget {
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const PreviousEvents()),
-                  );
+                  try {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const PreviousEvents()),
+                    );
+                  } catch (e) {
+                    debugPrint('Error al navegar a PreviousEvents: $e');
+                  }
                 },
                 icon: const Icon(Icons.event),
                 label: const Text('Ir a "Anteriores Eventos"'),

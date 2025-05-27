@@ -28,7 +28,10 @@ class HelpNextEvents extends StatelessWidget {
             Text(
               '¿Qué puedes hacer aquí?',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
             SizedBox(height: spacingLarge),
@@ -37,14 +40,14 @@ class HelpNextEvents extends StatelessWidget {
               icono: Icons.event_available,
               titulo: 'Próximos Eventos',
               descripcion:
-              'Aquí encontrarás los próximos eventos que celebrará el Grupo Talía.',
+                  'Aquí encontrarás los próximos eventos que celebrará el Grupo Talía.',
             ),
 
             WidgetsUtil.bloqueAyuda(
               icono: Icons.touch_app,
               titulo: 'Interacción con las tarjetas',
               descripcion:
-              'Puedes tocar sobre cada tarjeta '
+                  'Puedes tocar sobre cada tarjeta '
                   'para abrir una ventana con información detallada del evento.',
             ),
 
@@ -52,7 +55,7 @@ class HelpNextEvents extends StatelessWidget {
               icono: Icons.image,
               titulo: 'Eventos',
               descripcion:
-              'Cada evento tiene una imagen representativa y una descripción.\n\n'
+                  'Cada evento tiene una imagen representativa y una descripción.\n\n'
                   'Debajo de esta podrás ver un para botón que al tocarlo, '
                   'te dirigirá a la página webs donde podrás comprar las entradas del evento',
             ),
@@ -62,10 +65,14 @@ class HelpNextEvents extends StatelessWidget {
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const NextEvents()),
-                  );
+                  try {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const NextEvents()),
+                    );
+                  } catch (e) {
+                    debugPrint('Error al navegar a NextEvents: $e');
+                  }
                 },
                 icon: const Icon(Icons.event),
                 label: const Text('Ir a "Próximos Eventos"'),

@@ -71,8 +71,7 @@ class HomeScreen extends StatelessWidget {
     String label,
     String iconPath,
     String route,
-  )
-  {
+  ) {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Column(
@@ -81,24 +80,29 @@ class HomeScreen extends StatelessWidget {
         WidgetsUtil.gridMenu(
           imagePath: iconPath,
           onTap: () {
-            if (route == 'REFRESCAR') {
-              // Si se pulsa "Refrescar", recarga la pantalla y muestra SnackBar
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Refrescando contenido...'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
+            try {
+              if (route == 'REFRESCAR') {
+                // Si se pulsa "Refrescar", recarga la pantalla y muestra SnackBar
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Refrescando contenido...'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
 
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeScreen(titulo: "Grupo Talía"),
-                ),
-              );
-            } else {
-              // Si es una ruta normal, navega a ella
-              Navigator.pushNamed(context, route);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => const HomeScreen(titulo: "Grupo Talía"),
+                  ),
+                );
+              } else {
+                // Si es una ruta normal, navega a ella
+                Navigator.pushNamed(context, route);
+              }
+            } catch (e) {
+              debugPrint('Error al navegar: $e');
             }
           },
         ),

@@ -4,6 +4,7 @@ import 'package:talia_app/customColors/app_colors.dart';
 import 'package:talia_app/helpScreens/help_about_us.dart';
 import 'package:talia_app/helpScreens/help_contact.dart';
 import 'package:talia_app/helpScreens/help_legal.dart';
+
 import '../credits/credits_screen.dart';
 
 // Clase para la pantalla de ayuda sin conexión
@@ -42,7 +43,10 @@ class HelpOffline extends StatelessWidget {
           children: [
             Text(
               'Guía de Ayuda sin conexión',
-              style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(height: spacingSmall),
             Text(
@@ -75,12 +79,16 @@ class HelpOffline extends StatelessWidget {
                   ),
                   trailing: Icon(Icons.arrow_forward_ios, size: iconSize),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => seccion['pantalla'] as Widget,
-                      ),
-                    );
+                    try {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => seccion['pantalla'] as Widget,
+                        ),
+                      );
+                    } catch (e) {
+                      debugPrint('Error al navegar a ${seccion['titulo']}: $e');
+                    }
                   },
                 ),
               );

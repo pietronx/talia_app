@@ -58,10 +58,16 @@ class NoConnection extends StatelessWidget {
                   // Botón para recargar el SplashScreen y forzar nuevo intento de conexión
                   ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const SplashScreen()),
-                      );
+                      try {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const SplashScreen(),
+                          ),
+                        );
+                      } catch (e) {
+                        debugPrint('Error al recargar SplashScreen: $e');
+                      }
                     },
                     icon: Icon(Icons.refresh, size: screenWidth * 0.05),
                     label: Text(
@@ -152,7 +158,13 @@ class NoConnection extends StatelessWidget {
       children: [
         WidgetsUtil.gridMenu(
           imagePath: iconPath,
-          onTap: () => Navigator.pushNamed(context, route),
+          onTap: () {
+            try {
+              Navigator.pushNamed(context, route);
+            } catch (e) {
+              debugPrint('Error al navegar a $route: $e');
+            }
+          },
           height: screenHeight * 0.15,
         ),
         SizedBox(height: screenHeight * 0.01),

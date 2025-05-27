@@ -27,10 +27,14 @@ class AboutUs extends StatelessWidget {
             icon: const Icon(Icons.help),
             color: AppColors.appbarIcons,
             onPressed: () {
+              try {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const HelpAboutUs()),
               );
+              } catch (e) {
+                debugPrint('Error al navegar a HelpAboutUs: $e');
+              }
             },
           ),
         ],

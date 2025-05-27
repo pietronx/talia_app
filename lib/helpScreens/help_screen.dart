@@ -75,7 +75,8 @@ class HelpScreen extends StatelessWidget {
                     ),
                     children: [
                       const TextSpan(
-                        text: 'Selecciona una sección para recibir ayuda sobre cómo usar esa parte de la aplicación.\n\n'
+                        text:
+                            'Selecciona una sección para recibir ayuda sobre cómo usar esa parte de la aplicación.\n\n'
                             'Encontrarás explicaciones sencillas y enlaces útiles para navegar sin dificultad.\n\n'
                             'En la ',
                       ),
@@ -84,7 +85,8 @@ class HelpScreen extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const TextSpan(
-                        text: ', encontrarás cinco iconos que te ayudarán a navegar por la aplicación.\n\n'
+                        text:
+                            ', encontrarás cinco iconos que te ayudarán a navegar por la aplicación.\n\n'
                             'El primer icono, ',
                       ),
                       TextSpan(
@@ -92,7 +94,8 @@ class HelpScreen extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const TextSpan(
-                        text: ' , sirve para actualizar el contenido de la app como eventos, noticias, etc.',
+                        text:
+                            ' , sirve para actualizar el contenido de la app como eventos, noticias, etc.',
                       ),
                     ],
                   ),
@@ -124,12 +127,18 @@ class HelpScreen extends StatelessWidget {
                       ),
                       trailing: Icon(Icons.arrow_forward_ios, size: iconSize),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => seccion['pantalla'] as Widget,
-                          ),
-                        );
+                        try {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => seccion['pantalla'] as Widget,
+                            ),
+                          );
+                        } catch (e) {
+                          debugPrint(
+                            'Error al navegar a ${seccion['titulo']}: $e',
+                          );
+                        }
                       },
                     ),
                   );

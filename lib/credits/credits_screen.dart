@@ -1,5 +1,6 @@
 // Librerias importadas
 import 'package:flutter/material.dart';
+
 import '../customColors/app_colors.dart';
 import 'animation_credits.dart';
 import 'icon_credits.dart';
@@ -25,9 +26,7 @@ class CreditsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Créditos'),
-      ),
+      appBar: AppBar(title: const Text('Créditos')),
       body: Padding(
         padding: EdgeInsets.all(padding),
         child: ListView(
@@ -50,7 +49,10 @@ class CreditsScreen extends StatelessWidget {
             // Mapeo de secciones
             ...secciones.map((seccion) {
               return Card(
-                margin: EdgeInsets.symmetric(vertical: spacing * 0.6, horizontal: spacing * 0.3),
+                margin: EdgeInsets.symmetric(
+                  vertical: spacing * 0.6,
+                  horizontal: spacing * 0.3,
+                ),
                 color: AppColors.fondo,
                 elevation: 5,
                 shadowColor: AppColors.titulo,
@@ -69,16 +71,20 @@ class CreditsScreen extends StatelessWidget {
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => seccion['pantalla'] as Widget,
-                      ),
-                    );
+                    try {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => seccion['pantalla'] as Widget,
+                        ),
+                      );
+                    } catch (e) {
+                      debugPrint('Error al cargar la pantalla de créditos: $e');
+                    }
                   },
                 ),
               );
-            })
+            }),
           ],
         ),
       ),

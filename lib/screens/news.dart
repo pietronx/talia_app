@@ -29,32 +29,40 @@ class _NewsState extends State<News> {
 
   // Función para cargar y parsear las noticias desde el CSV remoto
   Future<List<Noticia>> cargarNoticias() async {
-    final response = await http.get(Uri.parse(csvUrl));
-    final contenido = utf8.decode(response.bodyBytes);
-    final columnas = const CsvToListConverter().convert(contenido, eol: '\n');
+    try {
+      final response = await http.get(Uri.parse(csvUrl));
+      final contenido = utf8.decode(response.bodyBytes);
+      final columnas = const CsvToListConverter().convert(contenido, eol: '\n');
 
-    List<Noticia> noticias = [];
+      List<Noticia> noticias = [];
 
-    for (int i = 1; i < columnas.length; i++) {
-      final columna = columnas[i];
-      if (columna.length < 6) continue;
+      for (int i = 1; i < columnas.length; i++) {
+        final columna = columnas[i];
+        if (columna.length < 6) continue;
 
-      final activo = columna[5].toString().trim().toLowerCase().startsWith('s');
-      if (!activo) continue;
+        final activo = columna[5].toString().trim().toLowerCase().startsWith(
+          's',
+        );
+        if (!activo) continue;
 
-      final noticia = Noticia(
-        titulo: columna[0].toString(),
-        fecha: columna[1].toString(),
-        descripcion: columna[2].toString(),
-        portadaUrl: columna[3].toString(),
-        linkMasInfo: columna[4].toString().isEmpty ? null : columna[4].toString(),
-        activo: true,
-      );
+        final noticia = Noticia(
+          titulo: columna[0].toString(),
+          fecha: columna[1].toString(),
+          descripcion: columna[2].toString(),
+          portadaUrl: columna[3].toString(),
+          linkMasInfo:
+              columna[4].toString().isEmpty ? null : columna[4].toString(),
+          activo: true,
+        );
 
-      noticias.add(noticia);
+        noticias.add(noticia);
+      }
+
+      return noticias;
+    } catch (e) {
+      debugPrint('Error al cargar las noticias: $e');
+      return []; // Si algo fall, devuelve la lista vacía
     }
-
-    return noticias;
   }
 
   @override
@@ -92,7 +100,11 @@ class _NewsState extends State<News> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.error_outline, size: iconSize, color: Colors.redAccent),
+                    Icon(
+                      Icons.error_outline,
+                      size: iconSize,
+                      color: Colors.redAccent,
+                    ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
                       "No se pudo cargar las noticias.\nRevisa tu conexión a Internet.",
@@ -106,7 +118,10 @@ class _NewsState extends State<News> {
                           _noticia = cargarNoticias(); // Reintento manual
                         });
                       },
-                      child: Text("Reintentar", style: TextStyle(fontSize: fontSize * 0.9)),
+                      child: Text(
+                        "Reintentar",
+                        style: TextStyle(fontSize: fontSize * 0.9),
+                      ),
                     ),
                   ],
                 ),
@@ -125,7 +140,11 @@ class _NewsState extends State<News> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.event_busy, size: screenWidth * 0.2, color: Colors.grey),
+                    Icon(
+                      Icons.event_busy,
+                      size: screenWidth * 0.2,
+                      color: Colors.grey,
+                    ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
                       "No hay noticias disponibles.",
@@ -151,10 +170,14 @@ class _NewsState extends State<News> {
                     icon: const Icon(Icons.help),
                     color: AppColors.appbarIcons,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const HelpNews()),
-                      );
+                      try {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const HelpNews()),
+                        );
+                      } catch (e) {
+                        debugPrint('Error al navegar a HelpNews: $e');
+                      }
                     },
                   ),
                 ],
@@ -167,20 +190,17 @@ class _NewsState extends State<News> {
                   vertical: verticalPadding,
                 ),
                 sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                      final noticia = activos[index];
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: screenHeight * 0.025),
-                        child: WidgetsUtil.tarjetaNoticia(
-                          context: context,
-                          index: index,
-                          noticia: noticia,
-                        ),
-                      );
-                    },
-                    childCount: activos.length,
-                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final noticia = activos[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: screenHeight * 0.025),
+                      child: WidgetsUtil.tarjetaNoticia(
+                        context: context,
+                        index: index,
+                        noticia: noticia,
+                      ),
+                    );
+                  }, childCount: activos.length),
                 ),
               ),
             ],

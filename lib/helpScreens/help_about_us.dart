@@ -1,5 +1,6 @@
 // Librerias importadas
 import 'package:flutter/material.dart';
+
 import '../customColors/app_colors.dart';
 import '../screens/about_us.dart';
 import '../widgets/widgets_util.dart';
@@ -26,7 +27,10 @@ class HelpAboutUs extends StatelessWidget {
             Text(
               '¿Que puedes hacer aquí?',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
             SizedBox(height: spacing),
@@ -36,7 +40,7 @@ class HelpAboutUs extends StatelessWidget {
               icono: Icons.image,
               titulo: 'Imagen del Grupo Talía',
               descripcion:
-              'Al inicio encontrarás un banner visual con la imagen del grupo y varios enlaces.\n'
+                  'Al inicio encontrarás un banner visual con la imagen del grupo y varios enlaces.\n'
                   'Toca los iconos para acceder a ellos',
             ),
 
@@ -44,7 +48,7 @@ class HelpAboutUs extends StatelessWidget {
               icono: Icons.people,
               titulo: 'Directores',
               descripcion:
-              'Verás fotos de los directores del grupo y una breve descripción.',
+                  'Verás fotos de los directores del grupo y una breve descripción.',
               puntos: [
                 'Cada director tiene iconos debajo con enlaces a sus redes sociales.',
                 'Toca los iconos para abrir sus perfiles en Facebook, Instagram, Twitter o LinkedIn.',
@@ -54,7 +58,7 @@ class HelpAboutUs extends StatelessWidget {
             WidgetsUtil.bloqueAyuda(
               titulo: 'Pie de página',
               descripcion:
-              'Al final de la pantalla encontrarás enlaces importantes:',
+                  'Al final de la pantalla encontrarás enlaces importantes:',
               puntos: ['Política de Privacidad', 'Aviso Legal'],
             ),
 
@@ -66,10 +70,14 @@ class HelpAboutUs extends StatelessWidget {
                 icon: const Icon(Icons.feed),
                 label: const Text('Ir a "Sobre Nosotros"'),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const AboutUs()),
-                  );
+                  try {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AboutUs()),
+                    );
+                  } catch (e) {
+                    print('Error al navegar a AboutUs: $e');
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.texto,
