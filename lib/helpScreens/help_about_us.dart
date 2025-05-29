@@ -76,7 +76,7 @@ class HelpAboutUs extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => const AboutUs()),
                     );
                   } catch (e) {
-                    print('Error al navegar a AboutUs: $e');
+                    debugPrint('Error al navegar a AboutUs: $e');
                   }
                 },
                 style: ElevatedButton.styleFrom(

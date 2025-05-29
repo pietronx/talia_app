@@ -382,8 +382,9 @@ class WidgetsUtil {
                           onPressed: () {
                             try {
                               Navigator.of(context).pop();
-                              if (onClose != null)
-                                onClose(); // Acción extra si se define
+                              if (onClose != null) {
+                                onClose();
+                              } // Acción extra si se define
                             } catch (e) {
                               debugPrint('Error al cerrar el modal: $e');
                             }

@@ -83,7 +83,7 @@ class HelpContact extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const Contact()),
                   );
                   } catch (e) {
-                    print('Error al navegar a Contact: $e');
+                    debugPrint('Error al navegar a Contact: $e');
                   }
                 },
                 icon: const Icon(Icons.people),

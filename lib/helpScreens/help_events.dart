@@ -63,7 +63,7 @@ class HelpEvents extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => Events()),
                     );
                   } catch (e) {
-                    print('Error al navegar a Events: $e');
+                    debugPrint('Error al navegar a Events: $e');
                   }
                 },
                 icon: const Icon(Icons.calendar_month),
