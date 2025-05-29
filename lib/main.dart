@@ -15,6 +15,7 @@ import 'package:talia_app/screens/news.dart';
 import 'package:talia_app/screens/next_events.dart';
 import 'package:talia_app/screens/previous_events.dart';
 import 'package:talia_app/screens/splash_screen.dart';
+import 'package:talia_app/screens/abonados.dart';
 
 // Archivos internos del proyecto
 import 'customColors/app_colors.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
         '/screens/nextEvents': (context) => const NextEvents(),
         '/screens/previousEvents': (context) => const PreviousEvents(),
         '/screens/news': (context) => const News(),
+        '/screens/susbcribers': (context) => const Abonados(),
         '/helpScreens/help_screen': (context) => const HelpScreen(),
         '/helpScreens/help_offline': (context) => const HelpOffline(),
         '/splash_screen': (context) => const SplashScreen(),

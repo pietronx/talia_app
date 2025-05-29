@@ -21,13 +21,13 @@ class Events extends StatelessWidget {
     final items = [
       {
         'label': 'Anteriores\nEventos',
-        'icon': 'assets/icons/pastEventsIcon.png',
+        'icon': 'assets/icons/pastEventsIconBW.png',
         'route': '/screens/previousEvents',
         // Ruta a la pantalla correspondiente
       },
       {
         'label': 'Próximos\nEventos',
-        'icon': 'assets/icons/futureEventsIcon.png',
+        'icon': 'assets/icons/futureEventsIconBW.png',
         'route': '/screens/nextEvents',
       },
     ];

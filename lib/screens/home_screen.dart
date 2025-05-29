@@ -22,12 +22,13 @@ class HomeScreen extends StatelessWidget {
     // Lista de elementos que se mostrarán en el grid
     // Cada elemento incluye: texto, icono y ruta o comando
     final items = [
-      ['Refrescar', 'assets/icons/refreshIcon.png', 'REFRESCAR'],
-      ['Sobre Nosotros', 'assets/icons/infoIcon.png', '/about_us'],
-      ['Contacto', 'assets/icons/contactIcon.png', '/contact'],
-      ['Eventos', 'assets/icons/eventsIcon.png', '/screens/events'],
-      ['Noticias', 'assets/icons/newsIcon.png', '/screens/news'],
-      ['Ayuda', 'assets/icons/helpIcon.png', '/helpScreens/help_screen'],
+      ['Sobre Nosotros', 'assets/icons/infoIconBW.png', '/about_us'],
+      ['Contacto', 'assets/icons/contactIconBW.png', '/contact'],
+      ['Abonados', 'assets/icons/suscriberIcon.png', '/screens/susbcribers'],
+      ['Eventos', 'assets/icons/eventsIconBW.png', '/screens/events'],
+      ['Noticias', 'assets/icons/newsIconBW.png', '/screens/news'],
+      ['Refrescar', 'assets/icons/refreshIconBW.png', 'REFRESCAR'],
+      ['Ayuda', 'assets/icons/helpIconBW.png', '/helpScreens/help_screen'],
     ];
 
     return Scaffold(

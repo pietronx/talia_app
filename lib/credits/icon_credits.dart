@@ -22,44 +22,49 @@ class IconCredits extends StatelessWidget {
     // Secciones de creditos
     final creditos = [
       {
-        'icon': 'assets/icons/helpIcon.png',
+        'icon': 'assets/icons/suscriberIcon.png',
+        'descripcion': 'Icono de Abonados creado por Freepik',
+        'url': 'https://www.flaticon.es/icono-gratis/boleto_1061702?related_id=1061651&origin=search',
+      },
+      {
+        'icon': 'assets/icons/helpIconBW.png',
         'descripcion': 'Icono de Ayuda creado por Freepik',
-        'url': 'https://www.flaticon.es/icono-gratis/servicio-al-cliente_2706962?term=soporte&page=1&position=15&origin=search&related_id=2706962',
+        'url': 'https://www.flaticon.es/icono-gratis/ayudar_1660114?term=ayuda&related_id=1660114',
       },
       {
-        'icon': 'assets/icons/eventsIcon.png',
+        'icon': 'assets/icons/eventsIconBW.png',
         'descripcion': 'Icono de Eventos creado por Uniconlabs',
-        'url': 'https://www.flaticon.es/icono-gratis/calendario_5656194',
+        'url': 'https://www.flaticon.es/icono-gratis/calendario_5656173?related_id=5656087&origin=search',
       },
       {
-        'icon': 'assets/icons/pastEventsIcon.png',
+        'icon': 'assets/icons/pastEventsIconBW.png',
         'descripcion': 'Icono de Anteriores Eventos creado por Uniconlabs',
-        'url': 'https://www.flaticon.es/icono-gratis/calendario_5656753'
+        'url': 'https://www.flaticon.es/icono-gratis/planificador_5656086?related_id=5656049&origin=search'
       },
       {
-        'icon': 'assets/icons/futureEventsIcon.png',
+        'icon': 'assets/icons/futureEventsIconBW.png',
         'descripcion': 'Icono de Próximos Eventos creado por Uniconlabs',
-        'url': 'https://www.flaticon.es/icono-gratis/planificador_5656103'
+        'url': 'https://www.flaticon.es/icono-gratis/calendario_5656690?related_id=5656753&origin=search'
       },
       {
-        'icon': 'assets/icons/contactIcon.png',
+        'icon': 'assets/icons/contactIconBW.png',
         'descripcion': 'Icono de Contacto creado por pojok d',
-        'url': 'https://www.flaticon.es/icono-gratis/contact-us_9194840',
+        'url': 'https://www.flaticon.es/icono-gratis/contact-us_9194860?related_id=9194848&origin=search',
       },
       {
-        'icon': 'assets/icons/infoIcon.png',
+        'icon': 'assets/icons/infoIconBW.png',
         'descripcion': 'Icono de Información creado por Mehwish',
-        'url': 'https://www.flaticon.es/icono-gratis/lista_6592963?related_id=6592952&origin=search',
+        'url': 'https://www.flaticon.es/icono-gratis/lista_6593003?related_id=6593002&origin=search',
       },
       {
-        'icon' : 'assets/icons/refreshIcon.png',
+        'icon' : 'assets/icons/refreshIconBW.png',
         'descripcion': 'Icono de Recargar creado por mavadee',
-        'url': 'https://www.flaticon.es/icono-gratis/recargar_3580324?related_id=3580284&origin=search&k=1747900843411&log-in=google',
+        'url': 'https://www.flaticon.es/icono-gratis/recargar_3580303?related_id=3580304&origin=search',
       },
       {
-        'icon': 'assets/icons/newsIcon.png',
+        'icon': 'assets/icons/newsIconBW.png',
         'descripcion': 'Icono de Noticias creado por Freepik',
-        'url': 'https://www.flaticon.es/icono-gratis/periodico_2965879?term=noticias&related_id=2965879'
+        'url': 'https://www.flaticon.es/icono-gratis/periodico_2965851?related_id=2965879&origin=search'
       },
       {
         'icon': 'assets/icons/facebookIcon.png',

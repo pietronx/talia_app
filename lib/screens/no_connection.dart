@@ -18,9 +18,9 @@ class NoConnection extends StatelessWidget {
 
     // Opciones disponibles en modo offline
     final items = [
-      ['Sobre Nosotros', 'assets/icons/infoIcon.png', '/about_us'],
-      ['Contacto', 'assets/icons/contactIcon.png', '/contact'],
-      ['Ayuda', 'assets/icons/helpIcon.png', '/helpScreens/help_offline'],
+      ['Sobre Nosotros', 'assets/icons/infoIconBW.png', '/about_us'],
+      ['Contacto', 'assets/icons/contactIconBW.png', '/contact'],
+      ['Ayuda', 'assets/icons/helpIconBW.png', '/helpScreens/help_offline'],
     ];
 
     return Scaffold(
