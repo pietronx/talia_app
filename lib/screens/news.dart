@@ -31,8 +31,14 @@ class _NewsState extends State<News> {
   Future<List<Noticia>> cargarNoticias() async {
     try {
       final response = await http.get(Uri.parse(csvUrl));
+      // Puedes controlar el status code si lo deseas
+      if (response.statusCode != 200) {
+        throw Exception("Error en la respuesta HTTP: ${response.statusCode}");
+      }
+
       final contenido = utf8.decode(response.bodyBytes);
-      final columnas = const CsvToListConverter().convert(contenido, eol: '\n');
+      final columnas =
+      const CsvToListConverter().convert(contenido, eol: '\n');
 
       List<Noticia> noticias = [];
 
@@ -40,9 +46,7 @@ class _NewsState extends State<News> {
         final columna = columnas[i];
         if (columna.length < 6) continue;
 
-        final activo = columna[5].toString().trim().toLowerCase().startsWith(
-          's',
-        );
+        final activo = columna[5].toString().trim().toLowerCase().startsWith('s');
         if (!activo) continue;
 
         final noticia = Noticia(
@@ -50,8 +54,9 @@ class _NewsState extends State<News> {
           fecha: columna[1].toString(),
           descripcion: columna[2].toString(),
           portadaUrl: columna[3].toString(),
-          linkMasInfo:
-              columna[4].toString().isEmpty ? null : columna[4].toString(),
+          linkMasInfo: columna[4].toString().isEmpty
+              ? null
+              : columna[4].toString(),
           activo: true,
         );
 
@@ -61,7 +66,8 @@ class _NewsState extends State<News> {
       return noticias;
     } catch (e) {
       debugPrint('Error al cargar las noticias: $e');
-      return []; // Si algo fall, devuelve la lista vacía
+      // Relanza el error para que el FutureBuilder lo detecte
+      throw Exception('Error al cargar las noticias: $e');
     }
   }
 

@@ -24,10 +24,11 @@ class HomeScreen extends StatelessWidget {
     final items = [
       ['Sobre Nosotros', 'assets/icons/infoIconBW.png', '/about_us'],
       ['Contacto', 'assets/icons/contactIconBW.png', '/contact'],
-      ['Abonados', 'assets/icons/suscriberIcon.png', '/screens/susbcribers'],
+      ['Abonados', 'assets/icons/suscriberIcon.png', '/screens/abonados'],
+      ['Nuestros Músicos', 'assets/icons/musicianIconBW.png', '/screens/musicos_screen'],
       ['Eventos', 'assets/icons/eventsIconBW.png', '/screens/events'],
       ['Noticias', 'assets/icons/newsIconBW.png', '/screens/news'],
-      ['Refrescar', 'assets/icons/refreshIconBW.png', 'REFRESCAR'],
+      ['Refrescar\nla app', 'assets/icons/refreshIconBW.png', 'REFRESCAR'],
       ['Ayuda', 'assets/icons/helpIconBW.png', '/helpScreens/help_screen'],
     ];
 
@@ -57,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                 // Máximo ancho por celda
                 mainAxisSpacing: 20,
                 crossAxisSpacing: 30,
-                childAspectRatio: 0.7, // Relación ancho/alto de cada item
+                childAspectRatio: 0.68, // Relación ancho/alto de cada item
               ),
             ),
           ),
