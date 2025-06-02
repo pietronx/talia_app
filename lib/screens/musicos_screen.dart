@@ -153,7 +153,7 @@ class _MusicosScreenState extends State<Musicos> {
               BannerPersonalizado(
                 titulo: 'Nuestros Músicos',
                 fontSize: fontSize * 1.2,
-                assetImage: 'assets/images/bannerNoticias.jpg',
+                assetImage: 'assets/images/bannerMusicos.png',
                 acciones: [
                   IconButton(
                     icon: const Icon(Icons.help),
