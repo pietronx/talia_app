@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 // Paquetes externos
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
+// Clases
 import 'package:talia_app/helpScreens/help_offline.dart';
 import 'package:talia_app/screens/abonados.dart';
 import 'package:talia_app/screens/about_us.dart';
@@ -13,10 +15,11 @@ import 'package:talia_app/screens/events.dart';
 import 'package:talia_app/screens/musicos_screen.dart';
 import 'package:talia_app/screens/news.dart';
 import 'package:talia_app/screens/next_events.dart';
+import 'package:talia_app/screens/offline_about_us.dart';
+import 'package:talia_app/screens/offline_screen.dart';
 import 'package:talia_app/screens/previous_events.dart';
 import 'package:talia_app/screens/splash_screen.dart';
 
-// Clases
 
 // Archivos internos del proyecto
 import 'customColors/app_colors.dart';
@@ -82,6 +85,8 @@ class MyApp extends StatelessWidget {
         '/screens/news': (context) => const News(),
         '/screens/musicos_screen': (context) => const Musicos(),
         '/screens/abonados': (context) => const Abonados(),
+        '/screens/offline_screen': (context) => const NoConnection(),
+        '/offline_about_us': (context) => const OfflineAboutUs(),
         '/helpScreens/help_about_us': (context) => const HelpAboutUs(),
         '/helpScreens/help_screen': (context) => const HelpScreen(),
         '/helpScreens/help_offline': (context) => const HelpOffline(),

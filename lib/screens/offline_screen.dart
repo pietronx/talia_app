@@ -1,9 +1,9 @@
 // Librerias importadas
 import 'package:flutter/material.dart';
 import 'package:talia_app/customColors/app_colors.dart';
+import 'package:talia_app/screens/splash_screen.dart';
 
 import '../widgets/widgets_util.dart';
-import 'splash_screen.dart';
 
 // Pantalla que se muestra cuando no hay conexión a Internet
 class NoConnection extends StatelessWidget {
@@ -18,7 +18,7 @@ class NoConnection extends StatelessWidget {
 
     // Opciones disponibles en modo offline
     final items = [
-      ['Sobre Nosotros', 'assets/icons/infoIconBW.png', '/about_us'],
+      ['Sobre Nosotros', 'assets/icons/infoIconBW.png', '/offline_about_us' ],
       ['Contacto', 'assets/icons/contactIconBW.png', '/contact'],
       ['Ayuda', 'assets/icons/helpIconBW.png', '/helpScreens/help_offline'],
     ];

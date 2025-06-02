@@ -7,7 +7,7 @@ import 'package:talia_app/customColors/app_colors.dart';
 import 'package:talia_app/widgets/loading_animation.dart';
 
 import 'home_screen.dart';
-import 'no_connection.dart';
+import 'offline_screen.dart';
 
 // Pantalla de carga inicial que verifica si hay conexión antes de entrar a la app
 class SplashScreen extends StatefulWidget {

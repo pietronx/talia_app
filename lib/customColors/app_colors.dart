@@ -9,6 +9,10 @@ class AppColors {
   static const Color titulo = Color(0xFF8B4513);
   static const Color dividerColor = Color(0xFF5A3E36);
 
+  // Colores personalizados para las tarjetas
+  static const Color cardSilvia = Color(0xFF510000); // Púrpura vibrante
+  static const Color cardAlejandro = Color(0xFF4C4C4C); // Verde elegante
+
   //----------------------> AppBar <----------------------\\
   static const Color appbar = Color(0xFF5A3E36);
   static const Color appbarTitulo = Color(0xFFFFFFFF);
