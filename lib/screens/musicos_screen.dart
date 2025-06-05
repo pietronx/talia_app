@@ -1,10 +1,13 @@
 // Importaciones necesarias
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:talia_app/widgets/musico_destacado.dart';
+import 'package:talia_app/helpScreens/help_musician.dart';
 import 'package:talia_app/widgets/loading_animation.dart';
+import 'package:talia_app/widgets/musico_destacado.dart';
+
 import '../customColors/app_colors.dart';
 import '../models/musico.dart';
 import '../widgets/banner.dart';
@@ -40,6 +43,7 @@ class _MusicosScreenState extends State<Musicos> {
       final rows = const CsvToListConverter().convert(contenido, eol: '\n');
 
       List<Musico> musicos = [];
+
       for (int i = 1; i < rows.length; i++) {
         final row = rows[i];
         if (row.length < 5) continue;
@@ -85,6 +89,7 @@ class _MusicosScreenState extends State<Musicos> {
           if (snapshot.hasError || snapshot.data == null) {
             final iconSize = screenWidth * 0.2;
             final padding = screenWidth * 0.1;
+
             return Center(
               child: Padding(
                 padding: EdgeInsets.all(padding),
@@ -98,7 +103,7 @@ class _MusicosScreenState extends State<Musicos> {
                     ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
-                      "No se pudo cargar los músicos.\nRevisa tu conexión a Internet.",
+                      "No se pudo cargar el contenido.\nRevisa tu conexión a Internet.",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: fontSize),
                     ),
@@ -137,7 +142,7 @@ class _MusicosScreenState extends State<Musicos> {
                     ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
-                      "No hay músicos disponibles.",
+                      "No hay integrantes disponibles.",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: fontSize),
                     ),
@@ -151,7 +156,7 @@ class _MusicosScreenState extends State<Musicos> {
           return CustomScrollView(
             slivers: [
               BannerPersonalizado(
-                titulo: 'Nuestros Músicos',
+                titulo: 'Integrantes',
                 fontSize: fontSize * 1.2,
                 assetImage: 'assets/images/bannerMusicos.png',
                 acciones: [
@@ -159,7 +164,14 @@ class _MusicosScreenState extends State<Musicos> {
                     icon: const Icon(Icons.help),
                     color: AppColors.appbarIcons,
                     onPressed: () {
-                      // TODO: Acciones de ayuda (por ejemplo, navegar a una pantalla de ayuda)
+                      try {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const HelpMusician()),
+                        );
+                      } catch (e) {
+                        debugPrint('Error al navegar a HelpNews: $e');
+                      }
                     },
                   ),
                 ],
@@ -176,7 +188,7 @@ class _MusicosScreenState extends State<Musicos> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Conoce a nuestros músicos...",
+                        "Conoce a los que integran el Grupo Talía...",
                         style: TextStyle(
                           fontSize: fontSize * 1.3,
                           fontWeight: FontWeight.bold,
@@ -196,22 +208,21 @@ class _MusicosScreenState extends State<Musicos> {
 
               // Lista de músicos
               SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
+                padding: EdgeInsets.only(
+                  left: horizontalPadding * 0.5,
+                  right: horizontalPadding * 0.5,
+                  bottom: verticalPadding * 1.5,
                 ),
                 sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                      final musico = musicos[index];
-                      return MusicoDestacado(
-                        nombre: musico.nombre,
-                        instrumento: musico.instrumento,
-                        descripcion: musico.descripcion,
-                        fotoUrl: musico.fotoUrl,
-                      );
-                    },
-                    childCount: musicos.length,
-                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final musico = musicos[index];
+                    return MusicoDestacado(
+                      nombre: musico.nombre,
+                      instrumento: musico.instrumento,
+                      descripcion: musico.descripcion,
+                      fotoUrl: musico.fotoUrl,
+                    );
+                  }, childCount: musicos.length),
                 ),
               ),
             ],

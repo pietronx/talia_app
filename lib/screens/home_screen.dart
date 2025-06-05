@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       ['Sobre Nosotros', 'assets/icons/infoIconBW.png', '/about_us'],
       ['Contacto', 'assets/icons/contactIconBW.png', '/contact'],
       ['Abonados', 'assets/icons/suscriberIcon.png', '/screens/abonados'],
-      ['Nuestros Músicos', 'assets/icons/musicianIconBW.png', '/screens/musicos_screen'],
+      ['Integrantes del Grupo Talía', 'assets/icons/musicianIconBW.png', '/screens/musicos_screen'],
       ['Eventos', 'assets/icons/eventsIconBW.png', '/screens/events'],
       ['Noticias', 'assets/icons/newsIconBW.png', '/screens/news'],
       ['Refrescar\nla app', 'assets/icons/refreshIconBW.png', 'REFRESCAR'],

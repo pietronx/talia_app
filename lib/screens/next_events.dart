@@ -27,10 +27,22 @@ class _NextEventsState extends State<NextEvents> {
 
   late Future<List<ProximoEvento>> _futureEventos;
 
+  @override
+  void initState() {
+    super.initState();
+    _futureEventos = cargarEventosProximos();
+  }
+
   // Carga de eventos desde el CSV remoto
   Future<List<ProximoEvento>> cargarEventosProximos() async {
     try {
       final response = await http.get(Uri.parse(csvUrl));
+
+      // Si la solicitud falla (sin conexión)
+      if (response.statusCode != 200) {
+        throw Exception("Error en respuesta HTTP: ${response.statusCode}");
+      }
+
       final contenido = utf8.decode(response.bodyBytes);
       final columnas = const CsvToListConverter().convert(contenido, eol: '\n');
 
@@ -40,10 +52,7 @@ class _NextEventsState extends State<NextEvents> {
         final columna = columnas[i];
         if (columna.length < 9) continue;
 
-        // Solo eventos marcados como activos ("sí")
-        final activo = columna[8].toString().trim().toLowerCase().startsWith(
-          's',
-        );
+        final activo = columna[8].toString().trim().toLowerCase().startsWith('s');
         if (!activo) continue;
 
         eventos.add(
@@ -54,10 +63,8 @@ class _NextEventsState extends State<NextEvents> {
             fecha: columna[3].toString(),
             lugar: columna[4].toString(),
             portadaUrl: columna[5].toString(),
-            linkEntradas:
-                columna[6].toString().isEmpty ? null : columna[6].toString(),
-            linkMasInfo:
-                columna[7].toString().isEmpty ? null : columna[7].toString(),
+            linkEntradas: columna[6].toString().isEmpty ? null : columna[6].toString(),
+            linkMasInfo: columna[7].toString().isEmpty ? null : columna[7].toString(),
             activo: true,
           ),
         );
@@ -66,15 +73,14 @@ class _NextEventsState extends State<NextEvents> {
       return eventos;
     } catch (e) {
       debugPrint('Error al cargar los eventos: $e');
-      return []; // Si algo falla, devuelve la lista vacía
-    }
-  }
 
-  @override
-  void initState() {
-    super.initState();
-    _futureEventos =
-        cargarEventosProximos(); // Se inicia la carga al iniciar la pantalla
+      // Si es un error de conexión
+      if (e.toString().contains("Failed host lookup")) {
+        throw Exception("Sin conexión a Internet");
+      }
+
+      return []; // Si otro tipo de error ocurre, devuelve lista vacía
+    }
   }
 
   @override
@@ -123,7 +129,7 @@ class _NextEventsState extends State<NextEvents> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          _futureEventos = cargarEventosProximos(); // Reintento
+                          _futureEventos = cargarEventosProximos();
                         });
                       },
                       child: Text(

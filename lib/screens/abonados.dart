@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:talia_app/helpScreens/help_abonados.dart';
 
 import '../customColors/app_colors.dart';
-import '../helpScreens/help_news.dart';
 import '../widgets/banner.dart';
 import '../widgets/widgets_util.dart';
 
@@ -39,7 +39,7 @@ class _AbonadosState extends State<Abonados> {
                   try {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const HelpNews()),
+                      MaterialPageRoute(builder: (_) => const HelpAbonados()),
                     );
                   } catch (e) {
                     debugPrint('Error al navegar a HelpNews: $e');
@@ -82,7 +82,7 @@ class _AbonadosState extends State<Abonados> {
                   Text(
                     'Los abonos te permiten disfrutar de toda la temporada musical '
                     'del Grupo Talía de forma cómoda y económica.\n\n'
-                    'Asiste a los conciertos del Ciclo Sinfónico-Coral '
+                    'Asiste a todos los conciertos del Ciclo Sinfónico-Coral '
                     'con un precio reducido y reserva siempre el mismo asiento '
                     'para todas las funciones.\n\n'
                     'Una opción ideal para los amantes de la música '
@@ -123,17 +123,17 @@ class _AbonadosState extends State<Abonados> {
                       _buildBenefitItem(
                         Icons.percent,
                         '25% de descuento',
-                        'Sobre el precio de las entradas comprando el abono de 4 conciertos.',
+                        'Sobre el precio de las entradas comprando el abono de 4 conciertos del ciclo Sinfonico-Coral.',
                       ),
                       _buildBenefitItem(
                         Icons.chair,
                         'Venta preferente',
-                        'Conserva siempre el mismo asiento para todas las funciones y temporadas.',
+                        'Conserva siempre la misma butaca de forma indefinida, para todas las funciones y temporadas.',
                       ),
                       _buildBenefitItem(
                         Icons.local_offer,
                         'Descuentos exclusivos',
-                        '10% de descuento en entradas adicionales y conciertos extraordinarios.',
+                        '10% de descuento en entradas adicionales del ciclo y en conciertos extraordinarios.',
                       ),
                       _buildBenefitItem(
                         Icons.music_note,
@@ -143,7 +143,7 @@ class _AbonadosState extends State<Abonados> {
                       _buildBenefitItem(
                         Icons.phone_android,
                         'Atención personalizada',
-                        'Newsletter, comunicación vía WhatsApp y acceso al blog "El atril del Abonado".',
+                        'Newsletter, comunicación vía WhatsApp y acceso al blog\n"El atril del Abonado".',
                       ),
                       _buildBenefitItem(
                         Icons.card_giftcard,
@@ -252,7 +252,9 @@ class _AbonadosState extends State<Abonados> {
                               text: '8:00 a 13:30',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            TextSpan(text: '.\n\nTambién puedes escribir un mail a '),
+                            TextSpan(
+                              text: '.\n\nTambién puedes escribir un mail a ',
+                            ),
                             TextSpan(
                               text: 'reservas@grupotalia.org',
                               style: TextStyle(fontWeight: FontWeight.bold),
