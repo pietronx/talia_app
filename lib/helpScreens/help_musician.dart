@@ -18,7 +18,7 @@ class HelpMusician extends StatelessWidget {
     final spacingSmall = screenHeight * 0.015;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ayuda: Músicos')),
+      appBar: AppBar(title: const Text('Ayuda: Integrantes')),
       body: Padding(
         padding: EdgeInsets.all(horizontalPadding),
         child: ListView(
@@ -37,17 +37,17 @@ class HelpMusician extends StatelessWidget {
             // Secciones de ayuda
             WidgetsUtil.bloqueAyuda(
               icono: Icons.people,
-              titulo: 'Descubre a nuestros músicos',
+              titulo: 'Descubre a nuestro equipo',
               descripcion:
-                  'Aquí puedes conocer a los talentosos músicos '
-                  'que forman parte del\nGrupo Talía.',
+                  'Aquí puedes conocer a los talentosos integrantes del equipo '
+                  'que forman parte del Grupo Talía.',
             ),
 
             WidgetsUtil.bloqueAyuda(
               icono: Icons.music_note,
-              titulo: 'Información de los músicos',
+              titulo: 'Información de cada uno',
               descripcion:
-                  'Cada músico cuenta con una ficha que muestra su foto y una descripción sobre ellos',
+                  'Cada integrante cuenta con una ficha que muestra su foto y una descripción sobre ellos',
             ),
 
             SizedBox(height: spacingSmall),
@@ -66,7 +66,7 @@ class HelpMusician extends StatelessWidget {
                   }
                 },
                 icon: const Icon(Icons.library_music),
-                label: const Text('Ir a "Músicos"'),
+                label: const Text('Ir a "Integrantes"'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.texto,
                   foregroundColor: Colors.white,

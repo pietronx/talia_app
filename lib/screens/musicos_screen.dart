@@ -156,7 +156,7 @@ class _MusicosScreenState extends State<Musicos> {
           return CustomScrollView(
             slivers: [
               BannerPersonalizado(
-                titulo: 'Integrantes',
+                titulo: 'Nuestro Equipo',
                 fontSize: fontSize * 1.2,
                 assetImage: 'assets/images/bannerMusicos.png',
                 acciones: [

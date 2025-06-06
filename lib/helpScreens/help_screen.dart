@@ -1,10 +1,11 @@
 // Librerias importadas
 import 'package:flutter/material.dart';
 import 'package:talia_app/credits/credits_screen.dart';
+import 'package:talia_app/helpScreens/help_abonados.dart';
 import 'package:talia_app/helpScreens/help_contact.dart';
 import 'package:talia_app/helpScreens/help_legal.dart';
+import 'package:talia_app/helpScreens/help_musician.dart';
 import 'package:talia_app/helpScreens/help_next_events.dart';
-import 'package:talia_app/screens/musicos_screen.dart';
 
 import '../customColors/app_colors.dart';
 import '../screens/home_screen.dart';
@@ -36,10 +37,11 @@ class HelpScreen extends StatelessWidget {
       {'titulo': 'Sobre Nosotros', 'pantalla': const HelpAboutUs()},
       {'titulo': 'Contacto', 'pantalla': const HelpContact()},
       {'titulo': 'Eventos', 'pantalla': const HelpEvents()},
-      {'titulo': 'Noticias', 'pantalla': const HelpNews()},
       {'titulo': 'Anteriores Eventos', 'pantalla': const HelpPreviousEvents()},
-      {'titulo': 'Integrantes de Talía', 'pantalla': const Musicos()},
       {'titulo': 'Próximos Eventos', 'pantalla': const HelpNextEvents()},
+      {'titulo': 'Noticias', 'pantalla': const HelpNews()},
+      {'titulo': 'Integrantes de Talía', 'pantalla': const HelpMusician()},
+      {'titulo': 'Abonados', 'pantalla': const HelpAbonados()},
       {'titulo': 'Políticas de Privacidad', 'pantalla': const HelpLegal()},
       {'titulo': 'Créditos', 'pantalla': const CreditsScreen()},
     ];

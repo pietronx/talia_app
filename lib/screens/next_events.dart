@@ -121,7 +121,7 @@ class _NextEventsState extends State<NextEvents> {
                     ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
-                      "No se pudo cargar los eventos.\nRevisa tu conexión a Internet.",
+                      "No se pudo cargar el contenido.\nRevisa tu conexión a Internet.",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: fontSize),
                     ),

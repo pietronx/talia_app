@@ -24,9 +24,9 @@ class IconCredits extends StatelessWidget {
     final creditos = [
       {
         'icon': 'assets/icons/musicianIconBW.png',
-        'descripcion': 'Icono de Musico creado por max.icons',
+        'descripcion': 'Icono de Musico creado por Freepik',
         'url':
-            'https://www.flaticon.es/icono-gratis/tocar-la-guitarra_1886632?term=musico&related_id=1886632',
+            'https://www.flaticon.es/icono-gratis/violin_93005?term=violin&page=1&position=1&origin=search&related_id=93005',
       },
       {
         'icon': 'assets/icons/suscriberIcon.png',
