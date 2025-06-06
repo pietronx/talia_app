@@ -30,7 +30,7 @@ class _AbonadosState extends State<Abonados> {
           BannerPersonalizado(
             titulo: 'Abonados',
             fontSize: titleFontSize,
-            assetImage: 'assets/images/bannerAbonados.png',
+            assetImage: 'assets/images/bannerAbonados.jpg',
             acciones: [
               IconButton(
                 icon: const Icon(Icons.help),

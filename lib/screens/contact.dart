@@ -32,7 +32,7 @@ class Contact extends StatelessWidget {
           BannerPersonalizado(
             titulo: 'Contacto',
             fontSize: screenWidth * 0.05,
-            assetImage: 'assets/images/bannerContacto.jpg',
+            assetImage: 'assets/images/bannerContacto.png',
             acciones: [
               IconButton(
                 icon: const Icon(Icons.help),

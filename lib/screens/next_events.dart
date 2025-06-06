@@ -178,7 +178,7 @@ class _NextEventsState extends State<NextEvents> {
               BannerPersonalizado(
                 titulo: 'Próximos Eventos',
                 fontSize: screenWidth * 0.05,
-                assetImage: 'assets/images/bannerProximosEventos.jpg',
+                assetImage: 'assets/images/bannerProximosEventos.png',
                 acciones: [
                   IconButton(
                     icon: const Icon(Icons.help),

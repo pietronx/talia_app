@@ -169,7 +169,7 @@ class _PreviousEventsState extends State<PreviousEvents> {
               BannerPersonalizado(
                 titulo: 'Anteriores Eventos',
                 fontSize: screenWidth * 0.05,
-                assetImage: 'assets/images/bannerEventosRecordar.jpg',
+                assetImage: 'assets/images/bannerEventosRecordar.png',
                 acciones: [
                   IconButton(
                     icon: const Icon(Icons.help),

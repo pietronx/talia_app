@@ -51,16 +51,16 @@ class _MusicosScreenState extends State<Musicos> {
         final activo = row[4].toString().trim().toLowerCase().startsWith('s');
         if (!activo) continue;
 
-        final musico = Musico(
-          nombre: row[0].toString(),
-          instrumento: row[1].toString(),
-          descripcion: row[2].toString(),
-          fotoUrl: row[3].toString(),
-          activo: true,
+        musicos.add(
+          Musico(
+            nombre: row[0].toString(),
+            instrumento: row[1].toString(),
+            descripcion: row[2].toString(),
+            fotoUrl: row[3].toString(),
+            activo: true,
+          ),
         );
-        musicos.add(musico);
       }
-
       return musicos;
     } catch (e) {
       throw Exception("Error al cargar músicos: $e");
@@ -158,7 +158,7 @@ class _MusicosScreenState extends State<Musicos> {
               BannerPersonalizado(
                 titulo: 'Nuestro Equipo',
                 fontSize: fontSize * 1.2,
-                assetImage: 'assets/images/bannerMusicos.png',
+                assetImage: 'assets/images/bannerIntegrantes.png',
                 acciones: [
                   IconButton(
                     icon: const Icon(Icons.help),
